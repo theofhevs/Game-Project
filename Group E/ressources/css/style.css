@@ -1,2 +1,62 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat:200,400,400i,700|Roboto+Slab:700');
 @import url('https://fonts.googleapis.com/css2?family=Mulish:200,400,wght@1,1000&display=swap');
+
+body{
+    font-family: 'Mulish', sans-serif;
+    margin: 0; 
+}
+h1{
+    margin: 0;
+    padding-top: 80px;
+    padding-bottom: 20px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
+    background-image: url("../images/beau-tir-lac-cristallin-cote-base-montagne-enneigee-au-cours-journee-ensoleillee.jpg");
+    background-size: cover; 
+    background-repeat: no-repeat;
+    background-position: center center;
+    color: #ffffff;
+    text-shadow:#ffffff 0em 0em 0.3em;
+    text-align: left;
+    padding-left: 20px;
+}
+
+p {
+    float: left;
+    width: 65%; 
+}
+header > p {
+    font-style: italic;
+    text-align: right;
+}
+article {
+    margin-top: 30px;
+    border-bottom: 1px solid #ccc; 
+    padding-bottom: 10px;
+}
+
+article h2 {
+    margin-bottom: 0;
+}
+div {
+    float: right;
+    width: 35%;
+}
+footer {
+    background-color: #bcbcbc;
+    width: 100%;
+    overflow: hidden; 
+}
+ul {
+    margin: 0;
+    padding: 0;
+}
+
+ul li {
+    display: inline-block;
+    margin-right: 20px;
+}
+
+#logo {
+    float: right;
+}
