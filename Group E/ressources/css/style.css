@@ -21,27 +21,6 @@ h1{
     padding-left: 20px;
 }
 
-p {
-    float: left;
-    width: 65%; 
-}
-header > p {
-    font-style: italic;
-    text-align: right;
-}
-article {
-    margin-top: 30px;
-    border-bottom: 1px solid #ccc; 
-    padding-bottom: 10px;
-}
-
-article h2 {
-    margin-bottom: 0;
-}
-div {
-    float: right;
-    width: 35%;
-}
 footer {
     background-color: #bcbcbc;
     width: 100%;
@@ -60,3 +39,80 @@ ul li {
 #logo {
     float: right;
 }
+
+/* Article*/
+
+        article{ /* All the left center part*/
+            margin-top: 30px;
+            margin-left: 2%;
+            width: 65%;
+            float: left;
+        }
+
+        article h2 { /* H2 title with line on bottom border*/
+            margin-bottom: 0;
+            border-bottom: 1px solid #ccc; 
+            font-weight: 800;
+        }
+
+        header > p { /* By Jean Dupont...*/
+            font-style: italic;
+            text-align: right;
+            float: right;
+            color: #bcbcbc;
+        }
+
+        article > p { /* Paragraphe inside the article*/
+            float: left;
+            color: #666666;   
+        }
+
+        p > a{ /* link inside a paragraphe*/
+            color: 
+            #76AFE9;
+            text-decoration: none;
+
+        }
+
+        p > strong { /* strong part inside a paragraphe*/
+            color: black;
+        }
+
+        p > a:hover { /* When we go with the moose over a link inside a paragraphe*/
+            color: #00A5E3;
+        }
+
+/* Div*/
+
+        div{ /* All the blue and white box on the right*/
+            border-radius: 5%;
+            background-color:#00A5E3;
+            color: black;
+            width: 27%;
+            float: right;
+            margin-right: 2%;
+            text-align: left;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        h3{ /* Title of the box*/
+            background-color: #00A5E3;
+            color: white;
+            padding-left: 5%;
+        }
+
+        div > ul{ /* liste inside the box*/
+            display: flex;
+            flex-direction: column ;
+            flex-wrap: wrap;
+            margin: 0;
+            padding: 5%;
+            color: black;
+            background-color: white;
+            border-bottom-right-radius: 5%;
+            border-bottom-left-radius: 5% ;
+        }
+
+        div > ul li { /* ellements of the liste inside the box*/
+                margin-right: 50px;
+        }
