@@ -40,10 +40,14 @@ ul li {
     float: right;
 }
 
+nav{
+    background-color: #bdbdbd;
+}
+
 /* Article*/
 
         article{ /* All the left center part*/
-            margin-top: 30px;
+            margin-top: 4%;
             margin-left: 2%;
             width: 65%;
             float: left;
@@ -58,14 +62,15 @@ ul li {
         header > p { /* By Jean Dupont...*/
             font-style: italic;
             text-align: right;
-            float: right;
             color: #bcbcbc;
+            display: block;
+            margin-top: 1%;
         }
 
         article > p { /* Paragraphe inside the article*/
-            float: left;
-            color: #666666;   
+            color: #666666;
         }
+
 
         p > a{ /* link inside a paragraphe*/
             color: 
@@ -93,6 +98,7 @@ ul li {
             margin-right: 2%;
             text-align: left;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 3%;
         }
 
         h3{ /* Title of the box*/
@@ -114,5 +120,5 @@ ul li {
         }
 
         div > ul li { /* ellements of the liste inside the box*/
-                margin-right: 50px;
+            margin-right: 1%;
         }
