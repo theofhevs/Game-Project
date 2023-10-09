@@ -25,6 +25,8 @@ footer {
     background-color: #bcbcbc;
     width: 100%;
     overflow: hidden;
+    position: absolute;
+    bottom: 0;
 }
 .hamburger{
     display: none;
@@ -69,32 +71,56 @@ header nav ul li.active a{
 }
 
 #logo {
-    padding-top:20px;
-    padding-right:20px;
+    padding-top:15px;
+    padding-right:15px;
     padding-bottom: 20px;
     float: right;
-    width:15%;
+    width:12%;
     height: auto;
 }
 @media only screen and (max-width: 600px) {
-    .hamburger {
-        display: inline-block;
+    body {
+        font-size: 14px; /* Adjust as needed */
     }
 
-    #menu {
-        display: none;
-        flex-direction: column;
-        align-items: center;
+    h1 {
+        padding-top: 60px;
+        padding-bottom: 10px;
+        padding-left: 15px;
         text-align: center;
+    }
+
+    nav {
+        padding-left: 15px;
+    }
+
+    nav > ul {
+        flex-direction: column;
+        align-items: stretch;
     }
 
     nav > ul li {
         margin-right: 0;
         margin-bottom: 10px;
+        width: 100%;
     }
 
     #logo {
-        width: 30% !important;
+        width: 70% !important; /* Adjust as needed */
+        float: none;
+        margin: 0 auto;
+    }
+
+    article {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    div {
+        width: 100%;
+        float: none;
+        margin-right: 0;
+        margin-top: 3%;
     }
 }
 
@@ -148,21 +174,21 @@ header nav ul li.active a{
             border-radius: 5%;
             background-color:#00A5E3;
             color: black;
-            width: 27%;
+            width: 22%;
             float: right;
-            margin-right: 2%;
+            margin-right: 4%;
             text-align: left;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             margin-top: 3%;
         }
 
-        h3{ /* Title of the box*/
+        h3{ /* title of the box*/
             background-color: #00A5E3;
             color: white;
             padding-left: 5%;
         }
 
-        div > ul{ /* liste inside the box*/
+        div > ul{ /* list inside the box*/
             display: flex;
             flex-direction: column ;
             flex-wrap: wrap;
@@ -175,6 +201,6 @@ header nav ul li.active a{
             list-style-type: none;
         }
 
-        div > ul li { /* ellements of the liste inside the box*/
+        div > ul li { /* elements of the list inside the box*/
                 margin-right: 50px;
         }
