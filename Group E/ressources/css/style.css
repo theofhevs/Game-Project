@@ -6,134 +6,89 @@ html, body{
     margin: 0;
     min-height: 100vh;
 }
-h1{
-    margin: 0;
-    padding-top: 8vh;
-    padding-bottom: 5vh;
-    font-family: 'Montserrat', sans-serif;
-    font-weight: bold;
-    background-image: url("../images/beau-tir-lac-cristallin-cote-base-montagne-enneigee-au-cours-journee-ensoleillee.jpg");
-    background-size: cover; 
-    background-repeat: no-repeat;
-    background-position: center center;
-    color: #ffffff;
-    text-shadow:#ffffff 0em 0em 0.3em;
-    text-align: left;
-    padding-left: 30px;
-    font-size: 272%;
-}
 
-footer {
-    background-color: #bdbdbd;
-    width: 100%;
-    height: 15%;
-    position: fixed;
-    bottom: 0;
-}
-.hamburger{
-    display: none;
-}
-nav{
-    background-color: #bdbdbd;
-    display: flex;
-    align-items: center; /* Vertical alignment */
-    padding-left: 26px;
-}
-nav > ul {
-    margin: 0;
-    padding: 0;
-    display: flex; 
-    align-items: center;
-}
-nav > ul li {
-    display: inline-block;
-    margin-right: 20px;
-    line-height: 35px;
-    width: 90px;
-    text-align: center;
-}
-li > a{
-    text-decoration: none;
-    color: black;
-    width: 100%;
-    margin: 0;
-}
-a:hover{
-    text-decoration: none;
-    color: rgb(0, 191, 255);
-}
-header nav ul li.active{
-    background-color: #ffffff;
-}
+/* Title */
+        h1{
+            margin: 0;
+            padding-top: 8vh;
+            padding-bottom: 5vh;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: bold;
+            background-image: url("../images/beau-tir-lac-cristallin-cote-base-montagne-enneigee-au-cours-journee-ensoleillee.jpg");
+            background-size: cover; 
+            background-repeat: no-repeat;
+            background-position: center center;
+            color: #ffffff;
+            text-shadow:#ffffff 0em 0em 0.3em;
+            text-align: left;
+            padding-left: 30px;
+            font-size: 272%;
+        }
 
-header nav ul li.active a{
-    color: rgb(0, 191, 255);
-    font-weight: 700;
-}
+/* Footer */
+        footer {
+            background-color: #bdbdbd;
+            width: 100%;
+            height: 15%;
+            position: fixed;
+            bottom: 0;
+        }
 
-#logo {
-    float: right;
-    max-width: auto;
-    height: 60%;
-    margin-right: 2%;
-    margin-top: 1.5%;
-}
+        #logo {
+            float: right;
+            max-width: auto;
+            height: 60%;
+            margin-right: 2%;
+            margin-top: 1.5%;
+        }
 
-@media only screen and (max-width: 600px) {
-    body {
-        font-size: 14px; /* Adjust as needed */
-    }
+/* nav */        
+        .hamburger{
+            display: none;
+        }
 
-    h1 {
-        padding-top: 60px;
-        padding-bottom: 10px;
-        padding-left: 15px;
-        text-align: center;
-    }
+        nav{
+            background-color: #bdbdbd;
+            display: flex;
+            align-items: center; /* Vertical alignment */
+            padding-left: 26px;
+        }
 
-    nav {
-        padding-left: 15px;
-    }
+        nav > ul {
+            margin: 0;
+            padding: 0;
+            display: flex; 
+            align-items: center;
+        }
 
-    nav > ul {
-        flex-direction: column;
-        align-items: stretch;
-    }
+        nav > ul li {
+            display: inline-block;
+            margin-right: 20px;
+            line-height: 35px;
+            width: 90px;
+            text-align: center;
+        }
 
-    nav > ul li {
-        margin-right: 0;
-        margin-bottom: 10px;
-        width: 100%;
-    }
+        li > a{
+            text-decoration: none;
+            color: black;
+            width: 100%;
+            margin: 0;
+        }
 
-    #logo {
-        width: 70% !important; /* Adjust as needed */
-        float: none;
-        margin: 0 auto;
-    }
+        a:hover{
+            text-decoration: none;
+            color: rgb(0, 191, 255);
+        }
 
-    article {
-        width: 100%;
-        margin-left: 0;
-    }
+        header nav ul li.active{
+            background-color: #ffffff;
+        }
 
-    div {
-        width: 100%;
-        float: none;
-        margin-right: 0;
-        margin-top: 3%;
-    }
-}
-
-@media only screen and (max-height: 500px) {
-    footer {
-        display: none; /* Cacher le pied de page lorsque la hauteur est inférieure à 500px */
-    }
-}
-
-nav{
-    background-color: #bdbdbd;
-}
+        header nav ul li.active a{
+            color: rgb(0, 191, 255);
+            font-weight: 700;
+        }
 
 /* Article*/
 
@@ -206,4 +161,93 @@ nav{
             list-style-type: none;
         }
 
-    
+
+/* Media */
+
+        /*Adjustement for pc resizing*/
+                @media only screen and (max-width: 600px) {
+                        body {
+                            font-size: 14px; 
+                        }
+
+                        h1 {
+                            padding-top: 60px;
+                            padding-bottom: 10px;
+                            padding-left: 15px;
+                            text-align: center;
+                        }
+
+                        nav {
+                            padding-left: 15px;
+                        }
+
+                        nav > ul {
+                            flex-direction: column;
+                            align-items: stretch;
+                        }
+
+                        nav > ul li {
+                            margin-right: 0;
+                            margin-bottom: 10px;
+                            width: 100%;
+                        }
+
+                        #logo {
+                            width: 70% !important; 
+                            float: none;
+                            margin: 0 auto;
+                        }
+
+                        article {
+                            width: 100%;
+                            margin-left: 0;
+                        }
+
+                        div {
+                            width: 100%;
+                            float: none;
+                            margin-right: 0;
+                            margin-top: 3%;
+                        }
+                    }
+        /* Delete footer on pc when zooming too much, so we can still read the text*/                    
+                @media only screen and (max-height: 500px) {
+                    footer {
+                        display: none; /* Cacher le pied de page lorsque la hauteur est inférieure à 500px */
+                    }
+                }
+
+
+        /* IPAD */
+                @media only screen and (max-height: 1180px) and (max-width: 820px){  
+                    footer {
+                        height: 5%;
+                    }
+
+                    article{ 
+                        width: 90%;
+                    }
+
+                    div {
+                        float: left;
+                        margin-left: 30px;
+                        width: 40%;
+                    }
+
+                    article h2 { /* H2 title with line on bottom border*/
+                        font-size: 32px;
+                    }
+
+                    body {
+                        font-size: 23px;
+                    }
+
+                    nav > ul li {
+                        line-height: 45px;
+                    }
+
+                    header nav ul li.active{
+                        width: 125px;
+                    }
+                }
+            
