@@ -15,14 +15,14 @@ html, body{
             font-family: 'Montserrat', sans-serif;
             font-weight: bold;
             background-image: url("../images/beau-tir-lac-cristallin-cote-base-montagne-enneigee-au-cours-journee-ensoleillee.jpg");
-            background-size: cover; 
+            background-size: cover;
             background-repeat: no-repeat;
             background-position: center center;
             color: #ffffff;
             text-shadow:#ffffff 0em 0em 0.3em;
             text-align: left;
             padding-left: 30px;
-            font-size: 272%;
+            font-size: 43px;
         }
 
 /* Footer */
@@ -97,14 +97,13 @@ html, body{
 
         article{ /* All the left center part*/
             margin-top: 20px;
-            margin-left: 30px;
+            padding-left: 30px;
             width: 70%;
             float: left;
         }
 
-        article h2 { /* H2 title with line on bottom border*/
+        article h2 { /* H2 title */
             margin-bottom: 0;
-            border-bottom: 1px solid #ccc; 
             font-weight: 800;
         }
 
@@ -114,6 +113,8 @@ html, body{
             color: #bcbcbc;
             display: block;
             margin-top: 1%;
+            border-top: 1px solid #ccc;
+            padding-top: 5px;
         }
 
         article > p { /* Paragraphe inside the article*/
@@ -130,6 +131,7 @@ html, body{
 
         p > strong { /* strong part inside a paragraphe*/
             color: black;
+            font-weight: 600;
         }
 
         p > a:hover { /* When we go with the moose over a link inside a paragraphe*/
@@ -178,13 +180,49 @@ html, body{
 
         /* IPAD */
 
-                @media only screen and (max-height: 1180px) and (max-width: 820px){  
-                    footer {
-                        height: 8%;
+                @media only screen and (max-height: 1100px) and (max-width: 800px){  
+
+                    h1{
+                        padding-top: 8.5vh;
+                        padding-bottom: 4vh;
+                        font-size: 250%;
+                    }
+
+                    nav > ul li {
+                        line-height: 50px;
+                        font-size: 19px;
+                        width: fit-content;
+                        padding-left: 1%;
+                        padding-right: 1%;
+                    }
+
+                    nav {
+                        padding-left: 25px;
+                    }
+                    
+
+                    header nav ul li.active{
+                        width: fit-content;
+                        line-height: 50px;
+                    }
+
+
+                    header nav ul li.active a{
+                        font-weight: 900;
+                    }
+                   
+
+                    article h2 { /* H2 title with line on bottom border*/
+                        font-size: 30px;
+                        margin-top: 5%;
                     }
 
                     article{ 
                         width: 90%; 
+                    }
+
+                    body {
+                        font-size: 21px;
                     }
 
                     div {
@@ -194,84 +232,32 @@ html, body{
                         margin-bottom: 15%;
                     }
 
-                    article h2 { /* H2 title with line on bottom border*/
-                        font-size: 32px;
+                    footer {
+                        height: 7%;
                     }
 
-                    body {
-                        font-size: 23px;
-                    }
-
-                    nav > ul li {
-                        line-height: 45px;
-                        padding-right: 20px;
-                    }
-
-                    header nav ul li.active{
-                        width: fit-content;
-                        padding-right: 2%;
-                        padding-left: 2%;
-                    }
-
-                }
-
-        /* IPHONE landscape*/
-
-                @media only screen and (max-height: 415px) and (max-width: 896px){  
-                   
-                     h1{  
-                        font-size: 190%;
-                    }
-
-                    article{ 
-                        width: 94%; 
-                    }
-
-                    body {
-                        font-size: 16.7px;
-                    }
-
-                    div {
-                        float: left;
-                        margin-left: 30px;
-                        width: 40%;
-                        margin-bottom: 3%;
-                    }
 
                 }
 
         /* IPHONE portrait*/
 
-                @media only screen and (max-height: 896px) and (max-width: 415px){  
+                @media only screen and (max-height: 800px) and (max-width: 500px){  
                     h1{  
-                        font-size: 130%;
+                        font-size: 170%;
                         text-align: left;
-                        padding-top: 4vh;
+                        padding-top: 7vh;
+                        padding-bottom: 2.5vh;
+                        padding-left: 25px;
                     }
 
                     .hamburger{
                         display: block;
                         justify-content: center;
-                        padding-top: 3%;
-                        background-color: aqua;
+                        padding-top: 2px;
+                        padding-bottom: 0%;
                     }
 
                     nav{
-                        padding-left: 0px;
-                    }
-
-                    nav > ul {
-                        flex-direction: column;
-                        align-items: center;
-                        justify-content: center;
-                        width: 100%;
-                    }
-
-                    header nav ul li.active{
-                        text-align: center;
-                        width: 100%;
-                        margin-bottom: 0%;
-                        justify-content: center;
                         padding-left: 0px;
                     }
 
@@ -281,18 +267,41 @@ html, body{
                         padding: 5px;
                         width: 100%;
                         margin-right: 0;
-                    }
- 
-                    body{
-                        font-size: 16px;
+                        font-size: 15px;
                     }
 
-                    article h2 { /* H2 title with line on bottom border*/
-                        font-size: 23px;
+                    nav > ul {
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: center;
+                        width: 100%;
+                       
+                    }
+
+                    header nav ul li.active{
+                        text-align: center;
+                        width: 100%;
+                        margin-bottom: 0%;
+                        justify-content: center;
+                        padding-left: 100px;
+                        padding-right: 100px;
+                        line-height: 25px;
+                        font-size: 15px;
+                    }
+
+                    body{
+                        font-size: 15px;
+                        width: 100%
+
+                    }
+
+                    article h2 { /* H2 title */
+                        font-size: 22px;
                     }
 
                     article {
-                        width: 86%;
+                        width: 89%;
+                        padding-left: 25px;
                     }
 
                     footer {
@@ -304,11 +313,56 @@ html, body{
                         margin-bottom: 3%;
                     }
 
+                }
 
-                    /* impossible in css ??????????*/
-                    ul li:not(.hamburger) {
-                        display: none;
+            
+        /* IPHONE landscape*/
+
+                @media only screen and (max-height: 500px) and (max-width: 800px){  
+                        
+                    h1{  
+                        font-size: 165%;
+                        padding-top: 12.5vh;
+                        padding-bottom: 6vh;
+                        padding-left: 20px;
                     }
 
+                    nav {
+                        padding-left: 12px;
+                    }
 
-                }
+                    nav > ul li {
+                        line-height: 30.5px;
+                        font-size: 13px;
+                        width: fit-content;
+                        margin-left: 3%;
+                        margin-right: 3%;
+                    }
+
+                    header nav ul li.active{
+                        line-height: 30.5px;
+                        font-size: 13px;
+                    }
+
+                    article h2 { /* H2 title */
+                        margin-top: 13px;
+                        font-size: 19px;
+                    }
+
+                    article{ 
+                        width: 92%; 
+                        padding-left: 20px;
+                    }
+
+                    body {
+                        font-size: 13px;
+                    }
+
+                    div {
+                        float: left;
+                        margin-left: 30px;
+                        width: 40%;
+                        margin-bottom: 3%;
+                    }
+
+            }
