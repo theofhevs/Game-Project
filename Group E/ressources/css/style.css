@@ -275,6 +275,8 @@ html, body{
                         align-items: center;
                         justify-content: center;
                         width: 100%;
+                        padding-left: 0%;
+                        margin-left: 0%;
                        
                     }
 
@@ -285,6 +287,10 @@ html, body{
                         justify-content: center;
                         line-height: 25px;
                         font-size: 15px;
+                        padding-left: 12px;
+                        padding-right: 12px;
+                        margin-left: 0;
+                        margin-right: 0;
                     }
 
                     body{
@@ -363,4 +369,13 @@ html, body{
                         margin-bottom: 3%;
                     }
 
+            }
+
+        /* Adjustement for web*/
+            @media only screen and (max-height: 240px) and (max-width: 400px){ 
+                
+                div{
+                    width: 86%;
+                    margin-bottom: 3%;
+                }
             }
