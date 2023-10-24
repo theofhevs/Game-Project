@@ -14,10 +14,6 @@ html, body{
             padding-bottom: 5vh;
             font-family: 'Montserrat', sans-serif;
             font-weight: bold;
-            background-image: url("../images/beau-tir-lac-cristallin-cote-base-montagne-enneigee-au-cours-journee-ensoleillee.jpg");
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-position: center center;
             color: #ffffff;
             text-shadow:#ffffff 0em 0em 0.3em;
             text-align: left;
@@ -25,11 +21,18 @@ html, body{
             font-size: 43px;
         }
 
+        body >header {
+            background-image: url("../images/beau-tir-lac-cristallin-cote-base-montagne-enneigee-au-cours-journee-ensoleillee.jpg");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+        }
+
 /* Footer */
         footer {
             background-color: #bdbdbd;
             width: 100%;
-            height: 15%;
+            height: 10%;
             position: fixed;
             bottom: 0;
         }
@@ -136,6 +139,40 @@ html, body{
 
         p > a:hover { /* When we go with the moose over a link inside a paragraphe*/
             color: #00A5E3;
+        }
+
+        article > table {
+            width: 100%;
+            table-layout: fixed;
+        }
+
+        article th{
+            width: 25%;
+            text-align: center;
+            background-color: #00A5E3;
+            color: white;
+            height: 50px;
+        }
+
+        article td {
+            width: 25%;
+            background-color: #bdbdbd;
+            height: 30px;
+        }
+
+        p > img{
+            width: 100%;
+            margin-bottom: 15%;
+        }
+
+        .GameSequences {
+            width: 20%;
+            height: auto;
+        }
+                            
+        .sitemap {
+            width: 100%;
+            height: auto;
         }
 
 /* Div*/
@@ -258,13 +295,13 @@ html, body{
                     }
 
                     nav{
-                        padding-left: 0px;
+                        padding-left: 0%;
                     }
 
                     nav > ul li {
                         line-height: 25px;
                         margin-bottom: 0px;
-                        padding: 5px;
+
                         width: 100%;
                         margin-right: 0;
                         font-size: 15px;
@@ -275,9 +312,6 @@ html, body{
                         align-items: center;
                         justify-content: center;
                         width: 100%;
-                        padding-left: 0%;
-                        margin-left: 0%;
-                       
                     }
 
                     header nav ul li.active{
@@ -287,10 +321,9 @@ html, body{
                         justify-content: center;
                         line-height: 25px;
                         font-size: 15px;
-                        padding-left: 12px;
-                        padding-right: 12px;
                         margin-left: 0;
                         margin-right: 0;
+                        padding: 0%;
                     }
 
                     body{
@@ -315,6 +348,10 @@ html, body{
                     div{
                         width: 86%;
                         margin-bottom: 3%;
+                    }
+
+                    th, td{
+                        font-size: 12px;
                     }
 
                 }
