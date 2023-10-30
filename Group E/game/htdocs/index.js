@@ -11,6 +11,8 @@ const mainBackGround = new Image();
 const tinyPlateformFont = new Image();
 const playerFont = new Image();
 const spikesImg = new Image();
+const desertBackground = new Image();
+desertBackground.src = siteURL + "/img/desertBackgroundLarge.png"
 spikesImg.src = siteURL + "/img/spikes.png";
 playerFont.src = siteURL + "/img/sprite.png";
 plateformFont.src = siteURL + "/img/platform.png";
@@ -36,7 +38,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // création de l'objet player
     let player = new Player(playerFont, spriteX, spriteY, gameFrame, staggerFrames)
 
-   
+
+    let currentLevel = 1;
+
+
     // création de l'objet plateform
     let plateforms = []
 
@@ -87,10 +92,15 @@ document.addEventListener('DOMContentLoaded', () => {
         player.position.y  < enemy.position.y + enemy.height 
     );
     // La condition se déclenche si les deux collisions (X et Y) sont vraies
-    if (Collision ) {
-        console.log("C'est carré le S")
-        init()
+    if (Collision) {
+        console.log("");
+    
+        if (currentLevel === 1) {
+            initlevel1();
+        } else if (currentLevel === 2) {
+            initlevel2();
         }
+    }
     }
 
     function checkPlayerEnemyMovingCollision(player, MovingEnemy) {
@@ -103,10 +113,15 @@ document.addEventListener('DOMContentLoaded', () => {
             player.position.y  < MovingEnemy.position.y + MovingEnemy.height 
         );
         // La condition se déclenche si les deux collisions (X et Y) sont vraies
-        if (Collision ) {
-            console.log("Moving ENemy death")
-            init()
-            }
+        if (Collision) {
+        console.log("");
+    
+        if (currentLevel === 1) {
+            initlevel1();
+        } else if (currentLevel === 2) {
+            initlevel2();
+        }
+    }
 
         }
 
@@ -116,7 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // permet de respawn après être tombé (même code que les ligne 108 - 143)
-    function init() {
+    function initlevel1() {
 
         // création de l'objet player
         player = new Player(playerFont, spriteX, spriteY, gameFrame, staggerFrames)
@@ -139,6 +154,54 @@ document.addEventListener('DOMContentLoaded', () => {
             x: 0,
             y: 0,
             image: mainBackGround
+            })
+        ]
+
+        spikes = [
+            // TODO change the hardcoding
+            new Spikes(plateforms[4].position.x+150, plateforms[4].position.y - 50, spikesImg),
+            new Spikes(plateforms[5].position.x+240, plateforms[5].position.y - 50, spikesImg),
+            new Spikes(plateforms[5].position.x+290, plateforms[5].position.y - 50, spikesImg)
+        ];
+
+        movingEnemies = [
+            new MovingEnemy (plateforms[1].position.x+240, plateforms[1].position.y - 80,'vertical',200,400,0,1),
+            new MovingEnemy(plateforms[0].position.x+240, plateforms[0].position.y - 80,'horizontal',plateforms[0].position.x,plateforms[0].position.x+plateforms[0].width,1,0)
+        ]
+
+
+
+        
+
+       
+
+        // variable qui permettra de définir un objectif pour finir un niveau par exemple
+        scrollOffset = 0
+    }
+
+    function initlevel2() {
+
+        // création de l'objet player
+        player = new Player(playerFont, spriteX, spriteY, gameFrame, staggerFrames)
+
+        // création de l'objet plateform
+        plateforms = [
+            new Plateform({ x: 0, y: 350, image: plateformFont }),
+            new Plateform({ x: plateformFont.width * 2 - 350, y: 500, image: plateformFont }),
+            new Plateform({ x: plateformFont.width * 2, y: 500, image: tinyPlateformFont }),
+            new Plateform({ x: plateformFont.width * 3.2, y: 500, image: plateformFont }),
+            new Plateform({ x: plateformFont.width * 3.8, y: 500, image: plateformFont }),
+            new Plateform({ x: plateformFont.width * 5.3, y: 500, image: plateformFont }),
+            new Plateform({ x: plateformFont.width * 6.7, y: 500, image: plateformFont }),
+            new Plateform({ x: plateformFont.width * 8.25, y: 500, image: plateformFont }),
+            new Plateform({ x: plateformFont.width * 9.8, y: 500, image: plateformFont })
+        ]
+
+        // création de l'objet concernant le BackGround
+        genericObjects = [new GenericObject({
+            x: 0,
+            y: 0,
+            image: desertBackground
             })
         ]
 
@@ -256,7 +319,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     genericObject.position.x += player.speed * 0.66
                 })
                 spikes.forEach((spikes) => {
-                    enemy.position.x += player.speed
+                    spikes.position.x += player.speed
                 })
                 movingEnemies.forEach((MovingEnemy) => {
                     if(MovingEnemy.movementType==='horizontal'){
@@ -297,16 +360,34 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         })
 
+        if (player.position.y > canvas.height) {
+            if (currentLevel === 1) {
+                initlevel1();
+            } else if (currentLevel === 2) {
+                initlevel2();
+            }
+        }
+        if (scrollOffset > 5000) {
+            console.log('you win');
 
+            // Passez au niveau suivant
+            currentLevel++; // Augmentez le niveau actuel de 1.
+
+            // Réinitialisez le niveau correspondant
+            if (currentLevel === 2) {
+                initlevel2();
+            } else {
+                initlevel1(); // Par défaut, retournez au niveau 1 si le niveau n'est pas défini.
+            }
+
+        }
         
         // Win condition vraiment la base pour réussi un niveau
         if (scrollOffset > 2000) {
             console.log('you win')
         }
 
-        // lose condition (player tombe dans le vide)
-        if (player.position.y > canvas.height)
-            init()
+       
     }
 
 
@@ -352,6 +433,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     })
 
-    init()
+    initlevel1()
     animate()
 })

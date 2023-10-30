@@ -37,7 +37,7 @@ class MovingEnemy {
             // Vérifiez si l'ennemi atteint les limites de sa plateforme
             if (this.position.x < this.min) {
                 this.velocity.x = 1; 
-            } else if (this.position.x > this.max) {
+            } else if (this.position.x > this.max-this.width) {
                 this.velocity.x = -1; 
             }
 
