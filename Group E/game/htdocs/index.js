@@ -1,7 +1,9 @@
+//import les class
 import Plateform from "./Class/Plateform.js";
 import GenericObject from "./Class/GenericObject.js";
 import Player from "./Class/Player.js";
 import Enemy from "./Class/Enemy.js";
+import MovingEnemy from "./Class/MovingEnemy.js";
 // ajout des images 
 const siteURL = "http://localhost/";
 const plateformFont = new Image();
@@ -29,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const staggerFrames = 5;
     
     // création de l'objet player
-    let player = new Player(playerFont, spriteFrame, gameFrame, staggerFrames)
+    let player = new Player() //playerFont, spriteFrame, gameFrame, staggerFrames
 
    
     // création de l'objet plateform
@@ -41,8 +43,18 @@ document.addEventListener('DOMContentLoaded', () => {
     // création de l'objet enemies
     let enemies = [];
 
+    // création objet Moving Moving Enemy
+    let movingEnemies = [];
+    let movingEnemiesY = []
+
+    
+
+    
+
     // Set l'accélération lorsque le player tombe
-    const gravity = 0.4
+    const gravity = 0.4;
+
+    let isPlayerOnEnemy = false;
 
     //for sprite animation
 
@@ -67,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
         player.position.x + player.width > enemy.position.x &&
         player.position.x < enemy.position.x + enemy.width 
 
-
+        // code pour la hauteur
         && player.position.y + player.height > enemy.position.y - 1 &&
         player.position.y  < enemy.position.y + enemy.height 
     );
@@ -77,6 +89,27 @@ document.addEventListener('DOMContentLoaded', () => {
         init()
         }
     }
+
+    function checkPlayerEnemyMovingCollision(player, MovingEnemy) {
+        const Collision = (
+            player.position.x + player.width > MovingEnemy.position.x &&
+            player.position.x < MovingEnemy.position.x + MovingEnemy.width 
+    
+            // code pour la hauteur
+            && player.position.y + player.height > MovingEnemy.position.y + 1 &&
+            player.position.y  < MovingEnemy.position.y + MovingEnemy.height 
+        );
+        // La condition se déclenche si les deux collisions (X et Y) sont vraies
+        if (Collision ) {
+            console.log("Moving ENemy death")
+            init()
+            }
+
+        }
+
+        
+
+
 
 
     // permet de respawn après être tombé (même code que les ligne 108 - 143)
@@ -106,15 +139,23 @@ document.addEventListener('DOMContentLoaded', () => {
             })
         ]
 
-        console.log('Position de la deuxième plateforme :', plateforms[1].position.x, plateforms[1].position.y);
-        // create an enemy at the same position as the third platform
-
         enemies = [
             // TODO changé le hardcoding pour le 40
             new Enemy(plateforms[5].position.x+240, plateforms[5].position.y - 80),
-            new Enemy(plateforms[1].position.x+240, plateforms[1].position.y - 80)
+            new Enemy(plateforms[2].position.x+240, plateforms[2].position.y - 80)
             // Add more enemies as needed
         ];
+
+        movingEnemies = [
+            new MovingEnemy (plateforms[1].position.x+240, plateforms[1].position.y - 80,'vertical',200,400,0,1),
+            new MovingEnemy(plateforms[0].position.x+240, plateforms[0].position.y - 80,'horizontal',plateforms[0].position.x,plateforms[0].position.x+plateforms[0].width,1,0)
+        ]
+
+
+
+        
+
+       
 
         // variable qui permettra de définir un objectif pour finir un niveau par exemple
         scrollOffset = 0
@@ -140,6 +181,27 @@ document.addEventListener('DOMContentLoaded', () => {
             checkPlayerEnemyCollision(player,enemy)
             enemy.draw(c);
         });
+        
+        movingEnemies.forEach((MovingEnemy) => {
+            checkPlayerEnemyMovingCollision(player,MovingEnemy)
+            
+            // Mettez à jour la position horizontale du MovingEnemy
+            MovingEnemy.updatePosition();
+            MovingEnemy.draw(c);
+        });
+
+       
+
+
+
+        // Gérer le saut automatique si le joueur est sur l'ennemi
+        if (isPlayerOnEnemy) {
+        if (player.velocity.y === 0) {
+            isPlayerOnEnemy = false
+            player.velocity.y -= 12;
+        }
+    }
+
         player.update(c,canvas,gravity)
 
 
@@ -168,6 +230,18 @@ document.addEventListener('DOMContentLoaded', () => {
                     enemy.position.x -= player.speed
                 })
 
+                movingEnemies.forEach((MovingEnemy) => {
+                    if(MovingEnemy.movementType==='horizontal'){
+                        MovingEnemy.min -= player.speed
+                        MovingEnemy.max -= player.speed
+                    }
+
+                        MovingEnemy.position.x -= player.speed
+                    
+                })
+
+
+
             } else if (keys.left.pressed && scrollOffset > 0) {
                 scrollOffset -= player.speed
                 plateforms.forEach((plateform) => {
@@ -179,6 +253,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 enemies.forEach((enemy) => {
                     enemy.position.x += player.speed
                 })
+                movingEnemies.forEach((MovingEnemy) => {
+                    if(MovingEnemy.movementType==='horizontal'){
+                        MovingEnemy.min += player.speed
+                        MovingEnemy.max += player.speed
+                    }
+                    MovingEnemy.position.x += player.speed
+                })
+
             }
         }
 
@@ -193,6 +275,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 player.velocity.y = 0
             }
         })
+        // gère les collision du joueur avec les Moving Enemy
+        movingEnemies.forEach((MovingEnemy,index) => {
+            if (
+                player.position.y + player.height <= MovingEnemy.position.y && player.position.y
+                + player.height + player.velocity.y >= MovingEnemy.position.y &&
+                player.position.x + player.width  >= MovingEnemy.position.x &&
+                player.position.x <= MovingEnemy.position.x + MovingEnemy.width
+            ) {
+                movingEnemies.splice(index,1)
+                player.velocity.y = 0
+                isPlayerOnEnemy = true;
+            }
+            else{
+                isPlayerOnEnemy = false;
+            }
+        })
+
+
         
         // Win condition vraiment la base pour réussi un niveau
         if (scrollOffset > 2000) {
@@ -221,8 +321,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 break
             case 87:
                 console.log('up')
-                if (player.velocity.y === 0)
-                    player.velocity.y -= 12
+                if ((player.velocity.y === 0 || isPlayerOnEnemy) && !isPlayerOnEnemy)
+                player.velocity.y -= 12
                 break
         }
     })

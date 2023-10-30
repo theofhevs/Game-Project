@@ -3,7 +3,7 @@ class Enemy {
         this.position = { x, y };
         this.width = 40;
         this.height = 80;
-        this.color = 'red'; // Ajout de la couleur rouge
+        this.color = 'green'; // Ajout de la couleur rouge
     }
 
     
