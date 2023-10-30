@@ -2,14 +2,16 @@
 import Plateform from "./Class/Plateform.js";
 import GenericObject from "./Class/GenericObject.js";
 import Player from "./Class/Player.js";
-import Enemy from "./Class/Enemy.js";
+import Spikes from "./Class/Spikes.js";
 import MovingEnemy from "./Class/MovingEnemy.js";
 // ajout des images 
-const siteURL = "http://localhost/";
+const siteURL = "http://127.0.0.1:5500/Group%20E/game/htdocs/";
 const plateformFont = new Image();
 const mainBackGround = new Image();
 const tinyPlateformFont = new Image();
 const playerFont = new Image();
+const spikesImg = new Image();
+spikesImg.src = siteURL + "/img/spikes.png";
 playerFont.src = siteURL + "/img/sprite.png";
 plateformFont.src = siteURL + "/img/platform.png";
 mainBackGround.src = siteURL + "/img/BG_large.png";
@@ -26,12 +28,13 @@ document.addEventListener('DOMContentLoaded', () => {
     canvas.width = 1024
     canvas.height = 576
 
-    let spriteFrame = 0;
+    let spriteX = 0;
+    let spriteY = 0;
     let gameFrame = 0;
-    const staggerFrames = 5;
+    const staggerFrames = 20;
     
     // création de l'objet player
-    let player = new Player() //playerFont, spriteFrame, gameFrame, staggerFrames
+    let player = new Player(playerFont, spriteX, spriteY, gameFrame, staggerFrames)
 
    
     // création de l'objet plateform
@@ -41,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let genericObjects = []
 
     // création de l'objet enemies
-    let enemies = [];
+    let spikes = [];
 
     // création objet Moving Moving Enemy
     let movingEnemies = [];
@@ -76,11 +79,11 @@ document.addEventListener('DOMContentLoaded', () => {
     function checkPlayerEnemyCollision(player, enemy) {
     // Vérifie s'il y a une collision en X
     const Collision = (
-        player.position.x + player.width > enemy.position.x &&
-        player.position.x < enemy.position.x + enemy.width 
+        player.position.x + player.width / 1.2 > enemy.position.x &&
+        player.position.x  * 1.1 < enemy.position.x + enemy.width
 
-        // code pour la hauteur
-        && player.position.y + player.height > enemy.position.y - 1 &&
+
+        && player.position.y + player.height > enemy.position.y &&
         player.position.y  < enemy.position.y + enemy.height 
     );
     // La condition se déclenche si les deux collisions (X et Y) sont vraies
@@ -116,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function init() {
 
         // création de l'objet player
-        player = new Player(playerFont, spriteFrame, gameFrame, staggerFrames)
+        player = new Player(playerFont, spriteX, spriteY, gameFrame, staggerFrames)
 
         // création de l'objet plateform
         plateforms = [
@@ -139,11 +142,11 @@ document.addEventListener('DOMContentLoaded', () => {
             })
         ]
 
-        enemies = [
-            // TODO changé le hardcoding pour le 40
-            new Enemy(plateforms[5].position.x+240, plateforms[5].position.y - 80),
-            new Enemy(plateforms[2].position.x+240, plateforms[2].position.y - 80)
-            // Add more enemies as needed
+        spikes = [
+            // TODO change the hardcoding
+            new Spikes(plateforms[4].position.x+150, plateforms[4].position.y - 50, spikesImg),
+            new Spikes(plateforms[5].position.x+240, plateforms[5].position.y - 50, spikesImg),
+            new Spikes(plateforms[5].position.x+290, plateforms[5].position.y - 50, spikesImg)
         ];
 
         movingEnemies = [
@@ -177,9 +180,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         });
         
-        enemies.forEach((enemy) => {
-            checkPlayerEnemyCollision(player,enemy)
-            enemy.draw(c);
+        spikes.forEach((spikes) => {
+            checkPlayerEnemyCollision(player,spikes)
+            spikes.draw(c);
         });
         
         movingEnemies.forEach((MovingEnemy) => {
@@ -209,6 +212,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // le 400 et 100 réprésentent les positions que le joueurs ne peut pas dépassé
         if (keys.right.pressed && player.position.x < 400) {
             player.velocity.x = player.speed
+            spriteY = 1;
 
         } else if ((keys.left.pressed && player.position.x > 100) || keys.left.pressed && scrollOffset === 0 && player.position.x > 0) {
             player.velocity.x = -player.speed
@@ -217,6 +221,7 @@ document.addEventListener('DOMContentLoaded', () => {
             player.velocity.x = 0
             // permet de donner l'illusion que les plateformes se déplacent lorsque le joueur bouge
             if (keys.right.pressed) {
+                spriteY = 0;
                 scrollOffset += player.speed
                 plateforms.forEach((plateform) => {
                     plateform.position.x -= player.speed
@@ -226,8 +231,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     genericObject.position.x -= player.speed * 0.66
                 })
 
-                enemies.forEach((enemy) => {
-                    enemy.position.x -= player.speed
+                spikes.forEach((spikes) => {
+                    spikes.position.x -= player.speed
                 })
 
                 movingEnemies.forEach((MovingEnemy) => {
@@ -250,7 +255,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 genericObjects.forEach(genericObject => {
                     genericObject.position.x += player.speed * 0.66
                 })
-                enemies.forEach((enemy) => {
+                spikes.forEach((spikes) => {
                     enemy.position.x += player.speed
                 })
                 movingEnemies.forEach((MovingEnemy) => {
