@@ -103,6 +103,7 @@ html, body{
             padding-left: 30px;
             width: 70%;
             float: left;
+            margin-bottom: 5%;
         }
 
         article h2 { /* H2 title */
@@ -158,11 +159,11 @@ html, body{
             width: 25%;
             background-color: #bdbdbd;
             height: 30px;
+            padding-left: 5px;
         }
 
         p > img{
             width: 100%;
-            margin-bottom: 15%;
         }
 
         .GameSequences {
@@ -171,6 +172,16 @@ html, body{
         }
                             
         .sitemap {
+            width: 100%;
+            height: auto;
+        }
+
+        .mockupImage{
+            width: 100%;
+            height: auto;
+        }
+
+        .sketch{
             width: 100%;
             height: auto;
         }
