@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let spriteY = 0;
     let gameFrame = 0;
     const staggerFrames = 20;
-    
+
     // création de l'objet player
     let player = new Player(playerFont, spriteX, spriteY, gameFrame, staggerFrames)
 
@@ -55,9 +55,9 @@ document.addEventListener('DOMContentLoaded', () => {
     let movingEnemies = [];
     let movingEnemiesY = []
 
-    
 
-    
+
+
 
     // Set l'accélération lorsque le player tombe
     const gravity = 0.4;
@@ -77,55 +77,62 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-     // variable qui permettra de définir un objectif pour finir un niveau par exemple
-     let scrollOffset = 0
+    // variable qui permettra de définir un objectif pour finir un niveau par exemple
+    let scrollOffset = 0
 
 
     function checkPlayerEnemyCollision(player, enemy) {
-    // Vérifie s'il y a une collision en X
-    const Collision = (
-        player.position.x + player.width / 1.2 > enemy.position.x &&
-        player.position.x  * 1.1 < enemy.position.x + enemy.width
+        // Vérifie s'il y a une collision en X
+        const Collision = (
+            player.position.x + player.width / 1.2 > enemy.position.x &&
+            player.position.x * 1.1 < enemy.position.x + enemy.width
 
 
-        && player.position.y + player.height > enemy.position.y &&
-        player.position.y  < enemy.position.y + enemy.height 
-    );
-    // La condition se déclenche si les deux collisions (X et Y) sont vraies
-    if (Collision) {
-        console.log("");
-    
-        if (currentLevel === 1) {
-            initlevel1();
-        } else if (currentLevel === 2) {
-            initlevel2();
+            && player.position.y + player.height > enemy.position.y &&
+            player.position.y < enemy.position.y + enemy.height
+        );
+        // La condition se déclenche si les deux collisions (X et Y) sont vraies
+        if (Collision) {
+            console.log("");
+
+            if (currentLevel === 1) {
+                initlevel1();
+            } else if (currentLevel === 2) {
+                initlevel2();
+            }
+            else if (currentLevel === 3) {
+                initlevelFinal();
+            }
+
         }
-    }
     }
 
     function checkPlayerEnemyMovingCollision(player, MovingEnemy) {
         const Collision = (
             player.position.x + player.width > MovingEnemy.position.x &&
-            player.position.x < MovingEnemy.position.x + MovingEnemy.width 
-    
+            player.position.x < MovingEnemy.position.x + MovingEnemy.width
+
             // code pour la hauteur
             && player.position.y + player.height > MovingEnemy.position.y + 1 &&
-            player.position.y  < MovingEnemy.position.y + MovingEnemy.height 
+            player.position.y < MovingEnemy.position.y + MovingEnemy.height
         );
         // La condition se déclenche si les deux collisions (X et Y) sont vraies
         if (Collision) {
-        console.log("");
-    
-        if (currentLevel === 1) {
-            initlevel1();
-        } else if (currentLevel === 2) {
-            initlevel2();
+            console.log("");
+
+            if (currentLevel === 1) {
+                initlevel1();
+            } else if (currentLevel === 2) {
+                initlevel2();
+            }
+            else if (currentLevel === 3) {
+                initlevelFinal();
+            }
         }
+
     }
 
-        }
 
-        
 
 
 
@@ -154,26 +161,26 @@ document.addEventListener('DOMContentLoaded', () => {
             x: 0,
             y: 0,
             image: mainBackGround
-            })
+        })
         ]
 
         spikes = [
             // TODO change the hardcoding
-            new Spikes(plateforms[4].position.x+150, plateforms[4].position.y - 50, spikesImg),
-            new Spikes(plateforms[5].position.x+240, plateforms[5].position.y - 50, spikesImg),
-            new Spikes(plateforms[5].position.x+290, plateforms[5].position.y - 50, spikesImg)
+            new Spikes(plateforms[4].position.x + 150, plateforms[4].position.y - 50, spikesImg),
+            new Spikes(plateforms[5].position.x + 240, plateforms[5].position.y - 50, spikesImg),
+            new Spikes(plateforms[5].position.x + 290, plateforms[5].position.y - 50, spikesImg)
         ];
 
         movingEnemies = [
-            new MovingEnemy (plateforms[1].position.x+240, plateforms[1].position.y - 80,'vertical',200,400,0,1),
-            new MovingEnemy(plateforms[0].position.x+240, plateforms[0].position.y - 80,'horizontal',plateforms[0].position.x,plateforms[0].position.x+plateforms[0].width,1,0)
+            new MovingEnemy(plateforms[1].position.x + 240, plateforms[1].position.y - 80, 'vertical', 200, 400, 0, 1),
+            new MovingEnemy(plateforms[0].position.x + 240, plateforms[0].position.y - 80, 'horizontal', plateforms[0].position.x, plateforms[0].position.x + plateforms[0].width, 1, 0)
         ]
 
 
 
-        
 
-       
+
+
 
         // variable qui permettra de définir un objectif pour finir un niveau par exemple
         scrollOffset = 0
@@ -202,26 +209,54 @@ document.addEventListener('DOMContentLoaded', () => {
             x: 0,
             y: 0,
             image: desertBackground
-            })
+        })
         ]
 
         spikes = [
             // TODO change the hardcoding
-            new Spikes(plateforms[4].position.x+150, plateforms[4].position.y - 50, spikesImg),
-            new Spikes(plateforms[5].position.x+240, plateforms[5].position.y - 50, spikesImg),
-            new Spikes(plateforms[5].position.x+290, plateforms[5].position.y - 50, spikesImg)
+            new Spikes(plateforms[4].position.x + 150, plateforms[4].position.y - 50, spikesImg),
+            new Spikes(plateforms[5].position.x + 240, plateforms[5].position.y - 50, spikesImg),
+            new Spikes(plateforms[5].position.x + 290, plateforms[5].position.y - 50, spikesImg)
         ];
 
         movingEnemies = [
-            new MovingEnemy (plateforms[1].position.x+240, plateforms[1].position.y - 80,'vertical',200,400,0,1),
-            new MovingEnemy(plateforms[0].position.x+240, plateforms[0].position.y - 80,'horizontal',plateforms[0].position.x,plateforms[0].position.x+plateforms[0].width,1,0)
+            new MovingEnemy(plateforms[1].position.x + 240, plateforms[1].position.y - 80, 'vertical', 200, 400, 0, 1),
+            new MovingEnemy(plateforms[0].position.x + 240, plateforms[0].position.y - 80, 'horizontal', plateforms[0].position.x, plateforms[0].position.x + plateforms[0].width, 1, 0)
         ]
 
 
 
-        
 
-       
+
+        // variable qui permettra de définir un objectif pour finir un niveau par exemple
+        scrollOffset = 0
+    }
+
+    function initlevelFinal() {
+        // création de l'objet player
+        player = new Player(playerFont, spriteX, spriteY, gameFrame, staggerFrames)
+
+        // création de l'objet plateform
+        plateforms = [
+            new Plateform({ x: 0, y: 400, image: plateformFont }),
+            new Plateform({ x: plateformFont.width, y: 400, image: plateformFont }),
+
+        ]
+
+
+        // création de l'objet concernant le BackGround
+        genericObjects = [new GenericObject({
+            x: 0,
+            y: 0,
+            image: desertBackground
+        })
+        ]
+
+
+
+
+
+
 
         // variable qui permettra de définir un objectif pour finir un niveau par exemple
         scrollOffset = 0
@@ -229,6 +264,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // permet de refresh en temps réel la position du player (evite que le player se déplace à l'infini dès qu'une touche est enfoncé)
     function animate() {
+
         requestAnimationFrame(animate)
         c.fillStyle = 'white'
         c.fillRect(0, 0, canvas.width, canvas.height)
@@ -242,93 +278,107 @@ document.addEventListener('DOMContentLoaded', () => {
             plateform.draw(c)
 
         });
-        
+
         spikes.forEach((spikes) => {
-            checkPlayerEnemyCollision(player,spikes)
+            checkPlayerEnemyCollision(player, spikes)
             spikes.draw(c);
         });
-        
+
         movingEnemies.forEach((MovingEnemy) => {
-            checkPlayerEnemyMovingCollision(player,MovingEnemy)
-            
+            checkPlayerEnemyMovingCollision(player, MovingEnemy)
+
             // Mettez à jour la position horizontale du MovingEnemy
             MovingEnemy.updatePosition();
             MovingEnemy.draw(c);
         });
 
-       
-
 
 
         // Gérer le saut automatique si le joueur est sur l'ennemi
         if (isPlayerOnEnemy) {
-        if (player.velocity.y === 0) {
-            isPlayerOnEnemy = false
-            player.velocity.y -= 12;
+            if (player.velocity.y === 0) {
+                isPlayerOnEnemy = false
+                player.velocity.y -= 12;
+            }
         }
-    }
 
-        player.update(c,canvas,gravity)
+        player.update(c, canvas, gravity)
 
 
-        // si la touche est enfoncé déplacement de 5 sinon 0
-        // le 400 et 100 réprésentent les positions que le joueurs ne peut pas dépassé
-        if (keys.right.pressed && player.position.x < 400) {
-            player.velocity.x = player.speed
-            spriteY = 1;
+        // permet de mettre en place un niveau static pour le BossFinal
+        if (currentLevel === 3) {
+            if (keys.right.pressed && player.position.x < 930) {
+                player.velocity.x = player.speed
+                spriteY = 1;
 
-        } else if ((keys.left.pressed && player.position.x > 100) || keys.left.pressed && scrollOffset === 0 && player.position.x > 0) {
-            player.velocity.x = -player.speed
+            } else if ((keys.left.pressed && player.position.x > 100) || keys.left.pressed && scrollOffset === 0 && player.position.x > 0) {
+                player.velocity.x = -player.speed
+
+            }
+            else {
+                player.velocity.x = 0
+
+            }
 
         } else {
-            player.velocity.x = 0
-            // permet de donner l'illusion que les plateformes se déplacent lorsque le joueur bouge
-            if (keys.right.pressed) {
-                spriteY = 0;
-                scrollOffset += player.speed
-                plateforms.forEach((plateform) => {
-                    plateform.position.x -= player.speed
-                })
+            // si la touche est enfoncé déplacement de 5 sinon 0
+            // le 400 et 100 réprésentent les positions que le joueurs ne peut pas dépassé
+            if (keys.right.pressed && player.position.x < 400) {
+                player.velocity.x = player.speed
+                spriteY = 1;
 
-                genericObjects.forEach(genericObject => {
-                    genericObject.position.x -= player.speed * 0.66
-                })
+            } else if ((keys.left.pressed && player.position.x > 100) || keys.left.pressed && scrollOffset === 0 && player.position.x > 0) {
+                player.velocity.x = -player.speed
 
-                spikes.forEach((spikes) => {
-                    spikes.position.x -= player.speed
-                })
+            } else {
+                player.velocity.x = 0
+                // permet de donner l'illusion que les plateformes se déplacent lorsque le joueur bouge
+                if (keys.right.pressed) {
+                    spriteY = 0;
+                    scrollOffset += player.speed
+                    plateforms.forEach((plateform) => {
+                        plateform.position.x -= player.speed
+                    })
 
-                movingEnemies.forEach((MovingEnemy) => {
-                    if(MovingEnemy.movementType==='horizontal'){
-                        MovingEnemy.min -= player.speed
-                        MovingEnemy.max -= player.speed
-                    }
+                    genericObjects.forEach(genericObject => {
+                        genericObject.position.x -= player.speed * 0.66
+                    })
+
+                    spikes.forEach((spikes) => {
+                        spikes.position.x -= player.speed
+                    })
+
+                    movingEnemies.forEach((MovingEnemy) => {
+                        if (MovingEnemy.movementType === 'horizontal') {
+                            MovingEnemy.min -= player.speed
+                            MovingEnemy.max -= player.speed
+                        }
 
                         MovingEnemy.position.x -= player.speed
-                    
-                })
+
+                    })
 
 
+                } else if (keys.left.pressed && scrollOffset > 0) {
+                    scrollOffset -= player.speed
+                    plateforms.forEach((plateform) => {
+                        plateform.position.x += player.speed
+                    })
+                    genericObjects.forEach(genericObject => {
+                        genericObject.position.x += player.speed * 0.66
+                    })
+                    spikes.forEach((spikes) => {
+                        spikes.position.x += player.speed
+                    })
+                    movingEnemies.forEach((MovingEnemy) => {
+                        if (MovingEnemy.movementType === 'horizontal') {
+                            MovingEnemy.min += player.speed
+                            MovingEnemy.max += player.speed
+                        }
+                        MovingEnemy.position.x += player.speed
+                    })
 
-            } else if (keys.left.pressed && scrollOffset > 0) {
-                scrollOffset -= player.speed
-                plateforms.forEach((plateform) => {
-                    plateform.position.x += player.speed
-                })
-                genericObjects.forEach(genericObject => {
-                    genericObject.position.x += player.speed * 0.66
-                })
-                spikes.forEach((spikes) => {
-                    spikes.position.x += player.speed
-                })
-                movingEnemies.forEach((MovingEnemy) => {
-                    if(MovingEnemy.movementType==='horizontal'){
-                        MovingEnemy.min += player.speed
-                        MovingEnemy.max += player.speed
-                    }
-                    MovingEnemy.position.x += player.speed
-                })
-
+                }
             }
         }
 
@@ -337,25 +387,25 @@ document.addEventListener('DOMContentLoaded', () => {
             if (
                 player.position.y + player.height <= plateform.position.y && player.position.y
                 + player.height + player.velocity.y >= plateform.position.y &&
-                player.position.x + player.width  >= plateform.position.x &&
+                player.position.x + player.width >= plateform.position.x &&
                 player.position.x <= plateform.position.x + plateform.width
             ) {
                 player.velocity.y = 0
             }
         })
         // gère les collision du joueur avec les Moving Enemy
-        movingEnemies.forEach((MovingEnemy,index) => {
+        movingEnemies.forEach((MovingEnemy, index) => {
             if (
                 player.position.y + player.height <= MovingEnemy.position.y && player.position.y
                 + player.height + player.velocity.y >= MovingEnemy.position.y &&
-                player.position.x + player.width  >= MovingEnemy.position.x &&
+                player.position.x + player.width >= MovingEnemy.position.x &&
                 player.position.x <= MovingEnemy.position.x + MovingEnemy.width
             ) {
-                movingEnemies.splice(index,1)
+                movingEnemies.splice(index, 1)
                 player.velocity.y = 0
                 isPlayerOnEnemy = true;
             }
-            else{
+            else {
                 isPlayerOnEnemy = false;
             }
         })
@@ -366,6 +416,9 @@ document.addEventListener('DOMContentLoaded', () => {
             } else if (currentLevel === 2) {
                 initlevel2();
             }
+            else if (currentLevel === 3) {
+                initlevelFinal();
+            }
         }
         if (scrollOffset > 5000) {
             console.log('you win');
@@ -374,20 +427,23 @@ document.addEventListener('DOMContentLoaded', () => {
             currentLevel++; // Augmentez le niveau actuel de 1.
 
             // Réinitialisez le niveau correspondant
-            if (currentLevel === 2) {
+            if (currentLevel === 3) {
+                initlevelFinal()
+            } else if (currentLevel === 2) {
                 initlevel2();
-            } else {
+            }
+            else if (currentLevel === 1) {
                 initlevel1(); // Par défaut, retournez au niveau 1 si le niveau n'est pas défini.
             }
 
         }
-        
+
         // Win condition vraiment la base pour réussi un niveau
         if (scrollOffset > 2000) {
             console.log('you win')
         }
 
-       
+
     }
 
 
@@ -408,7 +464,7 @@ document.addEventListener('DOMContentLoaded', () => {
             case 87:
                 console.log('up')
                 if ((player.velocity.y === 0 || isPlayerOnEnemy) && !isPlayerOnEnemy)
-                player.velocity.y -= 12
+                    player.velocity.y -= 12
                 break
         }
     })

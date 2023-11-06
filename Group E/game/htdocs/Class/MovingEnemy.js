@@ -3,7 +3,7 @@ class MovingEnemy {
         this.position = { x, y };
         this.width = 40;
         this.height = 80;
-        this.color = 'blue'; // Utilisation de la couleur définie
+        this.color = 'yellow'; // Utilisation de la couleur définie
         this.velocity = { x: velocityX, y: velocityY };
         this.movementType = movementType;
         this.min = min;
