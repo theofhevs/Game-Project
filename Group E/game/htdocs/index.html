@@ -1,67 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="style.css" />
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
     <script src="index.js" type="module"></script>
-    <title>THE TREMENDOUS JOURNEY</title>
-    <style>
-      body {
-        text-align: center;
-        font-family: Arial, sans-serif;
-      }
-      h1 {
-        color: #3498db;
-      }
-      button {
-        margin: 10px;
-        padding: 10px 20px;
-        font-size: 16px;
-        cursor: pointer;
-      }
-      canvas {
-        display: none;
-        margin: 10px;
-      }
-      img {
-        display: none;
-      }
-    </style>
-  </head>
+    <title>Game</title>
+</head>
 
-  <body>
-    <h1 id="pageTitle">THE TREMENDOUS JOURNEY</h1>
+<body>
+    <image></image>
+    <canvas></canvas>
+</body>
 
-    <button onclick="howToPlay()">HOW TO PLAY</button>
-    <button onclick="startGame()">PLAY</button>
-    <button onclick="highscore()">HIGHSCORE</button>
-
-    <img id="gameImage" />
-    <canvas id="gameCanvas"></canvas>
-
-    <script>
-      function startGame() {
-        alert("But du jeu : \nCollecter tous les ingrédients");
-        // Affiche le canvas et l'image une fois le jeu lancé
-        document.getElementById("gameImage").style.display = "block";
-        document.getElementById("gameCanvas").style.display = "block";
-
-        // Cache le titre une fois le jeu lancé
-        document.getElementById("pageTitle").style.display = "none";
-
-        // Cache les boutons une fois le jeu lancé
-        var buttons = document.getElementsByTagName("button");
-        for (var i = 0; i < buttons.length; i++) {
-          buttons[i].style.display = "none";
-        }
-      }
-      function howToPlay() {
-        alert("Commandes du jeu :\nA -> Gauche\nD -> Droite\nW -> Saut");
-      }
-      function highscore() {
-        alert("highscore page en cours de dev");
-      }
-    </script>
-  </body>
 </html>
