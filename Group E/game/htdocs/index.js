@@ -4,6 +4,7 @@ import GenericObject from "./Class/GenericObject.js";
 import Player from "./Class/Player.js";
 import Spikes from "./Class/Spikes.js";
 import MovingEnemy from "./Class/MovingEnemy.js";
+import Mozzarella from "./Class/Mozzarella.js"
 // ajout des images
 const siteURL = "http://127.0.0.1:5500/Group%20E/game/htdocs/";
 const plateformFont = new Image();
@@ -14,6 +15,8 @@ const spikesImg = new Image();
 const desertBackground = new Image();
 const plateformVenise = new Image();
 const cityBackground = new Image();
+const mozzarellaImg = new Image ();
+mozzarellaImg.src = siteURL + "/img/mozzarella.png"
 cityBackground.src = siteURL + "/img/italianCityLarge.png";
 desertBackground.src = siteURL + "/img/desertBackgroundLarge.png";
 spikesImg.src = siteURL + "/img/spikes.png";
@@ -38,6 +41,11 @@ document.addEventListener("DOMContentLoaded", () => {
   let gameFrame = 0;
   const staggerFrames = 20;
 
+  // création overlay
+  const overlay = {
+    opacity:0,
+  }
+
   // création de l'objet player
   let player = new Player(
     playerFont,
@@ -48,6 +56,14 @@ document.addEventListener("DOMContentLoaded", () => {
   );
 
   let currentLevel = 1;
+
+  let startTime = 0; // Initialisez le temps de départ
+  let elapsedTime = 0; // Initialisez le temps écoulé
+
+  // création de l'objet mozzarella
+  let mozzarella = []
+
+  const mozzarellaOpacities = [0.3, 0.3];
 
   // création de l'objet plateform
   let plateforms = [];
@@ -79,6 +95,66 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // variable qui permettra de définir un objectif pour finir un niveau par exemple
   let scrollOffset = 0;
+
+  // Ajoutez cette variable de verrouillage
+  let isIncrementingLevel = false; 
+
+//création item pas encore collecté
+function drawMozzarellaIcon() {
+    const iconSize = 50; // Taille de l'icône de mozzarella
+    const x = canvas.width - iconSize - 10; // Ajustez 10 pour un espace entre l'icône et le bord
+    const y = 10; // Ajustez cette valeur selon votre préférence
+    const opacity1 = mozzarellaOpacities[currentLevel - 1];
+
+    c.globalAlpha = opacity1;
+c.drawImage(mozzarellaImg, x, y, iconSize, iconSize);
+c.globalAlpha = 1.0;
+}
+
+function checkPlayerItemCollision(player, item) {
+       
+    // Vérifie s'il y a une collision en X
+    const CollisionItem = (
+        player.position.x + player.width / 1.2 > item.position.x &&
+        player.position.x  * 1.1 < item.position.x + item.width
+
+
+        && player.position.y + player.height > item.position.y &&
+        player.position.y  < item.position.y + item.height 
+    );
+    //Vérifiez le verrouillage ici
+    if(CollisionItem && !isIncrementingLevel) {
+        isIncrementingLevel = true;// Définissez le verrouillage pour éviter l'incrémentation multiple
+    
+            console.log(currentLevel)
+            gsap.to(overlay, {
+                opacity : 1,
+                onComplete: ()=>{
+                    currentLevel++;
+                    // Réinitialisez le niveau correspondant
+                        if (currentLevel === 1) {
+                            initlevel1();
+                        } else if (currentLevel === 2) {
+                            initlevel2();
+                        } else if (currentLevel === 3) {
+                            initlevel3();
+                        } else if (currentLevel === 4) {
+                            initlevelFinal();
+                        }
+                    gsap.to(overlay, {
+                        opacity : 0,
+                        onComplete: () => {
+                            isIncrementingLevel = false; // Réinitialisez le verrouillage après l'animation
+                        },
+                    })
+                }
+            })
+            
+         
+
+    }
+    }
+
 
   function checkPlayerEnemyCollision(player, enemy) {
     // Vérifie s'il y a une collision en X
@@ -225,6 +301,14 @@ document.addEventListener("DOMContentLoaded", () => {
       ),
     ];
 
+    mozzarella = [
+        new Mozzarella(plateforms[1].position.x+290, plateforms[1].position.y - 50, mozzarellaImg)
+    ]
+
+    mozzarellaOpacities[0] = 0.3;
+        // Dessine l'icône de mozzarella en haut à droite
+        drawMozzarellaIcon(0.3);
+
     // variable qui permettra de définir un objectif pour finir un niveau par exemple
     scrollOffset = 0;
   }
@@ -327,6 +411,14 @@ document.addEventListener("DOMContentLoaded", () => {
       ),
     ];
 
+    mozzarella = [
+        new Mozzarella(plateforms[1].position.x+290, plateforms[1].position.y - 50, mozzarellaImg)
+    ]
+    
+    mozzarellaOpacities[1] = 2.5;
+         // Dessine l'icône de mozzarella en haut à droite
+        drawMozzarellaIcon(2);
+
     // variable qui permettra de définir un objectif pour finir un niveau par exemple
     scrollOffset = 0;
   }
@@ -349,6 +441,8 @@ document.addEventListener("DOMContentLoaded", () => {
         image: desertBackground,
       }),
     ];
+    mozzarella = [
+   ]
 
     // variable qui permettra de définir un objectif pour finir un niveau par exemple
     scrollOffset = 0;
@@ -452,15 +546,28 @@ document.addEventListener("DOMContentLoaded", () => {
       ),
     ];
 
+    mozzarella = [
+        new Mozzarella(plateforms[1].position.x+290, plateforms[1].position.y - 50, mozzarellaImg)
+    ]
+
     // variable qui permettra de définir un objectif pour finir un niveau par exemple
     scrollOffset = 0;
   }
 
   // permet de refresh en temps réel la position du player (evite que le player se déplace à l'infini dès qu'une touche est enfoncé)
-  function animate() {
+  function animate(currentTime) {
     requestAnimationFrame(animate);
     c.fillStyle = "white";
     c.fillRect(0, 0, canvas.width, canvas.height);
+
+    if (!startTime) {
+        startTime = currentTime;
+    }
+      elapsedTime = Math.floor((currentTime - startTime) / 1000); // Temps en secondes
+      const minutes = Math.floor(elapsedTime / 60);
+      const seconds = elapsedTime % 60;
+      const formattedTime = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
 
     genericObjects.forEach((genericObject) => {
       genericObject.draw(c);
@@ -473,6 +580,11 @@ document.addEventListener("DOMContentLoaded", () => {
     spikes.forEach((spikes) => {
       checkPlayerEnemyCollision(player, spikes);
       spikes.draw(c);
+    });
+
+    mozzarella.forEach((mozzarella) => {
+        checkPlayerItemCollision(player,mozzarella)
+        mozzarella.draw(c);
     });
 
     movingEnemies.forEach((MovingEnemy) => {
@@ -534,6 +646,9 @@ document.addEventListener("DOMContentLoaded", () => {
           spikes.forEach((spikes) => {
             spikes.position.x -= player.speed;
           });
+          mozzarella.forEach((mozzarella) => {
+            mozzarella.position.x -= player.speed
+        })
 
           movingEnemies.forEach((MovingEnemy) => {
             if (MovingEnemy.movementType === "horizontal") {
@@ -554,6 +669,9 @@ document.addEventListener("DOMContentLoaded", () => {
           spikes.forEach((spikes) => {
             spikes.position.x += player.speed;
           });
+          mozzarella.forEach((mozzarella) => {
+            mozzarella.position.x += player.speed
+        })
           movingEnemies.forEach((MovingEnemy) => {
             if (MovingEnemy.movementType === "horizontal") {
               MovingEnemy.min += player.speed;
@@ -605,29 +723,24 @@ document.addEventListener("DOMContentLoaded", () => {
         initlevelFinal();
       }
     }
-    if (scrollOffset > 5000) {
-      console.log("you win");
+    
+    // Affichage du temps à l'écran
+    c.fillStyle = 'white';
+    c.font = '20px Arial';
+    c.fillText('Time: ' + formattedTime, 20, 30);
+        
+    // Dessine l'icône de mozzarella en haut à gauche
+    drawMozzarellaIcon();
 
-      // Passez au niveau suivant
-      currentLevel++; // Augmentez le niveau actuel de 1.
+    //overlay pour changement de niveau
+    c.save()
+    c.globalAlpha = overlay.opacity
+    c.fillStyle = 'black'
+    c.fillRect(0,0,canvas.width, canvas.height)
+    c.restore()
+     
 
-      // Réinitialisez le niveau correspondant
-      if (currentLevel === 1) {
-        initlevel1();
-      } else if (currentLevel === 2) {
-        initlevel2();
-      } else if (currentLevel === 3) {
-        initlevel3();
-      } else if (currentLevel === 4) {
-        initlevelFinal();
-      }
     }
-
-    // Win condition vraiment la base pour réussi un niveau
-    if (scrollOffset > 2000) {
-      console.log("you win");
-    }
-  }
 
   // assignation des touches pour les déplacements QUAND TOUCHE ENFONCE
   window.addEventListener("keydown", ({ keyCode }) => {
@@ -671,6 +784,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  initlevel3();
+  initlevel1();
   animate();
 });
