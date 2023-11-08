@@ -6,47 +6,57 @@
     <link rel="stylesheet" href="style.css" />
     <script src="index.js" type="module"></script>
     <title>THE TREMENDOUS JOURNEY</title>
-    <style>
-      body {
-        text-align: center;
-        font-family: Arial, sans-serif;
-      }
-      h1 {
-        color: #3498db;
-      }
-      button {
-        margin: 10px;
-        padding: 10px 20px;
-        font-size: 16px;
-        cursor: pointer;
-      }
-      canvas {
-        display: none;
-        margin: 10px;
-      }
-      img {
-        display: none;
-      }
-    </style>
+    <style></style>
   </head>
 
   <body>
-    <h1 id="pageTitle">THE TREMENDOUS JOURNEY</h1>
-
-    <button onclick="howToPlay()">HOW TO PLAY</button>
-    <button onclick="startGame()">PLAY</button>
-    <button onclick="highscore()">HIGHSCORE</button>
+    <h1 id="pageTitle">
+      <span class="letters" id="T1">T</span>
+      <span class="letters" id="H">H</span>
+      <span class="letters" id="E1">E</span>
+      <span class="letters" id="sapce1"> </span>
+      <span class="letters" id="T2">T</span>
+      <span class="letters" id="R1">R</span>
+      <span class="letters" id="E2">E</span>
+      <span class="letters" id="M">M</span>
+      <span class="letters" id="E3">E</span>
+      <span class="letters" id="N1">N</span>
+      <span class="letters" id="D">D</span>
+      <span class="letters" id="O1">O</span>
+      <span class="letters" id="U1">U</span>
+      <span class="letters" id="S">S</span>
+      <span class="letters" id="space2"> </span>
+      <span class="letters" id="J">J</span>
+      <span class="letters" id="O2">O</span>
+      <span class="letters" id="U2">U</span>
+      <span class="letters" id="R2">R</span>
+      <span class="letters" id="N2">N</span>
+      <span class="letters" id="E4">E</span>
+      <span class="letters" id="Y">Y</span>
+    </h1>
+    <div class="button-container">
+      <button class="howToPlay" onclick="howToPlay()">
+        <span>HOW TO PLAY</span>
+      </button>
+      <button class="startGame" onclick="startGame()">
+        <span>PLAY</span>
+      </button>
+      <button class="highscore" onclick="highscore()">
+        <span>HIGHSCORE</span>
+      </button>
+    </div>
 
     <img id="gameImage" />
     <canvas id="gameCanvas"></canvas>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"
-    integrity="sha512-16esztaSRplJROstbIIdwX3N97V1+pZvV33ABoG1H2OyTttBxEGkTsoIVsiP1iaTtM8b3+hu2kB6pQ4Clr5yug=="
-    crossorigin="anonymous" 
-    referrerpolicy="no-referrer"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"
+      integrity="sha512-16esztaSRplJROstbIIdwX3N97V1+pZvV33ABoG1H2OyTttBxEGkTsoIVsiP1iaTtM8b3+hu2kB6pQ4Clr5yug=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
     <script>
       function startGame() {
-        alert("But du jeu : \nCollecter tous les ingrédients");
         // Affiche le canvas et l'image une fois le jeu lancé
         document.getElementById("gameImage").style.display = "block";
         document.getElementById("gameCanvas").style.display = "block";
@@ -61,10 +71,10 @@
         }
       }
       function howToPlay() {
-        alert("Commandes du jeu :\nA -> Gauche\nD -> Droite\nW -> Saut");
+        window.location.href = "howToPlay.html";
       }
       function highscore() {
-        alert("highscore page en cours de dev");
+        window.location.href = "highscore.html";
       }
     </script>
   </body>

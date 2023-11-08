@@ -1,10 +1,166 @@
 body {
-    margin: 0;
-    background-color: black;
     display: flex;
+    flex-direction: column;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 0;
     align-items: center;
     justify-content: center;
     height: 100vh;
+    background-color: beige;
+    background-image: url("./img/BG_large.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+h1 {
+    color: white;
+    font-size: 70px;
+    margin-bottom: 300px;
+}
+
+.letters{
+    display: inline-block;
+    position: absolute;
+    padding-bottom: 1500px;
+    transform-origin: bottom center;
+    position: fixed;
+    text-shadow: 4px 4px 8px black;
+        /* Ajoute une ombre pour l'effet 3D */
+}
+
+#T1{
+        transform: rotate(-20deg) ;
+    }
+#H{
+        transform: rotate(-18deg);
+    }
+#E1{
+        transform: rotate(-16deg);
+    }
+#T2{
+        transform: rotate(-13deg);
+    }
+#R1{
+        transform: rotate(-11deg);
+    }
+#E2{
+        transform: rotate(-9deg);
+    }
+#M{
+        transform: rotate(-7deg);
+    }
+#E3{
+        transform: rotate(-4.5deg);
+    }
+#N1{
+        transform: rotate(-2.5deg);
+    }
+#D{
+        transform: rotate(-0.5deg);
+    }
+#O1{
+        transform: rotate(1.5deg);
+    }
+#U1{
+        transform: rotate(3.5deg);
+    }
+#S{
+        transform: rotate(5.5deg);
+    }
+#J{
+        transform: rotate(8.5deg);
+    }
+#O2{
+        transform: rotate(10deg);
+    }
+#U2{
+        transform: rotate(12deg);
+    }
+#R2{
+        transform: rotate(14deg);
+    }
+#N2{
+        transform: rotate(16deg);
+    }
+#E4{
+        transform: rotate(18deg);
+    }
+#Y{
+        transform: rotate(20deg);
+    }
+
+button {
+    width: 350px;
+    height: 200px;
+    margin: 10px;
+    padding: 20px 20px;
+    font-size: 16px;
+    z-index: 1;
+    cursor: pointer;
+    margin-bottom: 100px;
+    border-radius: 15px;
+    background-color: rgba(255, 255, 255, 0.8);
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    transition: box-shadow 0.2s, transform 0.2s;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+}
+
+button:hover {
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
+    background-color: rgba(224, 223, 223, 0.8);
+}
+
+button:active {
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    transform: scale(0.95);
+}
+
+.button-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    position: relative;
+}
+
+.button-container button span {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    font-weight: 500;
+    font-size: 30px;
+}
+
+.howToPlay {
+    background: url("./img/interogation.png") no-repeat center top;
+    background-size: 40%;
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+.startGame {
+    background: url("./img/play.png") no-repeat center top;
+    background-size: 40%;
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+.highscore {
+    background: url("./img/trophee.png") no-repeat center top;
+    background-size: 40%;
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+
+canvas,
+#gameImage {
+    display: none;
+    margin: 10px;
 }
 
 audio {
