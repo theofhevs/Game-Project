@@ -12,7 +12,6 @@ class Plateform {
     }
     // création de la plateforme dans le Canvas
     draw(c) {
-
         c.drawImage(this.image, this.position.x, this.position.y, this.width, this.height)
     }
 

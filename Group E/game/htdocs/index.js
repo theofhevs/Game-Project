@@ -15,8 +15,12 @@ const spikesImg = new Image();
 const desertBackground = new Image();
 const plateformVenise = new Image();
 const cityBackground = new Image();
-const mozzarellaImg = new Image ();
-mozzarellaImg.src = siteURL + "/img/mozzarella.png"
+const mozzarellaImg = new Image();
+const chefEnemy = new Image();
+const burgerEnemy = new Image();
+chefEnemy.src = siteURL + "/img/chefSprite.png";
+burgerEnemy.src = siteURL + "/img/burgerSprite.png";
+mozzarellaImg.src = siteURL + "/img/mozzarella.png";
 cityBackground.src = siteURL + "/img/italianCityLarge.png";
 desertBackground.src = siteURL + "/img/desertBackgroundLarge.png";
 spikesImg.src = siteURL + "/img/spikes.png";
@@ -38,8 +42,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let spriteX = 0;
   let spriteY = 0;
-  let gameFrame = 0;
-  const staggerFrames = 20;
 
   // création overlay
   const overlay = {
@@ -50,9 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let player = new Player(
     playerFont,
     spriteX,
-    spriteY,
-    gameFrame,
-    staggerFrames
+    spriteY
   );
 
   let currentLevel = 1;
@@ -86,12 +86,15 @@ document.addEventListener("DOMContentLoaded", () => {
   // création Objet Keys
   const keys = {
     right: {
-      pressed: false,
+        pressed: false
     },
     left: {
-      pressed: false,
+        pressed: false
     },
-  };
+    up : {
+        pressed: false
+    }
+  }
 
   // variable qui permettra de définir un objectif pour finir un niveau par exemple
   let scrollOffset = 0;
@@ -205,7 +208,7 @@ function checkPlayerItemCollision(player, item) {
   // permet de respawn après être tombé (même code que les ligne 108 - 143)
   function initlevel1() {
     // création de l'objet player
-    player = new Player(playerFont, spriteX, spriteY, gameFrame, staggerFrames);
+    player = new Player(playerFont, spriteX, spriteY);
 
     // création de l'objet plateform
     plateforms = [
@@ -285,20 +288,11 @@ function checkPlayerItemCollision(player, item) {
         plateforms[1].position.x + 240,
         plateforms[1].position.y - 80,
         "vertical",
-        200,
-        400,
-        0,
-        1
-      ),
+        200,plateforms[1].position.y,0,1, burgerEnemy,spriteX),
       new MovingEnemy(
         plateforms[0].position.x + 240,
         plateforms[0].position.y - 80,
-        "horizontal",
-        plateforms[0].position.x,
-        plateforms[0].position.x + plateforms[0].width,
-        1,
-        0
-      ),
+        "horizontal",plateforms[0].position.x,plateforms[0].position.x+plateforms[0].width,1,0, chefEnemy,spriteX),
     ];
 
     mozzarella = [
@@ -315,7 +309,7 @@ function checkPlayerItemCollision(player, item) {
 
   function initlevel2() {
     // création de l'objet player
-    player = new Player(playerFont, spriteX, spriteY, gameFrame, staggerFrames);
+    player = new Player(playerFont, spriteX, spriteY);
 
     // création de l'objet plateform
     plateforms = [
@@ -395,11 +389,9 @@ function checkPlayerItemCollision(player, item) {
         plateforms[1].position.x + 240,
         plateforms[1].position.y - 80,
         "vertical",
-        200,
-        400,
+        200,plateforms[1].position.y,
         0,
-        1
-      ),
+        1, burgerEnemy,spriteX),
       new MovingEnemy(
         plateforms[0].position.x + 240,
         plateforms[0].position.y - 80,
@@ -407,7 +399,7 @@ function checkPlayerItemCollision(player, item) {
         plateforms[0].position.x,
         plateforms[0].position.x + plateforms[0].width,
         1,
-        0
+        0,chefEnemy,spriteX
       ),
     ];
 
@@ -425,7 +417,7 @@ function checkPlayerItemCollision(player, item) {
 
   function initlevelFinal() {
     // création de l'objet player
-    player = new Player(playerFont, spriteX, spriteY, gameFrame, staggerFrames);
+    player = new Player(playerFont, spriteX, spriteY);
 
     // création de l'objet plateform
     plateforms = [
@@ -450,7 +442,7 @@ function checkPlayerItemCollision(player, item) {
 
   function initlevel3() {
     // création de l'objet player
-    player = new Player(playerFont, spriteX, spriteY, gameFrame, staggerFrames);
+    player = new Player(playerFont, spriteX, spriteY);
 
     // création de l'objet plateform
     plateforms = [
@@ -531,9 +523,9 @@ function checkPlayerItemCollision(player, item) {
         plateforms[1].position.y - 80,
         "vertical",
         200,
-        400,
+        plateforms[1].position.y,
         0,
-        1
+        1, burgerEnemy,spriteX
       ),
       new MovingEnemy(
         plateforms[0].position.x + 240,
@@ -542,7 +534,7 @@ function checkPlayerItemCollision(player, item) {
         plateforms[0].position.x,
         plateforms[0].position.x + plateforms[0].width,
         1,
-        0
+        0,chefEnemy,spriteX
       ),
     ];
 
@@ -743,46 +735,67 @@ function checkPlayerItemCollision(player, item) {
     }
 
   // assignation des touches pour les déplacements QUAND TOUCHE ENFONCE
-  window.addEventListener("keydown", ({ keyCode }) => {
+  window.addEventListener('keydown', ({ keyCode }) => {
     switch (keyCode) {
-      case 65:
-        console.log("left");
-        keys.left.pressed = true;
-        break;
-      case 83:
-        console.log("down");
-        break;
-      case 68:
-        console.log("right");
-        keys.right.pressed = true;
-        break;
-      case 87:
-        console.log("up");
-        if ((player.velocity.y === 0 || isPlayerOnEnemy) && !isPlayerOnEnemy)
-          player.velocity.y -= 12;
-        break;
+        case 65:
+            console.log('left')
+            keys.left.pressed = true
+            spriteY = 2;
+            if (player.spriteY !== 2)
+                player.spriteY = 2;
+            break
+        case 83:
+            console.log('down')
+            break
+        case 68:
+            console.log('right')
+            keys.right.pressed = true
+            spriteY = 1;
+            if (player.spriteY !== 1)
+                player.spriteY = 1;
+            break
+        case 87:
+            console.log('up')
+            keys.up.pressed = true
+            spriteY = 3;
+            if (player.spriteY !== 3 && player.velocity.y === 0)
+                player.spriteY = 3;
+            if ((player.velocity.y === 0 || isPlayerOnEnemy) && !isPlayerOnEnemy)
+                player.velocity.y -= 12
+            break
     }
-  });
+})
 
-  // assignation des touches pour les déplacements QUAND TOUCHE RELACHE
-  window.addEventListener("keyup", ({ keyCode }) => {
+// assignation des touches pour les déplacements QUAND TOUCHE RELACHE
+window.addEventListener('keyup', ({ keyCode }) => {
     switch (keyCode) {
-      case 65:
-        console.log("left");
-        keys.left.pressed = false;
-        break;
-      case 83:
-        console.log("down");
-        break;
-      case 68:
-        console.log("right");
-        keys.right.pressed = false;
-        break;
-      case 87:
-        console.log("up");
-        break;
+        case 65:
+            console.log('left')
+            keys.left.pressed = false
+            if (!keys.right.pressed)
+                player.spriteY = 0;  
+            break
+        case 83:
+            console.log('down')
+            break
+        case 68:
+            console.log('right')
+            keys.right.pressed = false
+            if (!keys.left.pressed)
+                player.spriteY = 0;  
+            break
+        case 87:
+            console.log('up')
+            keys.up.pressed = false
+            if(!keys.left.pressed && !keys.right.pressed)
+                player.spriteY = 0;
+            if (keys.left.pressed)
+                player.spriteY = 2;  
+            if (keys.right.pressed)
+                player.spriteY = 1;  
+            break
     }
-  });
+})
 
   initlevel1();
   animate();
