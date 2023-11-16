@@ -1,94 +1,13 @@
 body {
-    display: flex;
-    flex-direction: column;
-    font-family: Arial, sans-serif;
-    text-align: center;
     margin: 0;
+    background-color: black;
+    display: flex;
     align-items: center;
     justify-content: center;
     height: 100vh;
-    background-color: beige;
-    background-image: url("./img/mainBackground.png");
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center center;
 }
 
-h1 {
-    color: white;
-    font-size: 60px;
-}
-.title{
-    height: 250px;
-}
-
-button {
-    width: 350px;
-    height: 200px;
-    margin: 10px;
-    padding: 20px 20px;
-    font-size: 16px;
-    z-index: 1;
-    cursor: pointer;
-    margin-bottom: 100px;
-    border-radius: 15px;
-    background-color: rgba(255, 255, 255, 0.8);
-    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
-    transition: box-shadow 0.2s, transform 0.2s;
-    flex-direction: column;
-    position: relative;
-    overflow: hidden;
-}
-button:hover {
-    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
-    transform: translateY(-2px);
-    background-color: rgba(224, 223, 223, 0.8);
-}
-
-button:active {
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-    transform: scale(0.95);
-}
-
-.button-container {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 10px;
-    position: relative;
-    
-}
-
-.button-container button span {
-    position: absolute;
-    bottom: 10px;
-    left: 0;
-    right: 0;
-    margin: auto;
-    font-weight: 700;
-    font-size: 30px;
-}
-
-.howToPlay {
-    background: url("./img/interogation.png") no-repeat center top;
-    background-size: 40%;
-    background-color: rgba(255, 255, 255, 0.8);
-}
-.startGame {
-    background: url("./img/play.png") no-repeat center top;
-    background-size: 40%;
-    background-color: rgba(255, 255, 255, 0.8);
-}
-
-.highscore {
-    background: url("./img/trophee.png") no-repeat center top;
-    background-size: 40%;
-    background-color: rgba(255, 255, 255, 0.8);
-}
-
-
-canvas,
-#gameImage {
-    display: none;
-    margin: 10px;
+audio {
+    position: fixed;
+    top: 0;
 }

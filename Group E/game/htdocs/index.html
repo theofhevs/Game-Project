@@ -5,56 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
     <script src="index.js" type="module"></script>
-    <title>THE TREMENDOUS JOURNEY</title>
-    <style></style>
+    <title>Game</title>
   </head>
 
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"
+    integrity="sha512-16esztaSRplJROstbIIdwX3N97V1+pZvV33ABoG1H2OyTttBxEGkTsoIVsiP1iaTtM8b3+hu2kB6pQ4Clr5yug=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  ></script>
+
   <body>
-    <h1 id="pageTitle">
-      <img class="title" src="./img/title.png" alt="Title">
-    </h1>
-    <div class="button-container">
-      <button class="howToPlay" onclick="howToPlay()">
-        <span>HOW TO PLAY</span>
-      </button>
-      <button class="startGame" onclick="startGame()">
-        <span>PLAY</span>
-      </button>
-      <button class="highscore" onclick="highscore()">
-        <span>HIGHSCORE</span>
-      </button>
-    </div>
-
-    <img id="gameImage" />
-    <canvas id="gameCanvas"></canvas>
-
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"
-      integrity="sha512-16esztaSRplJROstbIIdwX3N97V1+pZvV33ABoG1H2OyTttBxEGkTsoIVsiP1iaTtM8b3+hu2kB6pQ4Clr5yug=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
-    <script>
-      function startGame() {
-        // Affiche le canvas et l'image une fois le jeu lancé
-        document.getElementById("gameImage").style.display = "block";
-        document.getElementById("gameCanvas").style.display = "block";
-
-        // Cache le titre une fois le jeu lancé
-        document.getElementById("pageTitle").style.display = "none";
-
-        // Cache les boutons une fois le jeu lancé
-        var buttons = document.getElementsByTagName("button");
-        for (var i = 0; i < buttons.length; i++) {
-          buttons[i].style.display = "none";
-        }
-      }
-      function howToPlay() {
-        window.location.href = "howToPlay.html";
-      }
-      function highscore() {
-        window.location.href = "highscore.html";
-      }
-    </script>
+    <image></image>
+    <!--<audio id="audio" autoplay loop controls src="img/drive.mp3"></audio>-->
+    <canvas></canvas>
   </body>
 </html>
