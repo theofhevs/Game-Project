@@ -17,8 +17,12 @@ const mainBackGround = new Image();
 const tinyPlateformFont = new Image();
 const playerFont = new Image();
 const spikesImg = new Image();
+const spikesBottomImg = new Image();
+const spikesLeftImg = new Image();
+const spikesRightImg = new Image();
 const desertBackground = new Image();
 const plateformVenise = new Image();
+const plateformVeniseBottom = new Image();
 const cityBackground = new Image();
 const mozzarellaImg = new Image();
 const chefEnemy = new Image();
@@ -34,11 +38,15 @@ mozzarellaImg.src = siteURL + "/img/mozzarella.png";
 cityBackground.src = siteURL + "/img/italianCityLarge.png";
 desertBackground.src = siteURL + "/img/desertBackgroundLarge.png";
 spikesImg.src = siteURL + "/img/spikes.png";
+spikesBottomImg.src = siteURL + "/img/spikesBottom.png";
+spikesLeftImg.src = siteURL + "/img/spikesLeft.png";
+spikesRightImg.src = siteURL + "/img/spikesRight.png";
 playerFont.src = siteURL + "/img/sprite.png";
 plateformFont.src = siteURL + "/img/platform.png";
 mainBackGround.src = siteURL + "/img/BG_large.png";
 tinyPlateformFont.src = siteURL + "/img/platform.png";
 plateformVenise.src = siteURL + "/img/platformVenise.png";
+plateformVeniseBottom.src = siteURL + "/img/platformVeniseBottom.png";
 howToPlay.src = siteURL + "/img/HowToPlay.png";
 startGame.src = siteURL + "/img/StartGame.png";
 highscore.src = siteURL + "/img/Highscore.png";
@@ -574,11 +582,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // création de l'objet plateform
     plateforms = [
-      new Plateform({ x: 0, y: 350, image: plateformVenise }),
+      new Plateform({ x: 0, y: 400, image: plateformVenise }),
       new Plateform({
-        x: plateformVenise.width * 2 - 350,
-        y: 500,
-        image: plateformVenise,
+        x: 0,
+        y: -500,
+        image: plateformVeniseBottom,
       }),
       new Plateform({
         x: plateformVenise.width * 2,
@@ -629,8 +637,8 @@ document.addEventListener("DOMContentLoaded", () => {
     spikes = [
       // TODO change the hardcoding
       new Spikes(
-        plateforms[4].position.x + 150,
-        plateforms[4].position.y - 50,
+        plateforms[0].position.x + 150,
+        plateforms[0].position.y - 50,
         spikesImg
       ),
       new Spikes(
@@ -672,8 +680,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     mozzarella = [
       new Mozzarella(
-        plateforms[1].position.x + 290,
-        plateforms[1].position.y - 50,
+        plateforms[0].position.x + 290,
+        plateforms[0].position.y - 50,
         mozzarellaImg
       ),
     ];
