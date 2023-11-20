@@ -1,4 +1,4 @@
-class Mozzarella {
+class Item {
     constructor(x, y, image) {
         this.position = { x, y };
         this.width = 50;
@@ -11,4 +11,4 @@ class Mozzarella {
     }
 }
 
-export default Mozzarella
+export default Item

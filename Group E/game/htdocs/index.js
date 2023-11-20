@@ -4,14 +4,15 @@ import GenericObject from "./Class/GenericObject.js";
 import Player from "./Class/Player.js";
 import Spikes from "./Class/Spikes.js";
 import MovingEnemy from "./Class/MovingEnemy.js";
-import Mozzarella from "./Class/Mozzarella.js";
+import Item from "./Class/Item.js";
 import Boss from "./Class/Boss.js";
 import Bouttons from "./Class/Bouttons.js";
 import Titre from "./Class/Titre.js";
 import BackgroundMenu from "./Class/BackgroundMenu.js";
+import {addDoc,dumpCollection} from "../Firebase.js";
 
 // ajout des images
-const siteURL = "http://127.0.0.1:5500/Group%20E/game/htdocs/";
+const siteURL = "";
 const plateformFont = new Image();
 const mainBackGround = new Image();
 const tinyPlateformFont = new Image();
@@ -32,26 +33,30 @@ const startGame = new Image();
 const highscore = new Image();
 const title = new Image();
 const backgroundMenu = new Image();
-chefEnemy.src = siteURL + "/img/chefSprite.png";
-burgerEnemy.src = siteURL + "/img/burgerSprite.png";
-mozzarellaImg.src = siteURL + "/img/mozzarella.png";
-cityBackground.src = siteURL + "/img/italianCityLarge.png";
-desertBackground.src = siteURL + "/img/desertBackgroundLarge.png";
-spikesImg.src = siteURL + "/img/spikes.png";
-spikesBottomImg.src = siteURL + "/img/spikesBottom.png";
-spikesLeftImg.src = siteURL + "/img/spikesLeft.png";
-spikesRightImg.src = siteURL + "/img/spikesRight.png";
-playerFont.src = siteURL + "/img/sprite.png";
-plateformFont.src = siteURL + "/img/platform.png";
-mainBackGround.src = siteURL + "/img/BG_large.png";
-tinyPlateformFont.src = siteURL + "/img/platform.png";
-plateformVenise.src = siteURL + "/img/platformVenise.png";
-plateformVeniseBottom.src = siteURL + "/img/platformVeniseBottom.png";
-howToPlay.src = siteURL + "/img/HowToPlay.png";
-startGame.src = siteURL + "/img/StartGame.png";
-highscore.src = siteURL + "/img/Highscore.png";
-title.src = siteURL + "/img/title.png";
-backgroundMenu.src = siteURL + "/img/mainBackground.png";
+const prosciuttoImg = new Image();
+const patePizzaImg = new Image();
+patePizzaImg.src = siteURL + "img/patePizza.png"
+prosciuttoImg.src = siteURL + "img/prosciutto.png"
+chefEnemy.src = siteURL + "img/chefSprite.png";
+burgerEnemy.src = siteURL + "img/burgerSprite.png";
+mozzarellaImg.src = siteURL + "img/mozzarella.png";
+cityBackground.src = siteURL + "img/italianCityLarge.png";
+desertBackground.src = siteURL + "img/desertBackgroundLarge.png";
+spikesImg.src = siteURL + "img/spikes.png";
+spikesBottomImg.src = siteURL + "img/spikesBottom.png";
+spikesLeftImg.src = siteURL + "img/spikesLeft.png";
+spikesRightImg.src = siteURL + "img/spikesRight.png";
+playerFont.src = siteURL + "img/sprite.png";
+plateformFont.src = siteURL + "img/platform.png";
+mainBackGround.src = siteURL + "img/BG_large.png";
+tinyPlateformFont.src = siteURL + "img/platform.png";
+plateformVenise.src = siteURL + "img/platformVenise.png";
+plateformVeniseBottom.src = siteURL + "img/platformVeniseBottom.png";
+howToPlay.src = siteURL + "img/HowToPlay.png";
+startGame.src = siteURL + "img/StartGame.png";
+highscore.src = siteURL + "img/Highscore.png";
+title.src = siteURL + "img/title.png";
+backgroundMenu.src = siteURL + "img/mainBackground.png";
 
 // Setup pour link le JS avec HTMLA
 document.addEventListener("DOMContentLoaded", () => {
@@ -66,6 +71,8 @@ document.addEventListener("DOMContentLoaded", () => {
   let spriteX = 0;
   let spriteY = 0;
 
+  let formattedTime;
+  
   // création overlay
   const overlay = {
     opacity: 0,
@@ -80,9 +87,21 @@ document.addEventListener("DOMContentLoaded", () => {
   let elapsedTime = 0; // Initialisez le temps écoulé
 
   // création de l'objet mozzarella
-  let mozzarella = [];
+  let item = [];
 
-  const mozzarellaOpacities = [0.3, 0.3];
+  const itemIndices = {
+    mozzarella: 0,
+    prosciutto: 1,
+    patePizza: 2  
+    // Ajoutez d'autres images avec leurs indices si nécessaire
+  };
+  
+  const itemOpacities = {
+    [itemIndices.mozzarella]: { 1: 0.3, 2: 2.5, 3: 2.5, 4: 2.5},
+    [itemIndices.prosciutto]: { 1: 0.3, 2: 0.3, 3: 2.5, 4: 2.5},
+    [itemIndices.patePizza]:  { 1: 0.3, 2: 0.3, 3: 0.3, 4: 2.5},
+    // Ajoutez d'autres images avec leurs opacités si nécessaire
+  };
 
   //création de l'objet boutton
   let buttons = [];
@@ -132,18 +151,20 @@ document.addEventListener("DOMContentLoaded", () => {
   // variable qui permettra de définir un objectif pour finir un niveau par exemple
   let scrollOffset = 0;
 
+ 
+
   // Ajoutez cette variable de verrouillage
   let isIncrementingLevel = false;
 
   //création item pas encore collecté
-  function drawMozzarellaIcon() {
-    const iconSize = 50; // Taille de l'icône de mozzarella
-    const x = canvas.width - iconSize - 10; // Ajustez 10 pour un espace entre l'icône et le bord
+  function drawItem(image, index, marge) {
+    const iconSize = 50; // Taille de l'icône de l'item
+    const x = canvas.width - iconSize - marge; // Ajustez pour un espace entre l'icône et le bord
     const y = 10; // Ajustez cette valeur selon votre préférence
-    const opacity1 = mozzarellaOpacities[currentLevel];
-
-    c.globalAlpha = opacity1;
-    c.drawImage(mozzarellaImg, x, y, iconSize, iconSize);
+    const opacity = itemOpacities[index][currentLevel];
+  
+    c.globalAlpha = opacity;
+    c.drawImage(image, x, y, iconSize, iconSize);
     c.globalAlpha = 1.0;
   }
 
@@ -312,6 +333,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // permet de respawn après être tombé (même code que les ligne 108 - 143)
   function initlevel1() {
+
+    
     // création de l'objet player
     player = new Player(playerFont, spriteX, spriteY);
 
@@ -413,23 +436,33 @@ document.addEventListener("DOMContentLoaded", () => {
       ),
     ];
 
-    mozzarella = [
-      new Mozzarella(
+    item = [
+      new Item(
         plateforms[1].position.x + 290,
         plateforms[1].position.y - 50,
         mozzarellaImg
       ),
     ];
-
-    mozzarellaOpacities[0] = 0.3;
-    // Dessine l'icône de mozzarella en haut à droite
-    drawMozzarellaIcon(0.3);
+   
+    
+   
+    
 
     // variable qui permettra de définir un objectif pour finir un niveau par exemple
     scrollOffset = 0;
   }
 
   function initlevel2() {
+    /*console.log(formattedTime);
+    let person = prompt("Please enter your name");
+    if (person == null || person == "") {
+      person = "Unknown";
+    }
+    addDoc("result",person,formattedTime);
+    dumpCollection("result");*/
+    
+
+
     // création de l'objet player
     player = new Player(playerFont, spriteX, spriteY);
 
@@ -531,18 +564,13 @@ document.addEventListener("DOMContentLoaded", () => {
       ),
     ];
 
-    mozzarella = [
-      new Mozzarella(
+    item = [
+      new Item(
         plateforms[1].position.x + 290,
         plateforms[1].position.y - 50,
-        mozzarellaImg
+        prosciuttoImg
       ),
     ];
-
-    mozzarellaOpacities[1] = 2.5;
-    // Dessine l'icône de mozzarella en haut à droite
-    drawMozzarellaIcon(2);
-
     // variable qui permettra de définir un objectif pour finir un niveau par exemple
     scrollOffset = 0;
   }
@@ -570,7 +598,7 @@ document.addEventListener("DOMContentLoaded", () => {
       new Boss(125, plateforms[0].position.y - 135, 0, canvas.width, 1, 0),
     ];
 
-    mozzarella = [];
+    item = [];
 
     // variable qui permettra de définir un objectif pour finir un niveau par exemple
     scrollOffset = 0;
@@ -678,8 +706,8 @@ document.addEventListener("DOMContentLoaded", () => {
       ),
     ];
 
-    mozzarella = [
-      new Mozzarella(
+    item = [
+      new Item(
         plateforms[0].position.x + 290,
         plateforms[0].position.y - 50,
         mozzarellaImg
@@ -702,7 +730,7 @@ document.addEventListener("DOMContentLoaded", () => {
     elapsedTime = Math.floor((currentTime - startTime) / 1000); // Temps en secondes
     const minutes = Math.floor(elapsedTime / 60);
     const seconds = elapsedTime % 60;
-    const formattedTime = `${minutes.toString().padStart(2, "0")}:${seconds
+    formattedTime = `${minutes.toString().padStart(2, "0")}:${seconds
       .toString()
       .padStart(2, "0")}`;
 
@@ -719,9 +747,9 @@ document.addEventListener("DOMContentLoaded", () => {
       spikes.draw(c);
     });
 
-    mozzarella.forEach((mozzarella) => {
-      checkPlayerItemCollision(player, mozzarella);
-      mozzarella.draw(c);
+    item.forEach((item) => {
+      checkPlayerItemCollision(player, item);
+      item.draw(c);
     });
 
     movingEnemies.forEach((MovingEnemy) => {
@@ -811,8 +839,8 @@ document.addEventListener("DOMContentLoaded", () => {
           spikes.forEach((spikes) => {
             spikes.position.x -= player.speed;
           });
-          mozzarella.forEach((mozzarella) => {
-            mozzarella.position.x -= player.speed;
+          item.forEach((item) => {
+            item.position.x -= player.speed;
           });
 
           movingEnemies.forEach((MovingEnemy) => {
@@ -834,8 +862,8 @@ document.addEventListener("DOMContentLoaded", () => {
           spikes.forEach((spikes) => {
             spikes.position.x += player.speed;
           });
-          mozzarella.forEach((mozzarella) => {
-            mozzarella.position.x += player.speed;
+          item.forEach((item) => {
+            item.position.x += player.speed;
           });
           movingEnemies.forEach((MovingEnemy) => {
             if (MovingEnemy.movementType === "horizontal") {
@@ -903,6 +931,9 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
+    
+
+
     if (player.position.y > canvas.height) {
       if (currentLevel === 1) {
         initlevel1();
@@ -920,8 +951,10 @@ document.addEventListener("DOMContentLoaded", () => {
     c.font = "20px Arial";
     c.fillText("Time: " + formattedTime, 20, 30);
 
-    // Dessine l'icône de mozzarella en haut à gauche
-    drawMozzarellaIcon();
+    
+    drawItem(mozzarellaImg, itemIndices.mozzarella, 10);
+    drawItem(prosciuttoImg, itemIndices.prosciutto, 50);
+    drawItem(patePizzaImg, itemIndices.patePizza, 90);
 
     //overlay pour changement de niveau
     c.save();
