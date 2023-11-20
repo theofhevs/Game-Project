@@ -1,13 +1,13 @@
-
 class Boss {
-    constructor(x, y, min, max, velocityX, velocityY) {
+    constructor(x, y, min, max, speed) {
         this.position = { x, y };
         this.width = 135;
         this.height = 135;
         this.color = 'green'; // Utilisation de la couleur définie
-        this.velocity = { x: velocityX, y: velocityY };
+        this.velocity = { x: 1, y: 0 };
         this.min = min;
         this.max = max;
+        this.speed = speed;
     }
 
     draw(c) {
@@ -16,28 +16,35 @@ class Boss {
     }
 
     updateVertical() {
-        const speed = 10
+
         // Mettez à jour la position verticale en fonction de la direction
-        this.position.x += this.velocity.x * speed;
+        this.position.x += this.velocity.x * this.speed;
 
         // Vérifiez si l'ennemi atteint les limites de sa plateforme
         if (this.position.x < this.min) {
             this.velocity.x = 1;
-        } else if (this.position.x > this.max - this.width) {
+        } else if (this.position.x + this.width > this.max) {
             this.velocity.x = -1;
         }
 
 
-
-
     }
 
-    test() {
-        this.velocity.x = 0
 
 
+    randomPosition() {
+        let random = Math.floor(Math.random() * (11 - 5)) + 5;
+        return random
     }
 
+
+
+
+    randomMax() {
+        let randomMax = Math.floor(Math.random() * (1025 - 440) + 440);
+
+        return randomMax
+    }
 
 
 

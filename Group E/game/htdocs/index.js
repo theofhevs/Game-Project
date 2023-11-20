@@ -9,7 +9,7 @@ import Boss from "./Class/Boss.js";
 import Bouttons from "./Class/Bouttons.js";
 import Titre from "./Class/Titre.js";
 import BackgroundMenu from "./Class/BackgroundMenu.js";
-import {addDoc,dumpCollection} from "../Firebase.js";
+import { addDoc, dumpCollection } from "../Firebase.js";
 
 // ajout des images
 const siteURL = "";
@@ -72,7 +72,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let spriteY = 0;
 
   let formattedTime;
-  
+
   // création overlay
   const overlay = {
     opacity: 0,
@@ -92,14 +92,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const itemIndices = {
     mozzarella: 0,
     prosciutto: 1,
-    patePizza: 2  
+    patePizza: 2
     // Ajoutez d'autres images avec leurs indices si nécessaire
   };
-  
+
   const itemOpacities = {
-    [itemIndices.mozzarella]: { 1: 0.3, 2: 2.5, 3: 2.5, 4: 2.5},
-    [itemIndices.prosciutto]: { 1: 0.3, 2: 0.3, 3: 2.5, 4: 2.5},
-    [itemIndices.patePizza]:  { 1: 0.3, 2: 0.3, 3: 0.3, 4: 2.5},
+    [itemIndices.mozzarella]: { 1: 0.3, 2: 2.5, 3: 2.5, 4: 2.5 },
+    [itemIndices.prosciutto]: { 1: 0.3, 2: 0.3, 3: 2.5, 4: 2.5 },
+    [itemIndices.patePizza]: { 1: 0.3, 2: 0.3, 3: 0.3, 4: 2.5 },
     // Ajoutez d'autres images avec leurs opacités si nécessaire
   };
 
@@ -129,7 +129,10 @@ document.addEventListener("DOMContentLoaded", () => {
   let isBossUpdateVerticalAllowed = true;
   // VARIABLE PERMETTANT DE METTRE UNE VIE AU BOSS
   let countHitBoss = 0;
-
+  // DEPLACEMENT RANDOM BOSS 
+  let random = 5
+  // Defini le point de départ du boss
+  let positionBossRandom = 890
   // Set l'accélération lorsque le player tombe
   const gravity = 0.4;
 
@@ -151,7 +154,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // variable qui permettra de définir un objectif pour finir un niveau par exemple
   let scrollOffset = 0;
 
- 
+
 
   // Ajoutez cette variable de verrouillage
   let isIncrementingLevel = false;
@@ -162,7 +165,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const x = canvas.width - iconSize - marge; // Ajustez pour un espace entre l'icône et le bord
     const y = 10; // Ajustez cette valeur selon votre préférence
     const opacity = itemOpacities[index][currentLevel];
-  
+
     c.globalAlpha = opacity;
     c.drawImage(image, x, y, iconSize, iconSize);
     c.globalAlpha = 1.0;
@@ -334,7 +337,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // permet de respawn après être tombé (même code que les ligne 108 - 143)
   function initlevel1() {
 
-    
+
     // création de l'objet player
     player = new Player(playerFont, spriteX, spriteY);
 
@@ -443,10 +446,10 @@ document.addEventListener("DOMContentLoaded", () => {
         mozzarellaImg
       ),
     ];
-   
-    
-   
-    
+
+
+
+
 
     // variable qui permettra de définir un objectif pour finir un niveau par exemple
     scrollOffset = 0;
@@ -460,7 +463,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     addDoc("result",person,formattedTime);
     dumpCollection("result");*/
-    
+
 
 
     // création de l'objet player
@@ -595,7 +598,7 @@ document.addEventListener("DOMContentLoaded", () => {
     ];
 
     bosses = [
-      new Boss(125, plateforms[0].position.y - 135, 0, canvas.width, 1, 0),
+      new Boss(125, plateforms[0].position.y - 135, 0, canvas.width, 10)
     ];
 
     item = [];
@@ -765,27 +768,56 @@ document.addEventListener("DOMContentLoaded", () => {
         boss.draw(c);
         // SI LE BOOLEAN EST TRUE ALORS l'ENEMY SE DEPLACE ET EST INVINCIBLE
         if (isBossUpdateVerticalAllowed) {
-          boss.updateVertical();
-          checkMovingBossCollision(player, boss);
+          boss.updateVertical()
+          checkMovingBossCollision(player, boss)
+
         }
         // si le boolean est faux, le  boss ne bouge pas et nous pouvons maintenant l'attaqué
         if (!isBossUpdateVerticalAllowed) {
-          checkPlayerBossStaticCollision(player, boss);
+          checkPlayerBossStaticCollision(player, boss)
+
         }
 
-        // LOGIQUE PERMETTANT DE CHANGER DE PHASE, SI LE BOSS ATTEINT LE POINT DEFINIE 2 FOIS, IL APPELLE LA METHODE QUI LE LAISSE IMMOBILE PENDANT 5 SECONDES
-        if (boss.position.x > boss.max - boss.width) {
+
+        console.log('le random est de   ' + random)
+
+
+
+
+        if (Math.abs(boss.position.x + boss.width == 890) && countHitBoss === 0) {
+          //boss.max = 890;
           maxReachedCounter++;
-          if (maxReachedCounter === 2) {
-            isBossUpdateVerticalAllowed = false;
-            boss.test();
-            setTimeout(() => {
-              maxReachedCounter = 0;
-              isBossUpdateVerticalAllowed = true;
-            }, 5000);
-          }
+
+        } else if (Math.abs(boss.position.x + boss.width == 506) && countHitBoss === 1) {
+          //boss.max = 500;
+          maxReachedCounter++;
+
+        } else if (Math.abs(boss.position.x + boss.width == 310) && countHitBoss === 2) {
+          //boss.max = 308;
+          maxReachedCounter++;
         }
+
+
+
+        if (maxReachedCounter === random) {
+          isBossUpdateVerticalAllowed = false;
+          random = boss.randomPosition()
+
+          setTimeout(() => {
+            maxReachedCounter = 0;
+            isBossUpdateVerticalAllowed = true;
+
+          }, 3000);
+
+
+        }
+
+
+
+
       });
+
+
     }
 
     // Gérer le saut automatique si le joueur est sur l'ennemi
@@ -881,7 +913,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (
         player.position.y + player.height <= plateform.position.y &&
         player.position.y + player.height + player.velocity.y >=
-          plateform.position.y &&
+        plateform.position.y &&
         player.position.x + player.width >= plateform.position.x &&
         player.position.x <= plateform.position.x + plateform.width
       ) {
@@ -893,7 +925,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (
         player.position.y + player.height <= MovingEnemy.position.y &&
         player.position.y + player.height + player.velocity.y >=
-          MovingEnemy.position.y &&
+        MovingEnemy.position.y &&
         player.position.x + player.width >= MovingEnemy.position.x &&
         player.position.x <= MovingEnemy.position.x + MovingEnemy.width
       ) {
@@ -912,11 +944,12 @@ document.addEventListener("DOMContentLoaded", () => {
         if (
           player.position.y + player.height <= Boss.position.y &&
           player.position.y + player.height + player.velocity.y >=
-            Boss.position.y &&
+          Boss.position.y &&
           player.position.x + player.width >= Boss.position.x &&
           player.position.x <= Boss.position.x + Boss.width
         ) {
           countHitBoss++;
+          Boss.speed = Boss.speed + 2
           isBossUpdateVerticalAllowed = true;
           player.velocity.y = 0;
           isPlayerOnEnemy = true;
@@ -931,7 +964,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-    
+
 
 
     if (player.position.y > canvas.height) {
@@ -951,7 +984,7 @@ document.addEventListener("DOMContentLoaded", () => {
     c.font = "20px Arial";
     c.fillText("Time: " + formattedTime, 20, 30);
 
-    
+
     drawItem(mozzarellaImg, itemIndices.mozzarella, 10);
     drawItem(prosciuttoImg, itemIndices.prosciutto, 50);
     drawItem(patePizzaImg, itemIndices.patePizza, 90);
@@ -988,22 +1021,22 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("keydown", ({ keyCode }) => {
     switch (keyCode) {
       case 65:
-        console.log("left");
+        //console.log("left");
         keys.left.pressed = true;
         spriteY = 2;
         if (player.spriteY !== 2) player.spriteY = 2;
         break;
       case 83:
-        console.log("down");
+        //console.log("down");
         break;
       case 68:
-        console.log("right");
+        //console.log("right");
         keys.right.pressed = true;
         spriteY = 1;
         if (player.spriteY !== 1) player.spriteY = 1;
         break;
       case 87:
-        console.log("up");
+        // console.log("up");
         keys.up.pressed = true;
         spriteY = 3;
         if (player.spriteY !== 3 && player.velocity.y === 0) player.spriteY = 3;
@@ -1017,20 +1050,20 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("keyup", ({ keyCode }) => {
     switch (keyCode) {
       case 65:
-        console.log("left");
+        //console.log("left");
         keys.left.pressed = false;
         if (!keys.right.pressed) player.spriteY = 0;
         break;
       case 83:
-        console.log("down");
+        //console.log("down");
         break;
       case 68:
-        console.log("right");
+        // console.log("right");
         keys.right.pressed = false;
         if (!keys.left.pressed) player.spriteY = 0;
         break;
       case 87:
-        console.log("up");
+        // console.log("up");
         keys.up.pressed = false;
         if (!keys.left.pressed && !keys.right.pressed) player.spriteY = 0;
         if (keys.left.pressed) player.spriteY = 2;
