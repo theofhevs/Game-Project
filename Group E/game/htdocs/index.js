@@ -32,11 +32,14 @@ const howToPlay = new Image();
 const startGame = new Image();
 const highscore = new Image();
 const title = new Image();
+const howToPlayBackground = new Image();
+const highscoreBackground = new Image();
+const backToMenu = new Image();
 const backgroundMenu = new Image();
 const prosciuttoImg = new Image();
 const patePizzaImg = new Image();
-patePizzaImg.src = siteURL + "img/patePizza.png"
-prosciuttoImg.src = siteURL + "img/prosciutto.png"
+patePizzaImg.src = siteURL + "img/patePizza.png";
+prosciuttoImg.src = siteURL + "img/prosciutto.png";
 chefEnemy.src = siteURL + "img/chefSprite.png";
 burgerEnemy.src = siteURL + "img/burgerSprite.png";
 mozzarellaImg.src = siteURL + "img/mozzarella.png";
@@ -57,6 +60,9 @@ startGame.src = siteURL + "img/StartGame.png";
 highscore.src = siteURL + "img/Highscore.png";
 title.src = siteURL + "img/title.png";
 backgroundMenu.src = siteURL + "img/mainBackground.png";
+howToPlayBackground.src = siteURL + "img/HowToPlayBackground.png";
+highscoreBackground.src = siteURL + "img/HighscoreBackground.png";
+backToMenu.src = siteURL + "img/backToMenu.png";
 
 // Setup pour link le JS avec HTMLA
 document.addEventListener("DOMContentLoaded", () => {
@@ -92,7 +98,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const itemIndices = {
     mozzarella: 0,
     prosciutto: 1,
-    patePizza: 2
+    patePizza: 2,
     // Ajoutez d'autres images avec leurs indices si nécessaire
   };
 
@@ -103,10 +109,13 @@ document.addEventListener("DOMContentLoaded", () => {
     // Ajoutez d'autres images avec leurs opacités si nécessaire
   };
 
-  //création de l'objet boutton
+  //création des objet du menu
   let buttons = [];
   let titleGame = [];
   let menuBackground = [];
+  let BackgroundhowToPlay = [];
+  let boutonBack = [];
+  let Backgroundhighscore = [];
 
   // création de l'objet plateform
   let plateforms = [];
@@ -129,10 +138,10 @@ document.addEventListener("DOMContentLoaded", () => {
   let isBossUpdateVerticalAllowed = true;
   // VARIABLE PERMETTANT DE METTRE UNE VIE AU BOSS
   let countHitBoss = 0;
-  // DEPLACEMENT RANDOM BOSS 
-  let random = 5
+  // DEPLACEMENT RANDOM BOSS
+  let random = 5;
   // Defini le point de départ du boss
-  let positionBossRandom = 890
+  let positionBossRandom = 890;
   // Set l'accélération lorsque le player tombe
   const gravity = 0.4;
 
@@ -153,8 +162,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // variable qui permettra de définir un objectif pour finir un niveau par exemple
   let scrollOffset = 0;
-
-
 
   // Ajoutez cette variable de verrouillage
   let isIncrementingLevel = false;
@@ -306,6 +313,26 @@ document.addEventListener("DOMContentLoaded", () => {
     canvas.addEventListener("click", handleCanvasClick);
   }
 
+  function initHowToPlay() {
+    BackgroundhowToPlay = [
+      new BackgroundMenu({ x: 0, y: 0, image: howToPlayBackground }),
+    ];
+
+    boutonBack = [new Bouttons({ x: 10, y: 10, image: backToMenu })];
+
+    canvas.addEventListener("click", handleCanvasClick);
+  }
+
+  function initHighscore() {
+    Backgroundhighscore = [
+      new BackgroundMenu({ x: 0, y: 0, image: highscoreBackground }),
+    ];
+
+    boutonBack = [new Bouttons({ x: 10, y: 10, image: backToMenu })];
+
+    canvas.addEventListener("click", handleCanvasClick);
+  }
+
   // Function to handle canvas click events
   function handleCanvasClick(event) {
     const canvasRect = canvas.getBoundingClientRect();
@@ -324,20 +351,53 @@ document.addEventListener("DOMContentLoaded", () => {
         handleButtonClick(button);
       }
     });
+
+    boutonBack.forEach((button) => {
+      if (
+        clickX >= button.position.x &&
+        clickX <= button.position.x + button.width &&
+        clickY >= button.position.y &&
+        clickY <= button.position.y + button.height
+      ) {
+        // Execute the desired function based on the clicked button
+        handleButtonClick(button);
+      }
+    });
   }
 
   // Function to handle button click
   function handleButtonClick(button) {
-    //pour lancer la vidéo intégrer ici
-
-    //lance le jeu lorsque un des bouton est cliqué
-    animate();
+    // Check which button was clicked based on its image property
+    switch (button.image) {
+      case howToPlay:
+        // Execute logic for the "How to Play" button
+        console.log("How to Play button clicked");
+        animateHowToPlay();
+        break;
+      case startGame:
+        // Execute logic for the "Start Game" button
+        console.log("Start Game button clicked");
+        animate(); // You can call your animation or game start logic here
+        break;
+      case highscore:
+        // Execute logic for the "Highscore" button
+        console.log("Highscore button clicked");
+        animateHighscore();
+        break;
+      case backToMenu:
+        // Execute logic for the "Highscore" button
+        console.log("back button clicked");
+        animateMenu();
+        break;
+      // Add more cases for additional buttons if needed
+      default:
+        // Default case, do nothing
+        break;
+    }
   }
 
   // permet de respawn après être tombé (même code que les ligne 108 - 143)
   function initlevel1() {
-
-
     // création de l'objet player
     player = new Player(playerFont, spriteX, spriteY);
 
@@ -447,10 +507,6 @@ document.addEventListener("DOMContentLoaded", () => {
       ),
     ];
 
-
-
-
-
     // variable qui permettra de définir un objectif pour finir un niveau par exemple
     scrollOffset = 0;
   }
@@ -463,8 +519,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     addDoc("result",person,formattedTime);
     dumpCollection("result");*/
-
-
 
     // création de l'objet player
     player = new Player(playerFont, spriteX, spriteY);
@@ -574,35 +628,6 @@ document.addEventListener("DOMContentLoaded", () => {
         prosciuttoImg
       ),
     ];
-    // variable qui permettra de définir un objectif pour finir un niveau par exemple
-    scrollOffset = 0;
-  }
-
-  function initlevelFinal() {
-    // création de l'objet player
-    player = new Player(playerFont, spriteX, spriteY);
-
-    // création de l'objet plateform
-    plateforms = [
-      new Plateform({ x: 0, y: 400, image: plateformFont }),
-      new Plateform({ x: plateformFont.width, y: 400, image: plateformFont }),
-    ];
-
-    // création de l'objet concernant le BackGround
-    genericObjects = [
-      new GenericObject({
-        x: 0,
-        y: 0,
-        image: desertBackground,
-      }),
-    ];
-
-    bosses = [
-      new Boss(125, plateforms[0].position.y - 135, 0, canvas.width, 10)
-    ];
-
-    item = [];
-
     // variable qui permettra de définir un objectif pour finir un niveau par exemple
     scrollOffset = 0;
   }
@@ -721,6 +746,35 @@ document.addEventListener("DOMContentLoaded", () => {
     scrollOffset = 0;
   }
 
+  function initlevelFinal() {
+    // création de l'objet player
+    player = new Player(playerFont, spriteX, spriteY);
+
+    // création de l'objet plateform
+    plateforms = [
+      new Plateform({ x: 0, y: 400, image: plateformFont }),
+      new Plateform({ x: plateformFont.width, y: 400, image: plateformFont }),
+    ];
+
+    // création de l'objet concernant le BackGround
+    genericObjects = [
+      new GenericObject({
+        x: 0,
+        y: 0,
+        image: desertBackground,
+      }),
+    ];
+
+    bosses = [
+      new Boss(125, plateforms[0].position.y - 135, 0, canvas.width, 10),
+    ];
+
+    item = [];
+
+    // variable qui permettra de définir un objectif pour finir un niveau par exemple
+    scrollOffset = 0;
+  }
+
   // permet de refresh en temps réel la position du player (evite que le player se déplace à l'infini dès qu'une touche est enfoncé)
   function animate(currentTime) {
     requestAnimationFrame(animate);
@@ -768,56 +822,46 @@ document.addEventListener("DOMContentLoaded", () => {
         boss.draw(c);
         // SI LE BOOLEAN EST TRUE ALORS l'ENEMY SE DEPLACE ET EST INVINCIBLE
         if (isBossUpdateVerticalAllowed) {
-          boss.updateVertical()
-          checkMovingBossCollision(player, boss)
-
+          boss.updateVertical();
+          checkMovingBossCollision(player, boss);
         }
         // si le boolean est faux, le  boss ne bouge pas et nous pouvons maintenant l'attaqué
         if (!isBossUpdateVerticalAllowed) {
-          checkPlayerBossStaticCollision(player, boss)
-
+          checkPlayerBossStaticCollision(player, boss);
         }
 
+        console.log("le random est de   " + random);
 
-        console.log('le random est de   ' + random)
-
-
-
-
-        if (Math.abs(boss.position.x + boss.width == 890) && countHitBoss === 0) {
+        if (
+          Math.abs(boss.position.x + boss.width == 890) &&
+          countHitBoss === 0
+        ) {
           //boss.max = 890;
           maxReachedCounter++;
-
-        } else if (Math.abs(boss.position.x + boss.width == 506) && countHitBoss === 1) {
+        } else if (
+          Math.abs(boss.position.x + boss.width == 506) &&
+          countHitBoss === 1
+        ) {
           //boss.max = 500;
           maxReachedCounter++;
-
-        } else if (Math.abs(boss.position.x + boss.width == 310) && countHitBoss === 2) {
+        } else if (
+          Math.abs(boss.position.x + boss.width == 310) &&
+          countHitBoss === 2
+        ) {
           //boss.max = 308;
           maxReachedCounter++;
         }
 
-
-
         if (maxReachedCounter === random) {
           isBossUpdateVerticalAllowed = false;
-          random = boss.randomPosition()
+          random = boss.randomPosition();
 
           setTimeout(() => {
             maxReachedCounter = 0;
             isBossUpdateVerticalAllowed = true;
-
           }, 3000);
-
-
         }
-
-
-
-
       });
-
-
     }
 
     // Gérer le saut automatique si le joueur est sur l'ennemi
@@ -913,7 +957,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (
         player.position.y + player.height <= plateform.position.y &&
         player.position.y + player.height + player.velocity.y >=
-        plateform.position.y &&
+          plateform.position.y &&
         player.position.x + player.width >= plateform.position.x &&
         player.position.x <= plateform.position.x + plateform.width
       ) {
@@ -925,7 +969,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (
         player.position.y + player.height <= MovingEnemy.position.y &&
         player.position.y + player.height + player.velocity.y >=
-        MovingEnemy.position.y &&
+          MovingEnemy.position.y &&
         player.position.x + player.width >= MovingEnemy.position.x &&
         player.position.x <= MovingEnemy.position.x + MovingEnemy.width
       ) {
@@ -944,12 +988,12 @@ document.addEventListener("DOMContentLoaded", () => {
         if (
           player.position.y + player.height <= Boss.position.y &&
           player.position.y + player.height + player.velocity.y >=
-          Boss.position.y &&
+            Boss.position.y &&
           player.position.x + player.width >= Boss.position.x &&
           player.position.x <= Boss.position.x + Boss.width
         ) {
           countHitBoss++;
-          Boss.speed = Boss.speed + 2
+          Boss.speed = Boss.speed + 2;
           isBossUpdateVerticalAllowed = true;
           player.velocity.y = 0;
           isPlayerOnEnemy = true;
@@ -963,9 +1007,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }
     });
-
-
-
 
     if (player.position.y > canvas.height) {
       if (currentLevel === 1) {
@@ -984,7 +1025,6 @@ document.addEventListener("DOMContentLoaded", () => {
     c.font = "20px Arial";
     c.fillText("Time: " + formattedTime, 20, 30);
 
-
     drawItem(mozzarellaImg, itemIndices.mozzarella, 10);
     drawItem(prosciuttoImg, itemIndices.prosciutto, 50);
     drawItem(patePizzaImg, itemIndices.patePizza, 90);
@@ -997,6 +1037,7 @@ document.addEventListener("DOMContentLoaded", () => {
     c.restore();
   }
 
+  //permet de lancer le menu avant le jeu
   function animateMenu() {
     requestAnimationFrame(animateMenu);
     c.fillStyle = "white";
@@ -1015,6 +1056,40 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     initMenu();
+  }
+
+  //permet de lancer la page how to play
+  function animateHowToPlay() {
+    requestAnimationFrame(animateHowToPlay);
+    c.fillStyle = "white";
+    c.fillRect(0, 0, canvas.width, canvas.height);
+
+    BackgroundhowToPlay.forEach((BackgroundhowToPlay) => {
+      BackgroundhowToPlay.draw(c);
+    });
+
+    boutonBack.forEach((boutonBack) => {
+      boutonBack.draw(c);
+    });
+
+    initHowToPlay();
+  }
+
+  //permet de lancer la page highscore
+  function animateHighscore() {
+    requestAnimationFrame(animateHighscore);
+    c.fillStyle = "white";
+    c.fillRect(0, 0, canvas.width, canvas.height);
+
+    Backgroundhighscore.forEach((Backgroundhighscore) => {
+      Backgroundhighscore.draw(c);
+    });
+
+    boutonBack.forEach((boutonBack) => {
+      boutonBack.draw(c);
+    });
+
+    initHighscore();
   }
 
   // assignation des touches pour les déplacements QUAND TOUCHE ENFONCE
