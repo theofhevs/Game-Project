@@ -10,6 +10,7 @@ import Bouttons from "./Class/Bouttons.js";
 import Titre from "./Class/Titre.js";
 import BackgroundMenu from "./Class/BackgroundMenu.js";
 import { addDoc, dumpCollection } from "../Firebase.js";
+import Animate from "./Class/Animate.js";
 
 // ajout des images
 const siteURL = "";
@@ -38,6 +39,7 @@ const backToMenu = new Image();
 const backgroundMenu = new Image();
 const prosciuttoImg = new Image();
 const patePizzaImg = new Image();
+const animate_class = new Animate();
 patePizzaImg.src = siteURL + "img/patePizza.png";
 prosciuttoImg.src = siteURL + "img/prosciutto.png";
 chefEnemy.src = siteURL + "img/chefSprite.png";
@@ -83,6 +85,27 @@ document.addEventListener("DOMContentLoaded", () => {
   const overlay = {
     opacity: 0,
   };
+
+  // variables for the game loop
+  let fps = 60;
+  let now;
+  let then = Date.now();
+  let interval = 1000 / fps;
+  let delta;
+
+  // état du jeu
+  const STATE_MENU = "menu";
+  const STATE_HOWTOPLAY = "howToPlay";
+  const STATE_HIGHSCORE = "highscore";
+  const STATE_GAME_ON = "gameOn";
+  //..
+  let gameState = STATE_MENU;
+
+  // handle clic (x,y du click)
+  // for each button
+  // if(button.IsInBounds(x,y))
+  //-> state = button.stateTo
+  //-> buttons = button.nextButtons
 
   // création de l'objet player
   let player = new Player(playerFont, spriteX, spriteY);
@@ -305,22 +328,67 @@ document.addEventListener("DOMContentLoaded", () => {
     titleGame = [new Titre({ x: 115, y: 20, image: title })];
 
     buttons = [
-      new Bouttons({ x: 150, y: 200, image: howToPlay }),
-      new Bouttons({ x: 410, y: 200, image: startGame }),
-      new Bouttons({ x: 670, y: 200, image: highscore }),
+      new Bouttons({
+        x: 150,
+        y: 200,
+        image: howToPlay,
+        belongTo: [STATE_MENU],
+        initMethod: () => {
+          initHowToPlay();
+          gameState = STATE_HOWTOPLAY;
+        },
+      }),
+      new Bouttons({
+        x: 410,
+        y: 200,
+        image: startGame,
+        belongTo: [STATE_MENU],
+        initMethod: () => {
+          initlevel1();
+          gameState = STATE_GAME_ON;
+        },
+      }),
+      new Bouttons({
+        x: 670,
+        y: 200,
+        image: highscore,
+        belongTo: [STATE_MENU],
+        initMethod: () => {
+          initHighscore();
+          gameState = STATE_HIGHSCORE;
+        },
+      }),
+      new Bouttons({
+        x: 10,
+        y: 10,
+        image: backToMenu,
+        belongTo: [STATE_HOWTOPLAY, STATE_HIGHSCORE],
+        initMethod: () => {
+          initMenu();
+          gameState = STATE_MENU;
+        },
+      }),
     ];
+
+    buttons.forEach((button) => {
+      setButtonAction(button);
+    });
+
     // Add a click event listener to the canvas
     canvas.addEventListener("click", handleCanvasClick);
+  }
+
+  function setButtonAction(button) {
+    let canvas = document.getElementById("canvas");
+    canvas.addEventListener("click", (event) => {
+      button.handleClick(event, gameState);
+    });
   }
 
   function initHowToPlay() {
     BackgroundhowToPlay = [
       new BackgroundMenu({ x: 0, y: 0, image: howToPlayBackground }),
     ];
-
-    boutonBack = [new Bouttons({ x: 10, y: 10, image: backToMenu })];
-
-    canvas.addEventListener("click", handleCanvasClick);
   }
 
   function initHighscore() {
@@ -335,64 +403,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Function to handle canvas click events
   function handleCanvasClick(event) {
-    const canvasRect = canvas.getBoundingClientRect();
-    const clickX = event.clientX - canvasRect.left;
-    const clickY = event.clientY - canvasRect.top;
+    // Calculate the position of the click
+    var rect = canvas.getBoundingClientRect();
+    var x = event.clientX - rect.left;
+    var y = event.clientY - rect.top;
 
-    // Check if the click is within the boundaries of any button
-    buttons.forEach((button) => {
+    // Check if any of the buttons were clicked
+    for (var i = 0; i < buttons.length; i++) {
+      var button = buttons[i];
       if (
-        clickX >= button.position.x &&
-        clickX <= button.position.x + button.width &&
-        clickY >= button.position.y &&
-        clickY <= button.position.y + button.height
+        x >= button.x &&
+        x <= button.x + button.width &&
+        y >= button.y &&
+        y <= button.y + button.height
       ) {
-        // Execute the desired function based on the clicked button
+        // The button was clicked, handle the click
+        // handleButtonClick(button);
+        button.initMethod();
+        state = button.stateTo;
+        buttons = button.nextButtons;
         handleButtonClick(button);
+        return;
       }
-    });
-
-    boutonBack.forEach((button) => {
-      if (
-        clickX >= button.position.x &&
-        clickX <= button.position.x + button.width &&
-        clickY >= button.position.y &&
-        clickY <= button.position.y + button.height
-      ) {
-        // Execute the desired function based on the clicked button
-        handleButtonClick(button);
-      }
-    });
-  }
-
-  // Function to handle button click
-  function handleButtonClick(button) {
-    // Check which button was clicked based on its image property
-    switch (button.image) {
-      case howToPlay:
-        // Execute logic for the "How to Play" button
-        console.log("How to Play button clicked");
-        animateHowToPlay();
-        break;
-      case startGame:
-        // Execute logic for the "Start Game" button
-        console.log("Start Game button clicked");
-        animate(); // You can call your animation or game start logic here
-        break;
-      case highscore:
-        // Execute logic for the "Highscore" button
-        console.log("Highscore button clicked");
-        animateHighscore();
-        break;
-      case backToMenu:
-        // Execute logic for the "Highscore" button
-        console.log("back button clicked");
-        animateMenu();
-        break;
-      // Add more cases for additional buttons if needed
-      default:
-        // Default case, do nothing
-        break;
     }
   }
 
@@ -775,9 +807,38 @@ document.addEventListener("DOMContentLoaded", () => {
     scrollOffset = 0;
   }
 
+  // rafraichissement du canvas
+  function rafraichissement() {
+    requestAnimationFrame(rafraichissement);
+    now = Date.now();
+    delta = now - then;
+    if (delta > interval) {
+      // update time
+      then = now - (delta % interval);
+      choixAffichage();
+    }
+  }
+
+  // détermine quoi afficher()
+  function choixAffichage() {
+    switch (gameState) {
+      case STATE_MENU:
+        animateMenu();
+        break;
+      case STATE_GAME_ON:
+        animate();
+        break;
+      case STATE_HOWTOPLAY:
+        animateHowToPlay();
+        break;
+      case STATE_HIGHSCORE:
+        animateHighscore();
+        break;
+    }
+  }
+
   // permet de refresh en temps réel la position du player (evite que le player se déplace à l'infini dès qu'une touche est enfoncé)
   function animate(currentTime) {
-    requestAnimationFrame(animate);
     c.fillStyle = "white";
     c.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -1039,57 +1100,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
   //permet de lancer le menu avant le jeu
   function animateMenu() {
-    requestAnimationFrame(animateMenu);
-    c.fillStyle = "white";
-    c.fillRect(0, 0, canvas.width, canvas.height);
-
-    menuBackground.forEach((menuBackground) => {
-      menuBackground.draw(c);
-    });
-
-    buttons.forEach((buttons) => {
-      buttons.draw(c);
-    });
-
-    titleGame.forEach((titleGame) => {
-      titleGame.draw(c);
-    });
-
+    animate_class.animateMenu(menuBackground, buttons, titleGame, gameState);
     initMenu();
   }
 
   //permet de lancer la page how to play
   function animateHowToPlay() {
-    requestAnimationFrame(animateHowToPlay);
-    c.fillStyle = "white";
-    c.fillRect(0, 0, canvas.width, canvas.height);
-
-    BackgroundhowToPlay.forEach((BackgroundhowToPlay) => {
-      BackgroundhowToPlay.draw(c);
-    });
-
-    boutonBack.forEach((boutonBack) => {
-      boutonBack.draw(c);
-    });
-
-    initHowToPlay();
+    animate_class.animateHowToPlay(BackgroundhowToPlay, buttons, gameState);
   }
 
   //permet de lancer la page highscore
   function animateHighscore() {
-    requestAnimationFrame(animateHighscore);
-    c.fillStyle = "white";
-    c.fillRect(0, 0, canvas.width, canvas.height);
-
-    Backgroundhighscore.forEach((Backgroundhighscore) => {
-      Backgroundhighscore.draw(c);
-    });
-
-    boutonBack.forEach((boutonBack) => {
-      boutonBack.draw(c);
-    });
-
-    initHighscore();
+    animate_class.animateHowToPlay(Backgroundhighscore, buttons, gameState);
   }
 
   // assignation des touches pour les déplacements QUAND TOUCHE ENFONCE
@@ -1146,6 +1168,5 @@ document.addEventListener("DOMContentLoaded", () => {
         break;
     }
   });
-
-  animateMenu();
+  rafraichissement();
 });
