@@ -79,7 +79,8 @@ document.addEventListener("DOMContentLoaded", () => {
   let spriteX = 0;
   let spriteY = 0;
 
-  let formattedTime;
+  
+
 
   // création overlay
   const overlay = {
@@ -112,8 +113,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let currentLevel = 1;
 
-  let startTime = 0; // Initialisez le temps de départ
-  let elapsedTime = 0; // Initialisez le temps écoulé
+ 
 
   // création de l'objet mozzarella
   let item = [];
@@ -345,6 +345,7 @@ document.addEventListener("DOMContentLoaded", () => {
         belongTo: [STATE_MENU],
         initMethod: () => {
           initlevel1();
+          startTimer();
           gameState = STATE_GAME_ON;
         },
       }),
@@ -549,8 +550,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if (person == null || person == "") {
       person = "Unknown";
     }
-    addDoc("result",person,formattedTime);
-    dumpCollection("result");*/
+    addDoc("result",person,formattedTime);*/
+    dumpCollection("result");
 
     // création de l'objet player
     player = new Player(playerFont, spriteX, spriteY);
@@ -837,21 +838,29 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  let startTime = 0; // Initialisez le temps de départ
+  let elapsedTime = 0; // Initialisez le temps écoulé
+
+  function startTimer() {
+    startTime = Date.now(); // Mettez à jour le temps de départ à chaque démarrage du minuteur
+  }
+  
+  
   // permet de refresh en temps réel la position du player (evite que le player se déplace à l'infini dès qu'une touche est enfoncé)
-  function animate(currentTime) {
+  function animate() {
     c.fillStyle = "white";
     c.fillRect(0, 0, canvas.width, canvas.height);
 
-    if (!startTime) {
-      startTime = currentTime;
-    }
-    elapsedTime = Math.floor((currentTime - startTime) / 1000); // Temps en secondes
-    const minutes = Math.floor(elapsedTime / 60);
-    const seconds = elapsedTime % 60;
-    formattedTime = `${minutes.toString().padStart(2, "0")}:${seconds
-      .toString()
-      .padStart(2, "0")}`;
+    // Vous pouvez ensuite mettre à jour elapsedTime comme suit dans votre boucle ou à un moment donné
+const currentTime = Date.now();
+elapsedTime = Math.floor((currentTime - startTime) / 1000); // Temps en secondes
 
+const minutes = Math.floor(elapsedTime / 60);
+const seconds = elapsedTime % 60;
+const formattedTime = `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+
+
+console.log(formattedTime); // Affichez le temps formaté
     genericObjects.forEach((genericObject) => {
       genericObject.draw(c);
     });
