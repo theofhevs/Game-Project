@@ -13,7 +13,7 @@ import { addDoc, dumpCollection } from "../Firebase.js";
 import Animate from "./Class/Animate.js";
 
 // ajout des images
-const siteURL = "";
+const imgURL = "img/";
 const plateformFont = new Image();
 const mainBackGround = new Image();
 const tinyPlateformFont = new Image();
@@ -23,6 +23,7 @@ const spikesBottomImg = new Image();
 const spikesLeftImg = new Image();
 const spikesRightImg = new Image();
 const desertBackground = new Image();
+const desertPlatform = new Image();
 const plateformVenise = new Image();
 const plateformVeniseBottom = new Image();
 const cityBackground = new Image();
@@ -39,32 +40,39 @@ const backToMenu = new Image();
 const backgroundMenu = new Image();
 const prosciuttoImg = new Image();
 const patePizzaImg = new Image();
+const bossBackground = new Image();
+const bossPlatform = new Image();
+const bossSprite = new Image();
 const animate_class = new Animate();
-patePizzaImg.src = siteURL + "img/patePizza.png";
-prosciuttoImg.src = siteURL + "img/prosciutto.png";
-chefEnemy.src = siteURL + "img/chefSprite.png";
-burgerEnemy.src = siteURL + "img/burgerSprite.png";
-mozzarellaImg.src = siteURL + "img/mozzarella.png";
-cityBackground.src = siteURL + "img/italianCityLarge.png";
-desertBackground.src = siteURL + "img/desertBackgroundLarge.png";
-spikesImg.src = siteURL + "img/spikes.png";
-spikesBottomImg.src = siteURL + "img/spikesBottom.png";
-spikesLeftImg.src = siteURL + "img/spikesLeft.png";
-spikesRightImg.src = siteURL + "img/spikesRight.png";
-playerFont.src = siteURL + "img/sprite.png";
-plateformFont.src = siteURL + "img/platform.png";
-mainBackGround.src = siteURL + "img/BG_large.png";
-tinyPlateformFont.src = siteURL + "img/platform.png";
-plateformVenise.src = siteURL + "img/platformVenise.png";
-plateformVeniseBottom.src = siteURL + "img/platformVeniseBottom.png";
-howToPlay.src = siteURL + "img/HowToPlay.png";
-startGame.src = siteURL + "img/StartGame.png";
-highscore.src = siteURL + "img/Highscore.png";
-title.src = siteURL + "img/title.png";
-backgroundMenu.src = siteURL + "img/mainBackground.png";
-howToPlayBackground.src = siteURL + "img/HowToPlayBackground.png";
-highscoreBackground.src = siteURL + "img/HighscoreBackground.png";
-backToMenu.src = siteURL + "img/backToMenu.png";
+bossBackground.src = imgURL + "bossBackground.png";
+desertPlatform.src = imgURL + "desertPlatform.png";
+bossPlatform.src = imgURL + "bossPlatform.png";
+patePizzaImg.src = imgURL + "patePizza.png";
+prosciuttoImg.src = imgURL + "prosciutto.png";
+bossSprite.src = imgURL + "boss.png"
+chefEnemy.src = imgURL + "chefSprite.png";
+burgerEnemy.src = imgURL + "burgerSprite.png";
+mozzarellaImg.src = imgURL + "mozzarella.png";
+cityBackground.src = imgURL + "italianCityLarge.png";
+desertBackground.src = imgURL + "desertBackgroundLarge.png";
+spikesImg.src = imgURL + "spikes.png";
+spikesBottomImg.src = imgURL + "spikesBottom.png";
+spikesLeftImg.src = imgURL + "spikesLeft.png";
+spikesRightImg.src = imgURL + "spikesRight.png";
+playerFont.src = imgURL + "sprite.png";
+plateformFont.src = imgURL + "platform.png";
+mainBackGround.src = imgURL + "BG_large.png";
+tinyPlateformFont.src = imgURL + "platform.png";
+plateformVenise.src = imgURL + "platformVenise.png";
+plateformVeniseBottom.src = imgURL + "platformVeniseBottom.png";
+howToPlay.src = imgURL + "HowToPlay.png";
+startGame.src = imgURL + "StartGame.png";
+highscore.src = imgURL + "Highscore.png";
+title.src = imgURL + "title.png";
+backgroundMenu.src = imgURL + "mainBackground.png";
+howToPlayBackground.src = imgURL + "HowToPlayBackground.png";
+highscoreBackground.src = imgURL + "HighscoreBackground.png";
+backToMenu.src = imgURL + "backToMenu.png";
 
 // Setup pour link le JS avec HTMLA
 document.addEventListener("DOMContentLoaded", () => {
@@ -79,8 +87,6 @@ document.addEventListener("DOMContentLoaded", () => {
   let spriteX = 0;
   let spriteY = 0;
 
-  
-
 
   // création overlay
   const overlay = {
@@ -88,7 +94,7 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   // variables for the game loop
-  let fps = 60;
+  let fps = 100;
   let now;
   let then = Date.now();
   let interval = 1000 / fps;
@@ -115,21 +121,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
  
 
-  // création de l'objet mozzarella
+  // items creation
   let item = [];
 
   const itemIndices = {
     mozzarella: 0,
     prosciutto: 1,
     patePizza: 2,
-    // Ajoutez d'autres images avec leurs indices si nécessaire
   };
 
   const itemOpacities = {
     [itemIndices.mozzarella]: { 1: 0.3, 2: 2.5, 3: 2.5, 4: 2.5 },
     [itemIndices.prosciutto]: { 1: 0.3, 2: 0.3, 3: 2.5, 4: 2.5 },
     [itemIndices.patePizza]: { 1: 0.3, 2: 0.3, 3: 0.3, 4: 2.5 },
-    // Ajoutez d'autres images avec leurs opacités si nécessaire
   };
 
   //création des objet du menu
@@ -558,46 +562,46 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // création de l'objet plateform
     plateforms = [
-      new Plateform({ x: 0, y: 350, image: plateformFont }),
+      new Plateform({ x: 0, y: 350, image: desertPlatform }),
       new Plateform({
-        x: plateformFont.width * 2 - 350,
+        x: desertPlatform.width * 2 - 350,
         y: 500,
-        image: plateformFont,
+        image: desertPlatform,
       }),
       new Plateform({
-        x: plateformFont.width * 2,
+        x: desertPlatform.width * 2,
         y: 500,
-        image: tinyPlateformFont,
+        image: desertPlatform,
       }),
       new Plateform({
-        x: plateformFont.width * 3.2,
+        x: desertPlatform.width * 3.2,
         y: 500,
-        image: plateformFont,
+        image: desertPlatform,
       }),
       new Plateform({
-        x: plateformFont.width * 3.8,
+        x: desertPlatform.width * 3.8,
         y: 500,
-        image: plateformFont,
+        image: desertPlatform,
       }),
       new Plateform({
-        x: plateformFont.width * 5.3,
+        x: desertPlatform.width * 5.3,
         y: 500,
-        image: plateformFont,
+        image: desertPlatform,
       }),
       new Plateform({
-        x: plateformFont.width * 6.7,
+        x: desertPlatform.width * 6.7,
         y: 500,
-        image: plateformFont,
+        image: desertPlatform,
       }),
       new Plateform({
-        x: plateformFont.width * 8.25,
+        x: desertPlatform.width * 8.25,
         y: 500,
-        image: plateformFont,
+        image: desertPlatform,
       }),
       new Plateform({
-        x: plateformFont.width * 9.8,
+        x: desertPlatform.width * 9.8,
         y: 500,
-        image: plateformFont,
+        image: desertPlatform,
       }),
     ];
 
@@ -785,8 +789,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // création de l'objet plateform
     plateforms = [
-      new Plateform({ x: 0, y: 400, image: plateformFont }),
-      new Plateform({ x: plateformFont.width, y: 400, image: plateformFont }),
+      new Plateform({ x: 0, y: 400, image: bossPlatform }),
+      new Plateform({ x: bossPlatform.width, y: 400, image: bossPlatform }),
     ];
 
     // création de l'objet concernant le BackGround
@@ -794,12 +798,12 @@ document.addEventListener("DOMContentLoaded", () => {
       new GenericObject({
         x: 0,
         y: 0,
-        image: desertBackground,
+        image: bossBackground,
       }),
     ];
 
     bosses = [
-      new Boss(125, plateforms[0].position.y - 135, 0, canvas.width, 10),
+      new Boss(125, plateforms[0].position.y - 135, 0, canvas.width, 10, bossSprite, spriteX),
     ];
 
     item = [];

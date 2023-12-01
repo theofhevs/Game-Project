@@ -1,5 +1,5 @@
 class Boss {
-    constructor(x, y, min, max, speed) {
+    constructor(x, y, min, max, speed, image, spriteX) {
         this.position = { x, y };
         this.width = 135;
         this.height = 135;
@@ -8,11 +8,19 @@ class Boss {
         this.min = min;
         this.max = max;
         this.speed = speed;
+        this.image = image;
+        this.spriteX = spriteX;
+        this.gameFrame = 0;
+        this.staggerFrames = 20;
     }
 
     draw(c) {
-        c.fillStyle = this.color;
-        c.fillRect(this.position.x, this.position.y, this.width, this.height);
+        if (this.gameFrame % this.staggerFrames === 0) {
+            if (this.spriteX < 3) this.spriteX++;
+            else this.spriteX = 0;
+        }
+        this.gameFrame++;
+        c.drawImage(this.image, this.spriteX * 256,0,256,256, this.position.x, this.position.y, this.width, this.height)
     }
 
     updateVertical() {
