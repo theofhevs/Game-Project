@@ -13,6 +13,28 @@ import { addDoc, dumpCollection } from "../Firebase.js";
 import Animate from "./Class/Animate.js";
 
 // ajout des images
+const soundURL = "sound/";
+
+let bossMusic = new Audio();
+bossMusic.src = soundURL + "bossFight.mp3";
+bossMusic.loop = true;
+
+let musicLevel1 = new Audio();
+musicLevel1.src = soundURL + "ryanGosling.mp3";
+musicLevel1.loop = true;
+
+let musicMenu = new Audio();
+musicMenu.src = soundURL + "MenuMusic.mp3";
+musicMenu.loop = true;
+
+let musicLevel2 = new Audio();
+musicLevel2.src = soundURL + "desertMusic.mp3";
+musicLevel2.loop = true;
+
+
+
+
+
 const imgURL = "img/";
 const plateformFont = new Image();
 const mainBackGround = new Image();
@@ -79,10 +101,13 @@ highscoreBackground.src = imgURL + "HighscoreBackground.png";
 backToMenu.src = imgURL + "backToMenu.png";
 
 // Setup pour link le JS avec HTMLA
+
+
 document.addEventListener("DOMContentLoaded", () => {
   const canvas = document.querySelector("canvas");
   const c = canvas.getContext("2d");
   console.log(c);
+
 
   // defini Le canvas avec la taille de la fenetre
   canvas.width = 1024;
@@ -123,7 +148,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let currentLevel = 1;
 
- 
+
 
   // items creation
   let item = [];
@@ -136,7 +161,7 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const itemOpacities = {
-    [itemIndices.dough]: { 1: 0.3, 2: 2.5, 3: 2.5, 4: 2.5, 5: 2.5},
+    [itemIndices.dough]: { 1: 0.3, 2: 2.5, 3: 2.5, 4: 2.5, 5: 2.5 },
     [itemIndices.sauce]: { 1: 0.3, 2: 0.3, 3: 2.5, 4: 2.5, 5: 2.5 },
     [itemIndices.mozzarella]: { 1: 0.3, 2: 0.3, 3: 0.3, 4: 2.5, 5: 2.5 },
     [itemIndices.prosciutto]: { 1: 0.3, 2: 0.3, 3: 0.3, 4: 0.3, 5: 2.5 }
@@ -237,7 +262,8 @@ document.addEventListener("DOMContentLoaded", () => {
           } else if (currentLevel === 4) {
             initlevel4();
           } else if (currentLevel === 5) {
-            initlevelFinal();}
+            initlevelFinal();
+          }
           gsap.to(overlay, {
             opacity: 0,
             onComplete: () => {
@@ -266,7 +292,7 @@ document.addEventListener("DOMContentLoaded", () => {
         initlevel2();
       } else if (currentLevel === 3) {
         initlevel3();
-      }else if (currentLevel === 4) {
+      } else if (currentLevel === 4) {
         initlevel4();
       } else if (currentLevel === 5) {
         initlevelFinal();
@@ -291,7 +317,7 @@ document.addEventListener("DOMContentLoaded", () => {
         initlevel2();
       } else if (currentLevel === 3) {
         initlevel3();
-      }else if (currentLevel === 4) {
+      } else if (currentLevel === 4) {
         initlevel4();
       } else if (currentLevel === 5) {
         initlevelFinal();
@@ -336,6 +362,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   //création du menu
   function initMenu() {
+    musicMenu.pause();
     menuBackground = [
       new BackgroundMenu({ x: 0, y: 0, image: backgroundMenu }),
     ];
@@ -402,12 +429,14 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function initHowToPlay() {
+    musicMenu.play();
     BackgroundhowToPlay = [
       new BackgroundMenu({ x: 0, y: 0, image: howToPlayBackground }),
     ];
   }
 
   function initHighscore() {
+    musicMenu.play();
     Backgroundhighscore = [
       new BackgroundMenu({ x: 0, y: 0, image: highscoreBackground }),
     ];
@@ -446,6 +475,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // permet de respawn après être tombé (même code que les ligne 108 - 143)
   function initlevel1() {
+    musicMenu.pause();
+    musicLevel1.play();
     // création de l'objet player
     player = new Player(playerFont, spriteX, spriteY);
 
@@ -560,6 +591,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function initlevel2() {
+    musicLevel1.pause();
+    musicLevel2.play();
     /*console.log(formattedTime);
     let person = prompt("Please enter your name");
     if (person == null || person == "") {
@@ -681,6 +714,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function initlevel3() {
+    musicLevel2.pause();
     // création de l'objet player
     player = new Player(playerFont, spriteX, spriteY);
 
@@ -909,6 +943,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function initlevelFinal() {
+    bossMusic.play();
     // création de l'objet player
     player = new Player(playerFont, spriteX, spriteY);
 
@@ -932,6 +967,10 @@ document.addEventListener("DOMContentLoaded", () => {
     ];
 
     item = [];
+
+    spikes = [];
+
+    movingEnemies = [];
 
     // variable qui permettra de définir un objectif pour finir un niveau par exemple
     scrollOffset = 0;
@@ -973,23 +1012,23 @@ document.addEventListener("DOMContentLoaded", () => {
   function startTimer() {
     startTime = Date.now(); // Mettez à jour le temps de départ à chaque démarrage du minuteur
   }
-  
-  
+
+
   // permet de refresh en temps réel la position du player (evite que le player se déplace à l'infini dès qu'une touche est enfoncé)
   function animate() {
     c.fillStyle = "white";
     c.fillRect(0, 0, canvas.width, canvas.height);
 
     // Vous pouvez ensuite mettre à jour elapsedTime comme suit dans votre boucle ou à un moment donné
-const currentTime = Date.now();
-elapsedTime = Math.floor((currentTime - startTime) / 1000); // Temps en secondes
+    const currentTime = Date.now();
+    elapsedTime = Math.floor((currentTime - startTime) / 1000); // Temps en secondes
 
-const minutes = Math.floor(elapsedTime / 60);
-const seconds = elapsedTime % 60;
-const formattedTime = `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+    const minutes = Math.floor(elapsedTime / 60);
+    const seconds = elapsedTime % 60;
+    const formattedTime = `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
 
 
-console.log(formattedTime); // Affichez le temps formaté
+    console.log(formattedTime); // Affichez le temps formaté
     genericObjects.forEach((genericObject) => {
       genericObject.draw(c);
     });
@@ -1156,7 +1195,7 @@ console.log(formattedTime); // Affichez le temps formaté
       if (
         player.position.y + player.height <= plateform.position.y &&
         player.position.y + player.height + player.velocity.y >=
-          plateform.position.y &&
+        plateform.position.y &&
         player.position.x + player.width >= plateform.position.x &&
         player.position.x <= plateform.position.x + plateform.width
       ) {
@@ -1168,7 +1207,7 @@ console.log(formattedTime); // Affichez le temps formaté
       if (
         player.position.y + player.height <= MovingEnemy.position.y &&
         player.position.y + player.height + player.velocity.y >=
-          MovingEnemy.position.y &&
+        MovingEnemy.position.y &&
         player.position.x + player.width >= MovingEnemy.position.x &&
         player.position.x <= MovingEnemy.position.x + MovingEnemy.width
       ) {
@@ -1187,7 +1226,7 @@ console.log(formattedTime); // Affichez le temps formaté
         if (
           player.position.y + player.height <= Boss.position.y &&
           player.position.y + player.height + player.velocity.y >=
-            Boss.position.y &&
+          Boss.position.y &&
           player.position.x + player.width >= Boss.position.x &&
           player.position.x <= Boss.position.x + Boss.width
         ) {
@@ -1242,6 +1281,7 @@ console.log(formattedTime); // Affichez le temps formaté
   //permet de lancer le menu avant le jeu
   function animateMenu() {
     animate_class.animateMenu(menuBackground, buttons, titleGame, gameState);
+
     initMenu();
   }
 
