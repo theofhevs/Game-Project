@@ -576,6 +576,19 @@ document.addEventListener("DOMContentLoaded", () => {
         chefEnemy,
         spriteX
       ),
+      new MovingEnemy(
+        plateforms[1].position.x + 650,
+        plateforms[1].position.y,
+        "vertical",
+        200,
+        plateforms[1].position.y,
+        0,
+        1,
+        burgerEnemy,
+        spriteX
+      )
+
+
     ];
 
     item = [
