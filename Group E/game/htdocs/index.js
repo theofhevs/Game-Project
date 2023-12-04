@@ -9,7 +9,7 @@ import Boss from "./Class/Boss.js";
 import Bouttons from "./Class/Bouttons.js";
 import Titre from "./Class/Titre.js";
 import BackgroundMenu from "./Class/BackgroundMenu.js";
-import { addDoc, dumpCollection } from "../Firebase.js";
+import { addDoc, dumpCollection, showScoreboard } from "../Firebase.js";
 import Animate from "./Class/Animate.js";
 
 // ajout des images
@@ -148,7 +148,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let currentLevel = 1;
 
-
+  let formattedTime;
 
   // items creation
   let item = [];
@@ -398,6 +398,8 @@ document.addEventListener("DOMContentLoaded", () => {
         belongTo: [STATE_MENU],
         initMethod: () => {
           initHighscore();
+         
+
           gameState = STATE_HIGHSCORE;
         },
       }),
@@ -407,8 +409,14 @@ document.addEventListener("DOMContentLoaded", () => {
         image: backToMenu,
         belongTo: [STATE_HOWTOPLAY, STATE_HIGHSCORE],
         initMethod: () => {
-          initMenu();
-          gameState = STATE_MENU;
+           // Remove the modal content when the back button is clicked
+        const modalContent = document.getElementById("modalContent");
+        if (modalContent) {
+          modalContent.remove();
+        }
+
+        initMenu();
+        gameState = STATE_MENU;
         },
       }),
     ];
@@ -434,15 +442,27 @@ document.addEventListener("DOMContentLoaded", () => {
       new BackgroundMenu({ x: 0, y: 0, image: howToPlayBackground }),
     ];
   }
-
   function initHighscore() {
+    showScoreboard();
     musicMenu.play();
-    Backgroundhighscore = [
+    /*Backgroundhighscore = [
       new BackgroundMenu({ x: 0, y: 0, image: highscoreBackground }),
-    ];
-
-    boutonBack = [new Bouttons({ x: 10, y: 10, image: backToMenu })];
-
+    ];*/
+    // Assuming boutonBack is an array of buttons with a single button for back to menu
+    boutonBack.forEach(button => {
+      button.onClick(() => {
+        // Remove the overlay when the back button is clicked
+        const overlay = document.getElementById("fullscreenOverlay");
+        if (overlay) {
+          overlay.remove();
+        }
+  
+        // Add any additional logic for returning to the menu
+        // For example, you can navigate to the menu page or perform any other desired actions
+        // window.location.href = "menu.html"; // replace with your menu page URL
+      });
+    });
+  
     canvas.addEventListener("click", handleCanvasClick);
   }
 
@@ -576,19 +596,6 @@ document.addEventListener("DOMContentLoaded", () => {
         chefEnemy,
         spriteX
       ),
-      new MovingEnemy(
-        plateforms[1].position.x + 650,
-        plateforms[1].position.y,
-        "vertical",
-        200,
-        plateforms[1].position.y,
-        0,
-        1,
-        burgerEnemy,
-        spriteX
-      )
-
-
     ];
 
     item = [
@@ -606,13 +613,8 @@ document.addEventListener("DOMContentLoaded", () => {
   function initlevel2() {
     musicLevel1.pause();
     musicLevel2.play();
-    /*console.log(formattedTime);
-    let person = prompt("Please enter your name");
-    if (person == null || person == "") {
-      person = "Unknown";
-    }
-    addDoc("result",person,formattedTime);*/
-    dumpCollection("result");
+    
+    
 
     // création de l'objet player
     player = new Player(playerFont, spriteX, spriteY);
@@ -1014,6 +1016,7 @@ document.addEventListener("DOMContentLoaded", () => {
         animateHowToPlay();
         break;
       case STATE_HIGHSCORE:
+        
         animateHighscore();
         break;
     }
@@ -1038,10 +1041,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const minutes = Math.floor(elapsedTime / 60);
     const seconds = elapsedTime % 60;
-    const formattedTime = `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+    formattedTime = `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
 
 
-    console.log(formattedTime); // Affichez le temps formaté
+    
     genericObjects.forEach((genericObject) => {
       genericObject.draw(c);
     });
@@ -1202,7 +1205,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }
     }
-
+    
     // gère la collision du joueur avec les plateformes
     plateforms.forEach((plateform) => {
       if (
@@ -1252,6 +1255,12 @@ document.addEventListener("DOMContentLoaded", () => {
             bosses.splice(index, 1);
             player.velocity.y = 0;
             isPlayerOnEnemy = true;
+           
+            /*let person = prompt("Please enter your name");
+            if (person == null || person == "") {
+              person = "Unknown";
+            }
+            addDoc("result",person,formattedTime);*/
           }
         } else {
           isPlayerOnEnemy = false;
@@ -1305,6 +1314,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   //permet de lancer la page highscore
   function animateHighscore() {
+    
     animate_class.animateHowToPlay(Backgroundhighscore, buttons, gameState);
   }
 
