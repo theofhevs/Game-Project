@@ -77,7 +77,7 @@ export async function showScoreboard() {
       left: 50%; // Center horizontally
       transform: translate(-50%, -50%); // Center precisely
       width: 40%; // Set the width of the modal
-      max-height: 55%; /* Adjust max-height as needed */
+      max-height: 55%; 
       overflow: auto; // Enable scrolling if content exceeds max-height
       background: #fff; // White background
       padding: 10px; // Padding around the content

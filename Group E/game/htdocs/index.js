@@ -57,6 +57,7 @@ const howToPlay = new Image();
 const sauce = new Image();
 const startGame = new Image();
 const highscore = new Image();
+const customize = new Image();
 const title = new Image();
 const howToPlayBackground = new Image();
 const highscoreBackground = new Image();
@@ -79,6 +80,7 @@ bossSprite.src = imgURL + "boss.png"
 chefEnemy.src = imgURL + "chefSprite.png";
 burgerEnemy.src = imgURL + "burgerSprite.png";
 mozzarellaImg.src = imgURL + "mozzarella.png";
+customize.src = imgURL + "customize.png";
 cityBackground.src = imgURL + "italianCityLarge.png";
 desertBackground.src = imgURL + "desertBackgroundLarge.png";
 spikesImg.src = imgURL + "spikes.png";
@@ -134,6 +136,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const STATE_HOWTOPLAY = "howToPlay";
   const STATE_HIGHSCORE = "highscore";
   const STATE_GAME_ON = "gameOn";
+  const STATE_PLAYERSELECTION = "playerSelection";
+
   //..
   let gameState = STATE_MENU;
 
@@ -174,6 +178,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let BackgroundhowToPlay = [];
   let boutonBack = [];
   let Backgroundhighscore = [];
+  let BackgroundPlayerSelection = [];
 
   // création de l'objet plateform
   let plateforms = [];
@@ -371,7 +376,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     buttons = [
       new Bouttons({
-        x: 150,
+        x: 35,
         y: 200,
         image: howToPlay,
         belongTo: [STATE_MENU],
@@ -381,7 +386,7 @@ document.addEventListener("DOMContentLoaded", () => {
         },
       }),
       new Bouttons({
-        x: 410,
+        x: 285,
         y: 200,
         image: startGame,
         belongTo: [STATE_MENU],
@@ -392,22 +397,30 @@ document.addEventListener("DOMContentLoaded", () => {
         },
       }),
       new Bouttons({
-        x: 670,
+        x: 535,
         y: 200,
         image: highscore,
         belongTo: [STATE_MENU],
         initMethod: () => {
           initHighscore();
-         
-
           gameState = STATE_HIGHSCORE;
+        },
+      }),
+      new Bouttons({
+        x: 785,
+        y: 200,
+        image: customize,
+        belongTo: [STATE_MENU],
+        initMethod: () => {
+          initPlayerSelection();
+          gameState = STATE_PLAYERSELECTION;
         },
       }),
       new Bouttons({
         x: 10,
         y: 10,
         image: backToMenu,
-        belongTo: [STATE_HOWTOPLAY, STATE_HIGHSCORE],
+        belongTo: [STATE_HOWTOPLAY, STATE_HIGHSCORE, STATE_PLAYERSELECTION],
         initMethod: () => {
            // Remove the modal content when the back button is clicked
         const modalContent = document.getElementById("modalContent");
@@ -443,11 +456,12 @@ document.addEventListener("DOMContentLoaded", () => {
     ];
   }
   function initHighscore() {
-    showScoreboard();
     musicMenu.play();
-    /*Backgroundhighscore = [
-      new BackgroundMenu({ x: 0, y: 0, image: highscoreBackground }),
-    ];*/
+    Backgroundhighscore = [
+      new BackgroundMenu({ x: 0, y: 0, image: backgroundMenu }),
+    ];
+    
+    showScoreboard();
     // Assuming boutonBack is an array of buttons with a single button for back to menu
     boutonBack.forEach(button => {
       button.onClick(() => {
@@ -456,14 +470,17 @@ document.addEventListener("DOMContentLoaded", () => {
         if (overlay) {
           overlay.remove();
         }
-  
-        // Add any additional logic for returning to the menu
-        // For example, you can navigate to the menu page or perform any other desired actions
-        // window.location.href = "menu.html"; // replace with your menu page URL
       });
     });
   
     canvas.addEventListener("click", handleCanvasClick);
+  }
+
+  function initPlayerSelection() {
+    musicMenu.play();
+    BackgroundPlayerSelection = [
+      new BackgroundMenu({ x: 0, y: 0, image: backgroundMenu }),
+    ];
   }
 
   // Function to handle canvas click events
@@ -1003,7 +1020,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // détermine quoi afficher()
   function choixAffichage() {
     switch (gameState) {
       case STATE_MENU:
@@ -1016,8 +1032,10 @@ document.addEventListener("DOMContentLoaded", () => {
         animateHowToPlay();
         break;
       case STATE_HIGHSCORE:
-        
         animateHighscore();
+        break;
+      case STATE_PLAYERSELECTION:
+        animatePlayerSelection();
         break;
     }
   }
@@ -1313,11 +1331,13 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   //permet de lancer la page highscore
-  function animateHighscore() {
-    
+  function animateHighscore() { 
     animate_class.animateHowToPlay(Backgroundhighscore, buttons, gameState);
   }
 
+  function animatePlayerSelection(){
+    animate_class.animatePlayerSelection(BackgroundPlayerSelection, buttons, gameState);
+  }
   // assignation des touches pour les déplacements QUAND TOUCHE ENFONCE
   window.addEventListener("keydown", ({ keyCode }) => {
     switch (keyCode) {
