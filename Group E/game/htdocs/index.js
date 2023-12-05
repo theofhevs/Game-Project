@@ -68,6 +68,8 @@ const bossBackground = new Image();
 const bossPlatform = new Image();
 const bossSprite = new Image();
 const animate_class = new Animate();
+const geolocationIcon = new Image();
+geolocationIcon.src = imgURL + "geolocalisation.png";
 bossBackground.src = imgURL + "bossBackground.png";
 desertPlatform.src = imgURL + "desertPlatform.png";
 bossPlatform.src = imgURL + "bossPlatform.png";
@@ -174,6 +176,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let BackgroundhowToPlay = [];
   let boutonBack = [];
   let Backgroundhighscore = [];
+  let buttonGeolocation = [];
 
   // création de l'objet plateform
   let plateforms = [];
@@ -398,7 +401,7 @@ document.addEventListener("DOMContentLoaded", () => {
         belongTo: [STATE_MENU],
         initMethod: () => {
           initHighscore();
-         
+
 
           gameState = STATE_HIGHSCORE;
         },
@@ -409,14 +412,41 @@ document.addEventListener("DOMContentLoaded", () => {
         image: backToMenu,
         belongTo: [STATE_HOWTOPLAY, STATE_HIGHSCORE],
         initMethod: () => {
-           // Remove the modal content when the back button is clicked
-        const modalContent = document.getElementById("modalContent");
-        if (modalContent) {
-          modalContent.remove();
-        }
+          // Remove the modal content when the back button is clicked
+          const modalContent = document.getElementById("modalContent");
+          if (modalContent) {
+            modalContent.remove();
+          }
 
-        initMenu();
-        gameState = STATE_MENU;
+          initMenu();
+          gameState = STATE_MENU;
+        },
+      }),
+      new Bouttons({
+        x: 950,
+        y: 500,
+        image: geolocationIcon,
+        belongTo: [STATE_MENU],
+        initMethod: () => {
+          // Remove the modal content when the back button is clicked
+          const modalContent = document.getElementById("modalContent");
+          if (modalContent) {
+            modalContent.remove();
+          }
+          if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(position => {
+              const { latitude, longitude } = position.coords;
+              console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
+              // Open Google Maps with a marker at the user's coordinates
+              window.open(`https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`);
+            }, error => {
+              console.error("Error obtaining geolocation", error);
+            });
+          } else {
+            console.error("Geolocation is not supported by this browser.");
+          }
+
+          //gameState = STATE_MENU;
         },
       }),
     ];
@@ -456,13 +486,12 @@ document.addEventListener("DOMContentLoaded", () => {
         if (overlay) {
           overlay.remove();
         }
-  
-        // Add any additional logic for returning to the menu
-        // For example, you can navigate to the menu page or perform any other desired actions
-        // window.location.href = "menu.html"; // replace with your menu page URL
+
+
+
       });
     });
-  
+
     canvas.addEventListener("click", handleCanvasClick);
   }
 
@@ -613,8 +642,8 @@ document.addEventListener("DOMContentLoaded", () => {
   function initlevel2() {
     musicLevel1.pause();
     musicLevel2.play();
-    
-    
+
+
 
     // création de l'objet player
     player = new Player(playerFont, spriteX, spriteY);
@@ -1016,7 +1045,7 @@ document.addEventListener("DOMContentLoaded", () => {
         animateHowToPlay();
         break;
       case STATE_HIGHSCORE:
-        
+
         animateHighscore();
         break;
     }
@@ -1044,7 +1073,7 @@ document.addEventListener("DOMContentLoaded", () => {
     formattedTime = `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
 
 
-    
+
     genericObjects.forEach((genericObject) => {
       genericObject.draw(c);
     });
@@ -1205,7 +1234,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }
     }
-    
+
     // gère la collision du joueur avec les plateformes
     plateforms.forEach((plateform) => {
       if (
@@ -1255,7 +1284,7 @@ document.addEventListener("DOMContentLoaded", () => {
             bosses.splice(index, 1);
             player.velocity.y = 0;
             isPlayerOnEnemy = true;
-           
+
             /*let person = prompt("Please enter your name");
             if (person == null || person == "") {
               person = "Unknown";
@@ -1314,7 +1343,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   //permet de lancer la page highscore
   function animateHighscore() {
-    
+
     animate_class.animateHowToPlay(Backgroundhighscore, buttons, gameState);
   }
 
