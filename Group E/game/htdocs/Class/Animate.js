@@ -66,6 +66,26 @@ class Animate {
       }
     });
   }
+  animatePlayerSelection(BackgroundPlayerSelection, buttons, gameState) {
+    this.c.fillStyle = "white";
+    this.c.fillRect(0, 0, canvas.width, canvas.height);
+
+    BackgroundPlayerSelection.forEach((BackgroundPlayerSelection) => {
+      BackgroundPlayerSelection.draw(this.c);
+    });
+
+    buttons.forEach((button) => {
+      for (let i = 0; i < button.belongTo.length; i++) {
+        if (button.belongTo[i] === gameState) {
+          button.draw(this.c);
+        }
+      }
+    });
+  }
+
 }
+
+
+
 
 export default Animate;
