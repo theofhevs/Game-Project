@@ -14,6 +14,7 @@ import Animate from "./Class/Animate.js";
 
 // ajout des images
 const soundURL = "sound/";
+let volumeLevel = 0.1
 
 let bossMusic = new Audio();
 bossMusic.loop = true;
@@ -27,13 +28,26 @@ musicMenu.loop = true;
 let musicLevel2 = new Audio();
 musicLevel2.loop = true;
 
+let musicEnding = new Audio();
+musicEnding.loop = true;
+
 fetch('/music.json')
   .then(response => response.json())
   .then(data => {
     bossMusic.src = soundURL + data.bossMusic;
+    bossMusic.volume = volumeLevel;
+
     musicLevel1.src = soundURL + data.musicLevel1;
+    musicLevel1.volume = volumeLevel;
+
     musicMenu.src = soundURL + data.musicMenu;
+    musicMenu.volume = volumeLevel;
+
     musicLevel2.src = soundURL + data.musicLevel2;
+    musicLevel2.volume = volumeLevel;
+
+    musicEnding.src = soundURL + data.musicEnding;
+    musicEnding.volume = volumeLevel;
   });
 
 
@@ -72,6 +86,10 @@ const bossPlatform = new Image();
 const bossSprite = new Image();
 const animate_class = new Animate();
 const geolocationIcon = new Image();
+const backEnding = new Image();
+const home = new Image();
+home.src = imgURL + "home.png";
+backEnding.src = imgURL + "bravo.png";
 geolocationIcon.src = imgURL + "geolocalisation.png";
 bossBackground.src = imgURL + "bossBackground.png";
 desertPlatform.src = imgURL + "desertPlatform.png";
@@ -141,6 +159,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const STATE_HIGHSCORE = "highscore";
   const STATE_PLAYERSELECTION = "playerSelection";
   const STATE_GAME_ON = "gameOn";
+  const STATE_END = "ending";
   //..
   let gameState = STATE_MENU;
 
@@ -181,6 +200,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let BackgroundhowToPlay = [];
   let boutonBack = [];
   let Backgroundhighscore = [];
+  let BackgroundEnding = [];
   let BackgroundPlayerSelection = [];
   let buttonGeolocation = [];
 
@@ -416,7 +436,7 @@ document.addEventListener("DOMContentLoaded", () => {
       new Bouttons({
         x: 785,
         y: 200,
-        image: customize,
+        image: howToPlay,
         belongTo: [STATE_MENU],
         initMethod: () => {
           initPlayerSelection();
@@ -466,6 +486,18 @@ document.addEventListener("DOMContentLoaded", () => {
           //gameState = STATE_MENU;
         },
       }),
+      new Bouttons({
+        x: 10,
+        y: 10,
+        image: home,
+        belongTo: [STATE_END],
+        initMethod: () => {
+       
+        window.location.href = window.location.href;
+        gameState = STATE_END;
+        },
+      }),
+      
     ];
 
     buttons.forEach((button) => {
@@ -490,14 +522,12 @@ document.addEventListener("DOMContentLoaded", () => {
     ];
   }
   function initHighscore() {
-
-    musicMenu.play();
-    Backgroundhighscore = [
-      new BackgroundMenu({ x: 0, y: 0, image: backgroundMenu }),
-    ];
-
     showScoreboard();
-    // Assuming boutonBack is an array of buttons with a single button for back to menu
+    musicMenu.play();
+    /*Backgroundhighscore = [
+      new BackgroundMenu({ x: 0, y: 0, image: highscoreBackground }),
+    ];*/
+    
     boutonBack.forEach(button => {
       button.onClick(() => {
         // Remove the overlay when the back button is clicked
@@ -505,14 +535,28 @@ document.addEventListener("DOMContentLoaded", () => {
         if (overlay) {
           overlay.remove();
         }
-
-
-
+  
       });
     });
-
+  
     canvas.addEventListener("click", handleCanvasClick);
   }
+
+  function initEnding() {
+   
+    bossMusic.pause();
+    musicEnding.play();
+    let person = prompt("Please enter your name");
+            if (person == null || person == "") {
+              person = "Unknown";
+            }
+            addDoc("result",person,formattedTime);
+    BackgroundEnding = [
+      new BackgroundMenu({ x: 0, y: 0, image: backEnding }),
+    ];
+    
+  }
+
   function initPlayerSelection() {
     musicMenu.play();
     BackgroundPlayerSelection = [
@@ -1077,6 +1121,9 @@ document.addEventListener("DOMContentLoaded", () => {
       case STATE_PLAYERSELECTION:
         animatePlayerSelection();
         break;
+      case STATE_END:
+        animateEnding();
+        break;
 
 
     }
@@ -1311,16 +1358,18 @@ document.addEventListener("DOMContentLoaded", () => {
           isBossUpdateVerticalAllowed = true;
           player.velocity.y = 0;
           isPlayerOnEnemy = true;
-          if (countHitBoss === 3) {
+          if (countHitBoss === 1) {
             bosses.splice(index, 1);
             player.velocity.y = 0;
             isPlayerOnEnemy = true;
 
-            /*let person = prompt("Please enter your name");
-            if (person == null || person == "") {
-              person = "Unknown";
-            }
-            addDoc("result",person,formattedTime);*/
+            
+            setTimeout(() => {
+
+              gameState = STATE_END
+              initEnding();
+             
+            }, 3000);
           }
         } else {
           isPlayerOnEnemy = false;
@@ -1380,6 +1429,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function animatePlayerSelection() {
     animate_class.animatePlayerSelection(BackgroundPlayerSelection, buttons, gameState);
+  }
+
+  function animateEnding() {
+    animate_class.animateHowToPlay(BackgroundEnding, buttons, gameState);
+  
   }
 
   // assignation des touches pour les déplacements QUAND TOUCHE ENFONCE
