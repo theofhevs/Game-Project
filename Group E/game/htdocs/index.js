@@ -16,23 +16,25 @@ import Animate from "./Class/Animate.js";
 const soundURL = "sound/";
 
 let bossMusic = new Audio();
-bossMusic.src = soundURL + "bossFight.mp3";
 bossMusic.loop = true;
 
 let musicLevel1 = new Audio();
-musicLevel1.src = soundURL + "ryanGosling.mp3";
 musicLevel1.loop = true;
 
 let musicMenu = new Audio();
-musicMenu.src = soundURL + "MenuMusic.mp3";
 musicMenu.loop = true;
 
 let musicLevel2 = new Audio();
-musicLevel2.src = soundURL + "desertMusic.mp3";
 musicLevel2.loop = true;
 
-
-
+fetch('/music.json')
+  .then(response => response.json())
+  .then(data => {
+    bossMusic.src = soundURL + data.bossMusic;
+    musicLevel1.src = soundURL + data.musicLevel1;
+    musicMenu.src = soundURL + data.musicMenu;
+    musicLevel2.src = soundURL + data.musicLevel2;
+  });
 
 
 const imgURL = "img/";
