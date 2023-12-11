@@ -560,9 +560,9 @@ document.addEventListener("DOMContentLoaded", () => {
   function initHighscore() {
     showScoreboard();
     musicMenu.play();
-    /* Backgroundhighscore = [
+   Backgroundhighscore = [
       new BackgroundMenu({ x: 0, y: 0, image: backgroundMenu }),
-    ];*/
+    ];
   }
 
   function initEnding() {
@@ -623,7 +623,7 @@ document.addEventListener("DOMContentLoaded", () => {
     musicMenu.pause();
     musicLevel1.play();
     // création de l'objet player
-    player = new Player(playerFont, spriteX, spriteY);
+    player = new Player(playerFont, spriteX, spriteY,isAnimated);
 
     // création de l'objet plateform
     plateforms = [
@@ -864,7 +864,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function initlevel3() {
     musicLevel2.pause();
     // création de l'objet player
-    player = new Player(playerFont, spriteX, spriteY);
+    player = new Player(playerFont, spriteX, spriteY, isAnimated);
 
     // création de l'objet plateform
     plateforms = [

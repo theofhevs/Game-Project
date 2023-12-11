@@ -96,6 +96,7 @@ export async function getUsersFromFirestore(collectionName) {
     title.style.textAlign = "center"; // Center the title
     title.style.fontSize = "20px"; // Adjust font size for the title
     title.style.fontFamily = "'fantasy', sans-serif";
+    title.style.color = "white";
     modalContent.appendChild(title);
   
     // Create a table for the scores
