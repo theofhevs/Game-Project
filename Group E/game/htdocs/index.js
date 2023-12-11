@@ -15,7 +15,7 @@ import Animate from "./Class/Animate.js";
 
 // ajout des images
 const soundURL = "sound/";
-let volumeLevel = 0.1
+let volumeLevel = 0.1;
 
 let bossMusic = new Audio();
 bossMusic.loop = true;
@@ -32,9 +32,9 @@ musicLevel2.loop = true;
 let musicEnding = new Audio();
 musicEnding.loop = true;
 
-fetch('/music.json')
-  .then(response => response.json())
-  .then(data => {
+fetch("/music.json")
+  .then((response) => response.json())
+  .then((data) => {
     bossMusic.src = soundURL + data.bossMusic;
     bossMusic.volume = volumeLevel;
 
@@ -51,7 +51,6 @@ fetch('/music.json')
     musicEnding.volume = volumeLevel;
   });
 
-
 const imgURL = "img/";
 const plateformFont = new Image();
 const mainBackGround = new Image();
@@ -62,10 +61,12 @@ const spikesBottomImg = new Image();
 const spikesLeftImg = new Image();
 const spikesRightImg = new Image();
 const toscanaBackground = new Image();
+const toscanePlatform = new Image();
 const desertBackground = new Image();
 const desertPlatform = new Image();
 const plateformVenise = new Image();
 const plateformVeniseBottom = new Image();
+const plateformVeniseSmall = new Image();
 const cityBackground = new Image();
 const mozzarellaImg = new Image();
 const chefEnemy = new Image();
@@ -97,9 +98,10 @@ desertPlatform.src = imgURL + "desertPlatform.png";
 bossPlatform.src = imgURL + "bossPlatform.png";
 sauce.src = imgURL + "tomatoSauce.png";
 toscanaBackground.src = imgURL + "toscanaBackground.png";
+toscanePlatform.src = imgURL + "platformToscane.png";
 patePizzaImg.src = imgURL + "dough.png";
 prosciuttoImg.src = imgURL + "prosciutto.png";
-bossSprite.src = imgURL + "boss.png"
+bossSprite.src = imgURL + "boss.png";
 chefEnemy.src = imgURL + "chefSprite.png";
 burgerEnemy.src = imgURL + "burgerSprite.png";
 customize.src = imgURL + "customize.png";
@@ -116,6 +118,7 @@ mainBackGround.src = imgURL + "BG_large.png";
 tinyPlateformFont.src = imgURL + "platform.png";
 plateformVenise.src = imgURL + "platformVenise.png";
 plateformVeniseBottom.src = imgURL + "platformVeniseBottom.png";
+plateformVeniseSmall.src = imgURL + "platformVeniseSmall.png";
 howToPlay.src = imgURL + "HowToPlay.png";
 startGame.src = imgURL + "StartGame.png";
 highscore.src = imgURL + "Highscore.png";
@@ -127,12 +130,10 @@ backToMenu.src = imgURL + "backToMenu.png";
 
 // Setup pour link le JS avec HTMLA
 
-
 document.addEventListener("DOMContentLoaded", () => {
   const canvas = document.querySelector("canvas");
   const c = canvas.getContext("2d");
   console.log(c);
-
 
   // defini Le canvas avec la taille de la fenetre
   canvas.width = 1024;
@@ -191,7 +192,7 @@ document.addEventListener("DOMContentLoaded", () => {
     [itemIndices.dough]: { 1: 0.3, 2: 2.5, 3: 2.5, 4: 2.5, 5: 2.5 },
     [itemIndices.sauce]: { 1: 0.3, 2: 0.3, 3: 2.5, 4: 2.5, 5: 2.5 },
     [itemIndices.mozzarella]: { 1: 0.3, 2: 0.3, 3: 0.3, 4: 2.5, 5: 2.5 },
-    [itemIndices.prosciutto]: { 1: 0.3, 2: 0.3, 3: 0.3, 4: 0.3, 5: 2.5 }
+    [itemIndices.prosciutto]: { 1: 0.3, 2: 0.3, 3: 0.3, 4: 0.3, 5: 2.5 },
   };
 
   //création des objet du menu
@@ -429,10 +430,8 @@ document.addEventListener("DOMContentLoaded", () => {
         initMethod: () => {
           initHighscore();
 
-
           gameState = STATE_HIGHSCORE;
         },
-
       }),
       new Bouttons({
         x: 785,
@@ -454,20 +453,23 @@ document.addEventListener("DOMContentLoaded", () => {
           playerFont.onload = () => {
             isAnimated = true;
 
-            //reset the drop zone 
+            //reset the drop zone
             const dropZone = document.getElementById("dropZone");
             if (dropZone) {
               dropZone.remove();
             }
-            const dragAndDropHandler = new DragAndDropHandler(playerFont, isAnimated);
+            const dragAndDropHandler = new DragAndDropHandler(
+              playerFont,
+              isAnimated
+            );
             dragAndDropHandler.addStyles();
-            
-          //set isAnimated to false if the user added a custom image (only if a custom image is added)
-          playerFont.onload = () => {
-            isAnimated = false;
+
+            //set isAnimated to false if the user added a custom image (only if a custom image is added)
+            playerFont.onload = () => {
+              isAnimated = false;
+            };
           };
-          };
-          console.log(isAnimated)
+          console.log(isAnimated);
         },
       }),
       new Bouttons({
@@ -477,10 +479,9 @@ document.addEventListener("DOMContentLoaded", () => {
         belongTo: [STATE_HOWTOPLAY, STATE_HIGHSCORE, STATE_PLAYERSELECTION],
         initMethod: () => {
           // Remove the drop zone when the back button is clicked
-          if(gameState === STATE_PLAYERSELECTION){
+          if (gameState === STATE_PLAYERSELECTION) {
             const dropZone = document.getElementById("dropZone");
-            if (dropZone)
-              dropZone.remove();
+            if (dropZone) dropZone.remove();
           }
           // Remove the modal content when the back button is clicked
           const modalContent = document.getElementById("modalContent");
@@ -503,14 +504,19 @@ document.addEventListener("DOMContentLoaded", () => {
             modalContent.remove();
           }
           if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(position => {
-              const { latitude, longitude } = position.coords;
-              console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
-              // Open Google Maps with a marker at the user's coordinates
-              window.open(`https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`);
-            }, error => {
-              console.error("Error obtaining geolocation", error);
-            });
+            navigator.geolocation.getCurrentPosition(
+              (position) => {
+                const { latitude, longitude } = position.coords;
+                console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
+                // Open Google Maps with a marker at the user's coordinates
+                window.open(
+                  `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`
+                );
+              },
+              (error) => {
+                console.error("Error obtaining geolocation", error);
+              }
+            );
           } else {
             console.error("Geolocation is not supported by this browser.");
           }
@@ -524,12 +530,10 @@ document.addEventListener("DOMContentLoaded", () => {
         image: home,
         belongTo: [STATE_END],
         initMethod: () => {
-       
-        window.location.href = window.location.href;
-        gameState = STATE_END;
+          window.location.href = window.location.href;
+          gameState = STATE_END;
         },
       }),
-      
     ];
 
     buttons.forEach((button) => {
@@ -556,48 +560,44 @@ document.addEventListener("DOMContentLoaded", () => {
   function initHighscore() {
     showScoreboard();
     musicMenu.play();
-   /* Backgroundhighscore = [
+    /* Backgroundhighscore = [
       new BackgroundMenu({ x: 0, y: 0, image: backgroundMenu }),
     ];*/
   }
 
   function initEnding() {
-   
     bossMusic.pause();
     musicEnding.play();
     let person = prompt("Please enter your name");
-            if (person == null || person == "") {
-              person = "Unknown";
-            }
-            addDoc("result",person,formattedTime);
-    BackgroundEnding = [
-      new BackgroundMenu({ x: 0, y: 0, image: backEnding }),
-    ];
-    
+    if (person == null || person == "") {
+      person = "Unknown";
+    }
+    addDoc("result", person, formattedTime);
+    BackgroundEnding = [new BackgroundMenu({ x: 0, y: 0, image: backEnding })];
   }
-  
-function initPlayerSelection() {
-  musicMenu.play();
-  BackgroundPlayerSelection = [
-    new BackgroundMenu({ x: 0, y: 0, image: backgroundMenu }),
-  ];
-  
-  // Instantiate the DragAndDropHandler
-  const dragAndDropHandler = new DragAndDropHandler(playerFont, isAnimated);
-  dragAndDropHandler.addStyles();
 
-  //set isAnimated to false if the user added a custom image (only if a custom image is added)
-  playerFont.onload = () => {
-    isAnimated = false;
-  };
-}
+  function initPlayerSelection() {
+    musicMenu.play();
+    BackgroundPlayerSelection = [
+      new BackgroundMenu({ x: 0, y: 0, image: backgroundMenu }),
+    ];
+
+    // Instantiate the DragAndDropHandler
+    const dragAndDropHandler = new DragAndDropHandler(playerFont, isAnimated);
+    dragAndDropHandler.addStyles();
+
+    //set isAnimated to false if the user added a custom image (only if a custom image is added)
+    playerFont.onload = () => {
+      isAnimated = false;
+    };
+  }
 
   // Function to handle canvas click events
   function handleCanvasClick(event) {
     // Calculate the position of the click
     var rect = canvas.getBoundingClientRect();
     var x = event.clientX - rect.left;
-    var y = event.clientY - rect.top; 
+    var y = event.clientY - rect.top;
 
     // Check if any of the buttons were clicked
     for (var i = 0; i < buttons.length; i++) {
@@ -627,10 +627,10 @@ function initPlayerSelection() {
 
     // création de l'objet plateform
     plateforms = [
-      new Plateform({ 
+      new Plateform({
         x: 0,
         y: 350,
-        image: plateformFont
+        image: plateformFont,
       }),
       new Plateform({
         x: plateformFont.width * 1.5,
@@ -652,7 +652,6 @@ function initPlayerSelection() {
         y: 380,
         image: plateformFont,
       }),
-
     ];
 
     // création de l'objet concernant le BackGround
@@ -701,7 +700,7 @@ function initPlayerSelection() {
     movingEnemies = [
       new MovingEnemy(
         plateforms[2].position.x + 240,
-        plateforms[2].position.y ,
+        plateforms[2].position.y,
         "vertical",
         0,
         plateforms[2].position.y,
@@ -732,7 +731,6 @@ function initPlayerSelection() {
         chefEnemy,
         spriteX
       ),
-      
     ];
 
     item = [
@@ -866,46 +864,91 @@ function initPlayerSelection() {
   function initlevel3() {
     musicLevel2.pause();
     // création de l'objet player
-    player = new Player(playerFont, spriteX, spriteY, isAnimated);
+    player = new Player(playerFont, spriteX, spriteY);
 
     // création de l'objet plateform
     plateforms = [
-      new Plateform({ x: 0, y: 400, image: plateformVenise }),
+      //0
+      new Plateform({ x: 0, y: 500, image: plateformVenise }),
+      //1
       new Plateform({
         x: 0,
-        y: -500,
+        y: -400,
         image: plateformVeniseBottom,
       }),
+      //2
       new Plateform({
         x: plateformVenise.width * 2,
         y: 500,
+        image: plateformVeniseSmall,
+      }),
+      //3
+      new Plateform({
+        x: plateformVenise.width * 2.5,
+        y: 300,
         image: plateformVenise,
       }),
+      //4
       new Plateform({
-        x: plateformVenise.width * 3.2,
+        x: plateformVenise.width * 3.5,
+        y: 120,
+        image: plateformVenise,
+      }),
+      //5
+      new Plateform({
+        x: plateformVenise.width * 4.6,
+        y: 200,
+        image: plateformVeniseSmall,
+      }),
+      //6
+      new Plateform({
+        x: plateformVenise.width * 5.2,
+        y: 200,
+        image: plateformVeniseSmall,
+      }),
+      //7
+      new Plateform({
+        x: plateformVenise.width * 4.8,
         y: 500,
         image: plateformVenise,
       }),
+      //8
       new Plateform({
-        x: plateformVenise.width * 3.8,
-        y: 500,
+        x: plateformVenise.width * 6,
+        y: 320,
+        image: plateformVeniseSmall,
+      }),
+      //9
+      new Plateform({
+        x: plateformVenise.width * 6.6,
+        y: 140,
         image: plateformVenise,
       }),
+      //10
       new Plateform({
-        x: plateformVenise.width * 5.3,
+        x: plateformVenise.width * 7.2,
         y: 500,
+        image: plateformVeniseSmall,
+      }),
+      //11
+      new Plateform({
+        x: plateformVenise.width * 6.6,
+        y: 400,
+        image: plateformVeniseSmall,
+      }),
+      //12
+      new Plateform({
+        x: plateformVenise.width * 7.1,
+        y: 300,
+        image: plateformVeniseSmall,
+      }),
+      //13
+      new Plateform({
+        x: plateformVenise.width * 7.8,
+        y: 140,
         image: plateformVenise,
       }),
-      new Plateform({
-        x: plateformVenise.width * 6.7,
-        y: 500,
-        image: plateformVenise,
-      }),
-      new Plateform({
-        x: plateformVenise.width * 8.25,
-        y: 500,
-        image: plateformVenise,
-      }),
+      //14
       new Plateform({
         x: plateformVenise.width * 9.8,
         y: 500,
@@ -925,40 +968,195 @@ function initPlayerSelection() {
     spikes = [
       // TODO change the hardcoding
       new Spikes(
-        plateforms[0].position.x + 150,
-        plateforms[0].position.y - 50,
-        spikesImg
+        plateforms[0].position.x,
+        plateforms[0].position.y - 218,
+        spikesBottomImg
       ),
       new Spikes(
-        plateforms[5].position.x + 240,
+        plateforms[0].position.x + 50,
+        plateforms[0].position.y - 218,
+        spikesBottomImg
+      ),
+      new Spikes(
+        plateforms[0].position.x + 250,
+        plateforms[0].position.y - 218,
+        spikesBottomImg
+      ),
+      new Spikes(
+        plateforms[0].position.x + 300,
+        plateforms[0].position.y - 218,
+        spikesBottomImg
+      ),
+      new Spikes(
+        plateforms[0].position.x + 350,
+        plateforms[0].position.y - 218,
+        spikesBottomImg
+      ),
+      new Spikes(
+        plateforms[0].position.x + 400,
+        plateforms[0].position.y - 218,
+        spikesBottomImg
+      ),
+      new Spikes(
+        plateforms[5].position.x,
         plateforms[5].position.y - 50,
         spikesImg
       ),
       new Spikes(
-        plateforms[5].position.x + 290,
+        plateforms[5].position.x + 50,
         plateforms[5].position.y - 50,
         spikesImg
+      ),
+      new Spikes(
+        plateforms[5].position.x + 100,
+        plateforms[5].position.y - 50,
+        spikesImg
+      ),
+      new Spikes(
+        plateforms[5].position.x + 140,
+        plateforms[5].position.y - 50,
+        spikesImg
+      ),
+      new Spikes(
+        plateforms[5].position.x + 140,
+        plateforms[5].position.y,
+        spikesRightImg
+      ),
+      new Spikes(
+        plateforms[5].position.x + 140,
+        plateforms[5].position.y + 50,
+        spikesRightImg
+      ),
+      new Spikes(
+        plateforms[5].position.x + 140,
+        plateforms[5].position.y + 100,
+        spikesRightImg
+      ),
+      new Spikes(
+        plateforms[5].position.x + 140,
+        plateforms[5].position.y + 150,
+        spikesRightImg
+      ),
+      new Spikes(
+        plateforms[5].position.x + 140,
+        plateforms[5].position.y + 200,
+        spikesRightImg
+      ),
+      new Spikes(
+        plateforms[5].position.x + 140,
+        plateforms[5].position.y + 250,
+        spikesRightImg
+      ),
+      new Spikes(
+        plateforms[6].position.x - 30,
+        plateforms[6].position.y - 50,
+        spikesImg
+      ),
+      new Spikes(
+        plateforms[6].position.x,
+        plateforms[6].position.y - 50,
+        spikesImg
+      ),
+      new Spikes(
+        plateforms[6].position.x + 50,
+        plateforms[6].position.y - 50,
+        spikesImg
+      ),
+      new Spikes(
+        plateforms[6].position.x + 100,
+        plateforms[6].position.y - 50,
+        spikesImg
+      ),
+      new Spikes(
+        plateforms[6].position.x - 30,
+        plateforms[6].position.y,
+        spikesLeftImg
+      ),
+      new Spikes(
+        plateforms[6].position.x - 30,
+        plateforms[6].position.y + 50,
+        spikesLeftImg
+      ),
+      new Spikes(
+        plateforms[6].position.x - 30,
+        plateforms[6].position.y + 100,
+        spikesLeftImg
+      ),
+      new Spikes(
+        plateforms[6].position.x - 30,
+        plateforms[6].position.y + 150,
+        spikesLeftImg
+      ),
+      new Spikes(
+        plateforms[9].position.x - 30,
+        plateforms[9].position.y + 50,
+        spikesLeftImg
+      ),
+      new Spikes(
+        plateforms[9].position.x - 30,
+        plateforms[9].position.y + 100,
+        spikesLeftImg
+      ),
+      new Spikes(
+        plateforms[9].position.x - 30,
+        plateforms[9].position.y + 150,
+        spikesLeftImg
+      ),
+      new Spikes(
+        plateforms[9].position.x - 30,
+        plateforms[9].position.y + 200,
+        spikesLeftImg
+      ),
+      new Spikes(
+        plateforms[9].position.x + 400,
+        plateforms[9].position.y - 180,
+        spikesBottomImg
+      ),
+      new Spikes(
+        plateforms[9].position.x + 450,
+        plateforms[9].position.y - 180,
+        spikesBottomImg
+      ),
+      new Spikes(
+        plateforms[9].position.x + 500,
+        plateforms[9].position.y - 180,
+        spikesBottomImg
+      ),
+      new Spikes(
+        plateforms[9].position.x + 550,
+        plateforms[9].position.y - 180,
+        spikesBottomImg
+      ),
+      new Spikes(
+        plateforms[9].position.x + 600,
+        plateforms[9].position.y - 180,
+        spikesBottomImg
+      ),
+      new Spikes(
+        plateforms[9].position.x + 650,
+        plateforms[9].position.y - 180,
+        spikesBottomImg
       ),
     ];
 
     movingEnemies = [
       new MovingEnemy(
-        plateforms[1].position.x + 240,
-        plateforms[1].position.y - 80,
+        plateforms[0].position.x + 700,
+        plateforms[0].position.y - 80,
         "vertical",
         200,
-        plateforms[1].position.y,
+        plateforms[0].position.y,
         0,
         1,
         burgerEnemy,
         spriteX
       ),
       new MovingEnemy(
-        plateforms[0].position.x + 240,
-        plateforms[0].position.y - 80,
+        plateforms[2].position.x + 240,
+        plateforms[2].position.y - 80,
         "horizontal",
-        plateforms[0].position.x,
-        plateforms[0].position.x + plateforms[0].width,
+        plateforms[2].position.x,
+        plateforms[2].position.x + plateforms[2].width,
         1,
         0,
         chefEnemy,
@@ -968,8 +1166,8 @@ function initPlayerSelection() {
 
     item = [
       new Item(
-        plateforms[0].position.x + 290,
-        plateforms[0].position.y - 50,
+        plateforms[13].position.x + 290,
+        plateforms[13].position.y - 50,
         mozzarellaImg
       ),
     ];
@@ -984,46 +1182,46 @@ function initPlayerSelection() {
 
     // création de l'objet plateform
     plateforms = [
-      new Plateform({ x: 0, y: 400, image: plateformVenise }),
+      new Plateform({ x: 0, y: 400, image: toscanePlatform }),
       new Plateform({
         x: 0,
         y: -500,
-        image: plateformVeniseBottom,
+        image: toscanePlatform,
       }),
       new Plateform({
-        x: plateformVenise.width * 2,
+        x: toscanePlatform.width * 2,
         y: 500,
-        image: plateformVenise,
+        image: toscanePlatform,
       }),
       new Plateform({
-        x: plateformVenise.width * 3.2,
+        x: toscanePlatform.width * 3.2,
         y: 500,
-        image: plateformVenise,
+        image: toscanePlatform,
       }),
       new Plateform({
-        x: plateformVenise.width * 3.8,
+        x: toscanePlatform.width * 3.8,
         y: 500,
-        image: plateformVenise,
+        image: toscanePlatform,
       }),
       new Plateform({
-        x: plateformVenise.width * 5.3,
+        x: toscanePlatform.width * 5.3,
         y: 500,
-        image: plateformVenise,
+        image: toscanePlatform,
       }),
       new Plateform({
-        x: plateformVenise.width * 6.7,
+        x: toscanePlatform.width * 6.7,
         y: 500,
-        image: plateformVenise,
+        image: toscanePlatform,
       }),
       new Plateform({
-        x: plateformVenise.width * 8.25,
+        x: toscanePlatform.width * 8.25,
         y: 500,
-        image: plateformVenise,
+        image: toscanePlatform,
       }),
       new Plateform({
-        x: plateformVenise.width * 9.8,
+        x: toscanePlatform.width * 9.8,
         y: 500,
-        image: plateformVenise,
+        image: toscanePlatform,
       }),
     ];
 
@@ -1113,7 +1311,15 @@ function initPlayerSelection() {
     ];
 
     bosses = [
-      new Boss(125, plateforms[0].position.y - 135, 0, canvas.width, 10, bossSprite, spriteX),
+      new Boss(
+        125,
+        plateforms[0].position.y - 135,
+        0,
+        canvas.width,
+        10,
+        bossSprite,
+        spriteX
+      ),
     ];
 
     item = [];
@@ -1150,7 +1356,6 @@ function initPlayerSelection() {
         animateHowToPlay();
         break;
       case STATE_HIGHSCORE:
-
         animateHighscore();
         break;
       case STATE_PLAYERSELECTION:
@@ -1159,8 +1364,6 @@ function initPlayerSelection() {
       case STATE_END:
         animateEnding();
         break;
-
-
     }
   }
 
@@ -1170,7 +1373,6 @@ function initPlayerSelection() {
   function startTimer() {
     startTime = Date.now(); // Mettez à jour le temps de départ à chaque démarrage du minuteur
   }
-
 
   // permet de refresh en temps réel la position du player (evite que le player se déplace à l'infini dès qu'une touche est enfoncé)
   function animate() {
@@ -1183,9 +1385,9 @@ function initPlayerSelection() {
 
     const minutes = Math.floor(elapsedTime / 60);
     const seconds = elapsedTime % 60;
-    formattedTime = `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
-
-
+    formattedTime = `${minutes.toString().padStart(2, "0")}:${seconds
+      .toString()
+      .padStart(2, "0")}`;
 
     genericObjects.forEach((genericObject) => {
       genericObject.draw(c);
@@ -1353,7 +1555,7 @@ function initPlayerSelection() {
       if (
         player.position.y + player.height <= plateform.position.y &&
         player.position.y + player.height + player.velocity.y >=
-        plateform.position.y &&
+          plateform.position.y &&
         player.position.x + player.width >= plateform.position.x &&
         player.position.x <= plateform.position.x + plateform.width
       ) {
@@ -1365,7 +1567,7 @@ function initPlayerSelection() {
       if (
         player.position.y + player.height <= MovingEnemy.position.y &&
         player.position.y + player.height + player.velocity.y >=
-        MovingEnemy.position.y &&
+          MovingEnemy.position.y &&
         player.position.x + player.width >= MovingEnemy.position.x &&
         player.position.x <= MovingEnemy.position.x + MovingEnemy.width
       ) {
@@ -1384,7 +1586,7 @@ function initPlayerSelection() {
         if (
           player.position.y + player.height <= Boss.position.y &&
           player.position.y + player.height + player.velocity.y >=
-          Boss.position.y &&
+            Boss.position.y &&
           player.position.x + player.width >= Boss.position.x &&
           player.position.x <= Boss.position.x + Boss.width
         ) {
@@ -1398,12 +1600,9 @@ function initPlayerSelection() {
             player.velocity.y = 0;
             isPlayerOnEnemy = true;
 
-            
             setTimeout(() => {
-
-              gameState = STATE_END
+              gameState = STATE_END;
               initEnding();
-             
             }, 3000);
           }
         } else {
@@ -1458,17 +1657,19 @@ function initPlayerSelection() {
 
   //permet de lancer la page highscore
   function animateHighscore() {
-
     animate_class.animateHowToPlay(Backgroundhighscore, buttons, gameState);
   }
 
   function animatePlayerSelection() {
-    animate_class.animatePlayerSelection(BackgroundPlayerSelection, buttons, gameState);
+    animate_class.animatePlayerSelection(
+      BackgroundPlayerSelection,
+      buttons,
+      gameState
+    );
   }
 
   function animateEnding() {
     animate_class.animateHowToPlay(BackgroundEnding, buttons, gameState);
-  
   }
 
   // assignation des touches pour les déplacements QUAND TOUCHE ENFONCE

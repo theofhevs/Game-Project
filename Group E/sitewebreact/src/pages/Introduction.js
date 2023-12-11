@@ -1,31 +1,40 @@
-import React from 'react'
-import BannerImage from '../assets/gameMenu.png';
-import '../styles/Intro.css';
+import React from "react";
+import BannerImage from "../assets/gameMenu.png";
+import "../styles/Intro.css";
 function Introduction() {
-    return (
-        <div className='intro'>
-
-            <div
-                className="introTop" style={{ backgroundImage: `url(${BannerImage})` }}
-            ></div>
-            <div className="IntroBottom">
-                <h1>INTRODUCTION</h1>
-                <p> Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime
-                    mollitia, molestiae quas vel sint commodi repudiandae consequuntur
-                    voluptatum laborum numquam blanditiis harum quisquam eius sed odit
-                    fugiat iusto fuga praesentium optio, eaque rerum! Provident similique
-                    accusantium nemo autem. Veritatis obcaecati tenetur iure eius earum ut
-                    molestias architecto voluptate aliquam nihil, eveniet aliquid culpa
-                    officia aut! Impedit sit sunt quaerat, odit, tenetur error, harum
-                    nesciunt ipsum debitis quas aliquid. Reprehenderit, quia. Quo neque
-                    error repudiandae fuga? Ipsa laudantium molestias eos sapiente
-                    officiis modi at sunt excepturi expedita sint? Sed quibusdam
-                    recusandae alias error harum maxime adipisci amet laborum.
-                    Perspiciatis minima nesciunt dolorem! Officiis iure rerum voluptates a
-                    cumque velit </p>
-            </div>
-        </div>
-    );
+  return (
+    <div className="intro">
+      <div
+        className="introTop"
+        style={{ backgroundImage: `url(${BannerImage})` }}
+      ></div>
+      <div className="IntroBottom">
+        <h1>INTRODUCTION</h1>
+        <h2>Game description</h2>
+        <p>
+          {" "}
+          The Tremendous Journey is a platform game, that is play in italian
+          landscapes
+        </p>
+        <h2>Goal of the game</h2>
+        <p>
+          {" "}
+          The play have to go threw different levels beat ennemy or escape them,
+          in order to collect an items and go to the next level to collect
+          another item, agter collecting all the items, the player will have to
+          beat the final boss in order to make the perfect pizza
+        </p>
+        <h2>Character</h2>
+        <p> The main character is a slide of pizza call Giuseppe</p>
+        <h2>Rules of the game</h2>
+        <p>
+          {" "}
+          The only rule is to have fun and finish the game as fast as possible
+          to be display on the wall of fame
+        </p>
+      </div>
+    </div>
+  );
 }
 
 export default Introduction;
