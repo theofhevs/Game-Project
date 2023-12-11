@@ -8,6 +8,7 @@ import Item from "./Class/Item.js";
 import Boss from "./Class/Boss.js";
 import Bouttons from "./Class/Bouttons.js";
 import Titre from "./Class/Titre.js";
+import DragAndDropHandler from "./Class/DragAndDropHandler.js";
 import BackgroundMenu from "./Class/BackgroundMenu.js";
 import { addDoc, dumpCollection, showScoreboard } from "../Firebase.js";
 import Animate from "./Class/Animate.js";
@@ -139,7 +140,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let spriteX = 0;
   let spriteY = 0;
-
+  let isAnimated = true;
 
   // création overlay
   const overlay = {
@@ -170,7 +171,7 @@ document.addEventListener("DOMContentLoaded", () => {
   //-> buttons = button.nextButtons
 
   // création de l'objet player
-  let player = new Player(playerFont, spriteX, spriteY);
+  let player = new Player(playerFont, spriteX, spriteY, isAnimated);
 
   let currentLevel = 1;
 
@@ -436,11 +437,37 @@ document.addEventListener("DOMContentLoaded", () => {
       new Bouttons({
         x: 785,
         y: 200,
-        image: howToPlay,
+        image: customize,
         belongTo: [STATE_MENU],
         initMethod: () => {
           initPlayerSelection();
           gameState = STATE_PLAYERSELECTION;
+        },
+      }),
+      new Bouttons({
+        x: 105,
+        y: 200,
+        image: customize,
+        belongTo: [STATE_PLAYERSELECTION],
+        initMethod: () => {
+          playerFont.src = imgURL + "sprite.png";
+          playerFont.onload = () => {
+            isAnimated = true;
+
+            //reset the drop zone 
+            const dropZone = document.getElementById("dropZone");
+            if (dropZone) {
+              dropZone.remove();
+            }
+            const dragAndDropHandler = new DragAndDropHandler(playerFont, isAnimated);
+            dragAndDropHandler.addStyles();
+            
+          //set isAnimated to false if the user added a custom image (only if a custom image is added)
+          playerFont.onload = () => {
+            isAnimated = false;
+          };
+          };
+          console.log(isAnimated)
         },
       }),
       new Bouttons({
@@ -449,12 +476,17 @@ document.addEventListener("DOMContentLoaded", () => {
         image: backToMenu,
         belongTo: [STATE_HOWTOPLAY, STATE_HIGHSCORE, STATE_PLAYERSELECTION],
         initMethod: () => {
+          // Remove the drop zone when the back button is clicked
+          if(gameState === STATE_PLAYERSELECTION){
+            const dropZone = document.getElementById("dropZone");
+            if (dropZone)
+              dropZone.remove();
+          }
           // Remove the modal content when the back button is clicked
           const modalContent = document.getElementById("modalContent");
           if (modalContent) {
             modalContent.remove();
           }
-
           initMenu();
           gameState = STATE_MENU;
         },
@@ -524,22 +556,9 @@ document.addEventListener("DOMContentLoaded", () => {
   function initHighscore() {
     showScoreboard();
     musicMenu.play();
-    /*Backgroundhighscore = [
-      new BackgroundMenu({ x: 0, y: 0, image: highscoreBackground }),
-    ];*/
-    
-    boutonBack.forEach(button => {
-      button.onClick(() => {
-        // Remove the overlay when the back button is clicked
-        const overlay = document.getElementById("fullscreenOverlay");
-        if (overlay) {
-          overlay.remove();
-        }
-  
-      });
-    });
-  
-    canvas.addEventListener("click", handleCanvasClick);
+    Backgroundhighscore = [
+      new BackgroundMenu({ x: 0, y: 0, image: backgroundMenu }),
+    ];
   }
 
   function initEnding() {
@@ -556,22 +575,29 @@ document.addEventListener("DOMContentLoaded", () => {
     ];
     
   }
+  
+function initPlayerSelection() {
+  musicMenu.play();
+  BackgroundPlayerSelection = [
+    new BackgroundMenu({ x: 0, y: 0, image: backgroundMenu }),
+  ];
+  
+  // Instantiate the DragAndDropHandler
+  const dragAndDropHandler = new DragAndDropHandler(playerFont, isAnimated);
+  dragAndDropHandler.addStyles();
 
-  function initPlayerSelection() {
-    musicMenu.play();
-    BackgroundPlayerSelection = [
-      new BackgroundMenu({ x: 0, y: 0, image: backgroundMenu }),
-    ];
-  }
-
-
+  //set isAnimated to false if the user added a custom image (only if a custom image is added)
+  playerFont.onload = () => {
+    isAnimated = false;
+  };
+}
 
   // Function to handle canvas click events
   function handleCanvasClick(event) {
     // Calculate the position of the click
     var rect = canvas.getBoundingClientRect();
     var x = event.clientX - rect.left;
-    var y = event.clientY - rect.top;
+    var y = event.clientY - rect.top; 
 
     // Check if any of the buttons were clicked
     for (var i = 0; i < buttons.length; i++) {
@@ -598,7 +624,7 @@ document.addEventListener("DOMContentLoaded", () => {
     musicMenu.pause();
     musicLevel1.play();
     // création de l'objet player
-    player = new Player(playerFont, spriteX, spriteY);
+    player = new Player(playerFont, spriteX, spriteY, isAnimated);
 
     // création de l'objet plateform
     plateforms = [
@@ -714,10 +740,8 @@ document.addEventListener("DOMContentLoaded", () => {
     musicLevel1.pause();
     musicLevel2.play();
 
-
-
     // création de l'objet player
-    player = new Player(playerFont, spriteX, spriteY);
+    player = new Player(playerFont, spriteX, spriteY, isAnimated);
 
     // création de l'objet plateform
     plateforms = [
@@ -831,7 +855,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function initlevel3() {
     musicLevel2.pause();
     // création de l'objet player
-    player = new Player(playerFont, spriteX, spriteY);
+    player = new Player(playerFont, spriteX, spriteY, isAnimated);
 
     // création de l'objet plateform
     plateforms = [
@@ -945,7 +969,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function initlevel4() {
     // création de l'objet player
-    player = new Player(playerFont, spriteX, spriteY);
+    player = new Player(playerFont, spriteX, spriteY, isAnimated);
 
     // création de l'objet plateform
     plateforms = [
@@ -1060,7 +1084,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function initlevelFinal() {
     bossMusic.play();
     // création de l'objet player
-    player = new Player(playerFont, spriteX, spriteY);
+    player = new Player(playerFont, spriteX, spriteY, isAnimated);
 
     // création de l'objet plateform
     plateforms = [

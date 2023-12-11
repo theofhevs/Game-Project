@@ -1,9 +1,10 @@
  // Creation du Personnage 
  class Player {
     // definit sa position ainsi que sa grandeur
-    constructor(image, spriteX, spriteY) {
+    constructor(image, spriteX, spriteY, isAnimated) {
         this.spriteX = spriteX
         this.spriteY = spriteY
+        this.isAnimated = isAnimated
         this.gameFrame = 0
         this.staggerFrames = 20
 
@@ -27,14 +28,18 @@
     }
     // création du personnage dans le Canvas
     draw(c) {
-        //for sprite animation
-        if (this.gameFrame % this.staggerFrames === 0) {
-            if (this.spriteX < 3) this.spriteX++;
-            else this.spriteX = 0;
-        }
-        this.gameFrame++;
+        if(this.isAnimated){
+            //for sprite animation
+            if (this.gameFrame % this.staggerFrames === 0) {
+                if (this.spriteX < 3) this.spriteX++;
+                else this.spriteX = 0;
+            }
+            this.gameFrame++;
 
-        c.drawImage(this.image, this.spriteX * 256, this.spriteY * 256, 256, 252, this.position.x, this.position.y, this.width, this.height)
+            c.drawImage(this.image, this.spriteX * 256, this.spriteY * 256, 256, 252, this.position.x, this.position.y, this.width, this.height)
+        }
+        else
+            c.drawImage(this.image, this.position.x, this.position.y, this.width, this.height)
     
     }
     // gère la position du joueur avec la velocité choisi
@@ -48,6 +53,5 @@
             this.velocity.y += gravity
     }
 }
-
 
 export default Player 
