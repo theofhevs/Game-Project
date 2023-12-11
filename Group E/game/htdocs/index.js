@@ -556,9 +556,9 @@ document.addEventListener("DOMContentLoaded", () => {
   function initHighscore() {
     showScoreboard();
     musicMenu.play();
-    Backgroundhighscore = [
+   /* Backgroundhighscore = [
       new BackgroundMenu({ x: 0, y: 0, image: backgroundMenu }),
-    ];
+    ];*/
   }
 
   function initEnding() {
@@ -618,57 +618,41 @@ function initPlayerSelection() {
       }
     }
   }
-
   // permet de respawn après être tombé (même code que les ligne 108 - 143)
   function initlevel1() {
     musicMenu.pause();
     musicLevel1.play();
     // création de l'objet player
-    player = new Player(playerFont, spriteX, spriteY, isAnimated);
+    player = new Player(playerFont, spriteX, spriteY);
 
     // création de l'objet plateform
     plateforms = [
-      new Plateform({ x: 0, y: 350, image: plateformFont }),
+      new Plateform({ 
+        x: 0,
+        y: 350,
+        image: plateformFont
+      }),
       new Plateform({
-        x: plateformFont.width * 2 - 350,
-        y: 470,
+        x: plateformFont.width * 1.5,
+        y: 250,
         image: plateformFont,
       }),
       new Plateform({
-        x: plateformFont.width * 2,
+        x: plateformFont.width * 3,
         y: 305,
         image: tinyPlateformFont,
       }),
       new Plateform({
-        x: plateformFont.width * 3.2,
+        x: plateformFont.width * 4.5,
         y: 420,
         image: plateformFont,
       }),
       new Plateform({
-        x: plateformFont.width * 3.8,
-        y: 300,
+        x: plateformFont.width * 6,
+        y: 380,
         image: plateformFont,
       }),
-      new Plateform({
-        x: plateformFont.width * 5.3,
-        y: 300,
-        image: plateformFont,
-      }),
-      new Plateform({
-        x: plateformFont.width * 6.7,
-        y: 300,
-        image: plateformFont,
-      }),
-      new Plateform({
-        x: plateformFont.width * 8.25,
-        y: 300,
-        image: plateformFont,
-      }),
-      new Plateform({
-        x: plateformFont.width * 9.8,
-        y: 300,
-        image: plateformFont,
-      }),
+
     ];
 
     // création de l'objet concernant le BackGround
@@ -683,51 +667,78 @@ function initPlayerSelection() {
     spikes = [
       // TODO change the hardcoding
       new Spikes(
+        plateforms[0].position.x + 300,
+        plateforms[0].position.y - 50,
+        spikesImg
+      ),
+      new Spikes(
+        plateforms[1].position.x + 150,
+        plateforms[1].position.y - 50,
+        spikesImg
+      ),
+      new Spikes(
+        plateforms[2].position.x + 240,
+        plateforms[2].position.y - 50,
+        spikesImg
+      ),
+      new Spikes(
+        plateforms[2].position.x + 290,
+        plateforms[2].position.y - 50,
+        spikesImg
+      ),
+      new Spikes(
         plateforms[4].position.x + 150,
         plateforms[4].position.y - 50,
         spikesImg
       ),
       new Spikes(
-        plateforms[5].position.x + 240,
-        plateforms[5].position.y - 50,
-        spikesImg
-      ),
-      new Spikes(
-        plateforms[5].position.x + 290,
-        plateforms[5].position.y - 50,
+        plateforms[4].position.x + 220,
+        plateforms[4].position.y - 50,
         spikesImg
       ),
     ];
 
     movingEnemies = [
       new MovingEnemy(
-        plateforms[1].position.x + 240,
-        plateforms[1].position.y - 80,
+        plateforms[2].position.x + 240,
+        plateforms[2].position.y ,
         "vertical",
-        200,
-        plateforms[1].position.y,
+        0,
+        plateforms[2].position.y,
         0,
         1,
         burgerEnemy,
         spriteX
       ),
       new MovingEnemy(
-        plateforms[0].position.x + 240,
-        plateforms[0].position.y - 80,
+        plateforms[1].position.x + 240,
+        plateforms[1].position.y - 80,
         "horizontal",
-        plateforms[0].position.x,
-        plateforms[0].position.x + plateforms[0].width,
+        plateforms[1].position.x,
+        plateforms[1].position.x + plateforms[0].width,
         1,
         0,
         chefEnemy,
         spriteX
       ),
+      new MovingEnemy(
+        plateforms[3].position.x,
+        plateforms[3].position.y - 80,
+        "horizontal",
+        plateforms[3].position.x,
+        plateforms[3].position.x + plateforms[0].width,
+        1,
+        0,
+        chefEnemy,
+        spriteX
+      ),
+      
     ];
 
     item = [
       new Item(
-        plateforms[1].position.x + 290,
-        plateforms[1].position.y - 50,
+        plateforms[0].position.x + 455,
+        plateforms[0].position.y - 50,
         patePizzaImg
       ),
     ];

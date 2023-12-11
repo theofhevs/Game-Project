@@ -65,7 +65,8 @@ export async function getUsersFromFirestore(collectionName) {
     return users;
   }
   
-export async function showScoreboard() {
+
+  export async function showScoreboard() {
     const topTenUsers = await getUsersFromFirestore("result");
   
     // Create a fixed-position modal content container
@@ -94,6 +95,7 @@ export async function showScoreboard() {
     title.textContent = "HIGHSCORE (TOP 10)";
     title.style.textAlign = "center"; // Center the title
     title.style.fontSize = "20px"; // Adjust font size for the title
+    title.style.fontFamily = "'fantasy', sans-serif";
     modalContent.appendChild(title);
   
     // Create a table for the scores
@@ -113,12 +115,11 @@ export async function showScoreboard() {
       const row = document.createElement("tr");
       row.style.height = "20px"; // Adjust the height as needed
       row.innerHTML = `
-        <td style="font-size: 15px;">${index + 1}</td>
-        <td style="font-size: 15px;">${user.playerName}</td>
-        <td style="font-size: 15px;">${user.score}</td>
+      <td style="font-size: 15px; font-family: 'fantasy', sans-serif;">${index + 1}</td>
+      <td style="font-size: 15px; font-family: 'fantasy', serif;">${user.playerName}</td>
+      <td style="font-size: 15px; font-family: 'fantasy', monospace;">${user.score}</td>
       `;
       scoreTableBody.appendChild(row);
     });
   
-    // No need to create the back button here
   }
