@@ -3,7 +3,6 @@ class Boss {
         this.position = { x, y };
         this.width = 135;
         this.height = 135;
-        this.color = 'green'; // Utilisation de la couleur définie
         this.velocity = { x: 1, y: 0 };
         this.min = min;
         this.max = max;
@@ -29,34 +28,22 @@ class Boss {
         this.position.x += this.velocity.x * this.speed;
 
         // Vérifiez si l'ennemi atteint les limites de sa plateforme
-        if (this.position.x < this.min) {
+        if (this.position.x < this.min)
             this.velocity.x = 1;
-        } else if (this.position.x + this.width > this.max) {
+        else if (this.position.x + this.width > this.max)
             this.velocity.x = -1;
-        }
-
-
     }
-
-
 
     randomPosition() {
         let random = Math.floor(Math.random() * (11 - 5)) + 5;
         return random
     }
 
-
-
-
     randomMax() {
         let randomMax = Math.floor(Math.random() * (1025 - 440) + 440);
 
         return randomMax
     }
-
-
-
-
 
 
 }

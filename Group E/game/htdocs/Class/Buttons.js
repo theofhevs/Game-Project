@@ -1,5 +1,5 @@
-class Bouttons {
-  //définir la position des boutons
+class Buttons {
+  // define buttons position, size and image
   constructor({ x, y, image, belongTo, initMethod }) {
     this.position = {
       x,
@@ -56,4 +56,4 @@ class Bouttons {
   }
 }
 
-export default Bouttons;
+export default Buttons;

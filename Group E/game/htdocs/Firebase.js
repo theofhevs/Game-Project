@@ -78,11 +78,10 @@ export async function getUsersFromFirestore(collectionName) {
       left: 50%; // Center horizontally
       transform: translate(-50%, -50%); // Center precisely
       width: 40%; // Set the width of the modal
-      max-height: 55%; /* Adjust max-height as needed */
+      max-height: 55%;
       overflow: auto; // Enable scrolling if content exceeds max-height
-      background: #fff; // White background
       padding: 10px; // Padding around the content
-      border-radius: 10px; // Rounded corners
+      border-radius: 10px; 
       z-index: 1000; // Set a high z-index to appear above other elements
       display: flex; // Use flex display
       flex-direction: column; // Stack children vertically
@@ -93,8 +92,9 @@ export async function getUsersFromFirestore(collectionName) {
     // Create a title for the modal
     const title = document.createElement("h2");
     title.textContent = "HIGHSCORE (TOP 10)";
+    title.style.marginTop = "5px"; 
     title.style.textAlign = "center"; // Center the title
-    title.style.fontSize = "20px"; // Adjust font size for the title
+    title.style.fontSize = "28px"; // Adjust font size for the title
     title.style.fontFamily = "'fantasy', sans-serif";
     title.style.color = "white";
     modalContent.appendChild(title);
@@ -103,8 +103,14 @@ export async function getUsersFromFirestore(collectionName) {
     const scoreTable = document.createElement("table");
     scoreTable.id = "scoreTable";
     scoreTable.className = "scoreboard-table";
-    scoreTable.style.width = "100%"; // Set the width of the table
-    scoreTable.style.maxHeight = "10%"; // Adjust max-height as needed
+    scoreTable.style.width = "100%"; 
+    scoreTable.style.maxHeight = "10%"; 
+    scoreTable.style.color = "white";
+    scoreTable.style.borderCollapse = "collapse"; 
+    scoreTable.style.textAlign = "center";
+    scoreTable.style.fontFamily = "'fantasy', sans-serif";
+    scoreTable.style.borderRadius = "10px"; 
+
     modalContent.appendChild(scoreTable);
   
     // Create a body for the table
@@ -114,11 +120,21 @@ export async function getUsersFromFirestore(collectionName) {
     // Populate the table with user scores
     topTenUsers.forEach((user, index) => {
       const row = document.createElement("tr");
-      row.style.height = "20px"; // Adjust the height as needed
+      row.style.backgroundColor = "rgba(0, 0, 0, 0.8)";
+      row.style.height = "18px"; 
+      row.style.fontFamily = "'fantasy', sans-serif";
+      row.style.fontSize = "13px";
+
+      // Display only the first 25 characters of playerName
+      let truncatedName = user.playerName.slice(0, 25)
+      // add ... if playerName is longer than 25 characters
+      if (user.playerName.length > 25)
+        truncatedName += "..."
+
       row.innerHTML = `
-      <td style="font-size: 15px; font-family: 'fantasy', sans-serif;">${index + 1}</td>
-      <td style="font-size: 15px; font-family: 'fantasy', serif;">${user.playerName}</td>
-      <td style="font-size: 15px; font-family: 'fantasy', monospace;">${user.score}</td>
+      <td>${index + 1}</td>
+      <td>${truncatedName}</td>
+      <td>${user.score}</td>
       `;
       scoreTableBody.appendChild(row);
     });

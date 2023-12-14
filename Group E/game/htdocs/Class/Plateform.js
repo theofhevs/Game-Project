@@ -1,5 +1,5 @@
 class Plateform {
-    // definit sa position ainsi que sa grandeur
+    // define plateform, position and image
     constructor({ x, y, image }) {
         this.position = {
             x,
@@ -10,7 +10,7 @@ class Plateform {
         this.height = image.height
 
     }
-    // création de la plateforme dans le Canvas
+    // plateform creation in the canvas
     draw(c) {
         c.drawImage(this.image, this.position.x, this.position.y, this.width, this.height)
     }

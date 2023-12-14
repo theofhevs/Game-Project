@@ -1,5 +1,4 @@
 class BackgroundMenu {
-  //définir la position des boutons
   constructor({ x, y, image }) {
     this.position = {
       x,

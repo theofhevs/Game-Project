@@ -1,6 +1,6 @@
-    // Set tout les éléments concernant les images de font (Parallax)
+    // set the background position, size and image
     class GenericObject {
-        // definit sa position ainsi que sa grandeur
+        // define the position of the background
         constructor({ x, y, image }) {
             this.position = {
                 x,
@@ -12,9 +12,8 @@
 
 
         }
-        // création de la plateforme dans le Canvas
+        // background creation in the canvas
         draw(c) {
-
             c.drawImage(this.image, this.position.x, this.position.y, this.width, this.height)
         }
 

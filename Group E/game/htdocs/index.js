@@ -1,4 +1,4 @@
-//import les class
+// classes import 
 import Plateform from "./Class/Plateform.js";
 import GenericObject from "./Class/GenericObject.js";
 import Player from "./Class/Player.js";
@@ -6,32 +6,32 @@ import Spikes from "./Class/Spikes.js";
 import MovingEnemy from "./Class/MovingEnemy.js";
 import Item from "./Class/Item.js";
 import Boss from "./Class/Boss.js";
-import Bouttons from "./Class/Bouttons.js";
-import Titre from "./Class/Titre.js";
+import Buttons from "./Class/Buttons.js";
+import Title from "./Class/Title.js";
 import DragAndDropHandler from "./Class/DragAndDropHandler.js";
 import BackgroundMenu from "./Class/BackgroundMenu.js";
 import { addDoc, dumpCollection, showScoreboard } from "../Firebase.js";
 import Animate from "./Class/Animate.js";
 
-// ajout des images
+// audio import
 const soundURL = "sound/";
 let volumeLevel = 0.1;
 
+// create the audio objects
 let bossMusic = new Audio();
-bossMusic.loop = true;
-
 let musicLevel1 = new Audio();
-musicLevel1.loop = true;
-
 let musicMenu = new Audio();
-musicMenu.loop = true;
-
 let musicLevel2 = new Audio();
-musicLevel2.loop = true;
-
 let musicEnding = new Audio();
+
+// set the music loop to true
+bossMusic.loop = true;
+musicLevel1.loop = true;
+musicMenu.loop = true;
+musicLevel2.loop = true;
 musicEnding.loop = true;
 
+// fetch the music.json file and set the volume of the music
 fetch("/music.json")
   .then((response) => response.json())
   .then((data) => {
@@ -51,6 +51,7 @@ fetch("/music.json")
     musicEnding.volume = volumeLevel;
   });
 
+// images import
 const imgURL = "img/";
 const plateformFont = new Image();
 const mainBackGround = new Image();
@@ -86,7 +87,6 @@ const patePizzaImg = new Image();
 const bossBackground = new Image();
 const bossPlatform = new Image();
 const bossSprite = new Image();
-const animate_class = new Animate();
 const geolocationIcon = new Image();
 const backEnding = new Image();
 const home = new Image();
@@ -128,22 +128,25 @@ howToPlayBackground.src = imgURL + "HowToPlayBackground.png";
 highscoreBackground.src = imgURL + "HighscoreBackground.png";
 backToMenu.src = imgURL + "backToMenu.png";
 
-// Setup pour link le JS avec HTMLA
+// animation import
+const animate_class = new Animate();
 
+// setup the canvas and context 
 document.addEventListener("DOMContentLoaded", () => {
   const canvas = document.querySelector("canvas");
   const c = canvas.getContext("2d");
   console.log(c);
 
-  // defini Le canvas avec la taille de la fenetre
+  // define the canvas dimensions
   canvas.width = 1024;
   canvas.height = 576;
 
+  // define the sprite animation variables
   let spriteX = 0;
   let spriteY = 0;
   let isAnimated = true;
 
-  // création overlay
+  // define the overlay object
   const overlay = {
     opacity: 0,
   };
@@ -155,30 +158,29 @@ document.addEventListener("DOMContentLoaded", () => {
   let interval = 1000 / fps;
   let delta;
 
-  // état du jeu
+  // game state variables
   const STATE_MENU = "menu";
   const STATE_HOWTOPLAY = "howToPlay";
   const STATE_HIGHSCORE = "highscore";
   const STATE_PLAYERSELECTION = "playerSelection";
   const STATE_GAME_ON = "gameOn";
   const STATE_END = "ending";
-  //..
   let gameState = STATE_MENU;
 
-  // handle clic (x,y du click)
+  // handle click (x,y du click)
   // for each button
   // if(button.IsInBounds(x,y))
   //-> state = button.stateTo
   //-> buttons = button.nextButtons
 
-  // création de l'objet player
+  // player creation
   let player = new Player(playerFont, spriteX, spriteY, isAnimated);
 
   let currentLevel = 1;
 
   let formattedTime;
 
-  // items creation
+  // item creation 
   let item = [];
 
   const itemIndices = {
@@ -188,6 +190,7 @@ document.addEventListener("DOMContentLoaded", () => {
     prosciutto: 3,
   };
 
+  // item opacities for each level 
   const itemOpacities = {
     [itemIndices.dough]: { 1: 0.3, 2: 2.5, 3: 2.5, 4: 2.5, 5: 2.5 },
     [itemIndices.sauce]: { 1: 0.3, 2: 0.3, 3: 2.5, 4: 2.5, 5: 2.5 },
@@ -195,7 +198,7 @@ document.addEventListener("DOMContentLoaded", () => {
     [itemIndices.prosciutto]: { 1: 0.3, 2: 0.3, 3: 0.3, 4: 0.3, 5: 2.5 },
   };
 
-  //création des objet du menu
+  // menu creation 
   let buttons = [];
   let titleGame = [];
   let menuBackground = [];
@@ -206,37 +209,39 @@ document.addEventListener("DOMContentLoaded", () => {
   let BackgroundPlayerSelection = [];
   let buttonGeolocation = [];
 
-  // création de l'objet plateform
+  // plateform creation
   let plateforms = [];
 
-  // création de l'objet concernant le BackGround
+  // background creation
   let genericObjects = [];
 
-  // création de l'objet enemies
+  // spikes creation
   let spikes = [];
 
-  // création objet Moving Moving Enemy
+  // moving enemies creation 
   let movingEnemies = [];
   let movingEnemiesY = [];
 
-  // création de l'objet BOSS
+  // boss creation
   let bosses = [];
-  // COMPTEUR PERMETTANT DE DEFINIR A QUELLE MOMENT LE BOSS CHANGE DE PHASE
+  // boss position
   let maxReachedCounter = 0;
-  // BOOLEAN PERMETTANT DE SWITCH ENTRE LES 2 MODS DU BOSS
+  // used to switch between the boss phases
   let isBossUpdateVerticalAllowed = true;
-  // VARIABLE PERMETTANT DE METTRE UNE VIE AU BOSS
+  // add a counter to count the number of hits on the boss
   let countHitBoss = 0;
-  // DEPLACEMENT RANDOM BOSS
+  // random number to set the boss position
   let random = 5;
-  // Defini le point de départ du boss
+  // start position of the boss
   let positionBossRandom = 890;
-  // Set l'accélération lorsque le player tombe
+  
+  // set the gravity
   const gravity = 0.4;
 
+  // check if the player is on an enemy
   let isPlayerOnEnemy = false;
 
-  // création Objet Keys
+  // key pressed
   const keys = {
     right: {
       pressed: false,
@@ -249,56 +254,58 @@ document.addEventListener("DOMContentLoaded", () => {
     },
   };
 
-  // variable qui permettra de définir un objectif pour finir un niveau par exemple
+  // define an objectif to finish a level
   let scrollOffset = 0;
 
-  // Ajoutez cette variable de verrouillage
+  // lock the incrementation of the level
   let isIncrementingLevel = false;
 
-  //création item pas encore collecté
+  // item creation
   function drawItem(image, index, margin) {
-    const iconSize = 50; // Taille de l'icône de l'item
+    const iconSize = 50; // size of the item
     const x = canvas.width - iconSize - margin; // space between the item and the platform
     const y = 10; // top margin
     const opacity = itemOpacities[index][currentLevel];
 
+    // draw the item
     c.globalAlpha = opacity;
     c.drawImage(image, x, y, iconSize, iconSize);
     c.globalAlpha = 1.0;
   }
 
   function checkPlayerItemCollision(player, item) {
-    // Vérifie s'il y a une collision en X
+    // check if there is a collision with the item
     const CollisionItem =
       player.position.x + player.width / 1.2 > item.position.x &&
       player.position.x * 1.1 < item.position.x + item.width &&
       player.position.y + player.height > item.position.y &&
       player.position.y < item.position.y + item.height;
-    //Vérifiez le verrouillage ici
+
+    // check the lock to avoid multiple incrementation of the level
     if (CollisionItem && !isIncrementingLevel) {
-      isIncrementingLevel = true; // Définissez le verrouillage pour éviter l'incrémentation multiple
+      isIncrementingLevel = true;
 
       console.log(currentLevel);
       gsap.to(overlay, {
         opacity: 1,
         onComplete: () => {
           currentLevel++;
-          // Réinitialisez le niveau correspondant
-          if (currentLevel === 1) {
+          // init the level
+          if (currentLevel === 1)
             initlevel1();
-          } else if (currentLevel === 2) {
+           else if (currentLevel === 2) 
             initlevel2();
-          } else if (currentLevel === 3) {
+           else if (currentLevel === 3) 
             initlevel3();
-          } else if (currentLevel === 4) {
+           else if (currentLevel === 4) 
             initlevel4();
-          } else if (currentLevel === 5) {
+           else if (currentLevel === 5) 
             initlevelFinal();
-          }
+          
           gsap.to(overlay, {
             opacity: 0,
             onComplete: () => {
-              isIncrementingLevel = false; // Réinitialisez le verrouillage après l'animation
+              isIncrementingLevel = false; 
             },
           });
         },
@@ -307,57 +314,57 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function checkPlayerEnemyCollision(player, enemy) {
-    // Vérifie s'il y a une collision en X
+    // check if there is a collision
     const Collision =
+      // x position
       player.position.x + player.width / 1.2 > enemy.position.x &&
       player.position.x * 1.1 < enemy.position.x + enemy.width &&
+      // y position
       player.position.y + player.height > enemy.position.y &&
       player.position.y < enemy.position.y + enemy.height;
-    // La condition se déclenche si les deux collisions (X et Y) sont vraies
+    // the condition triggers if both collisions (X and Y) are true
     if (Collision) {
-      console.log("");
-
-      if (currentLevel === 1) {
+      // init the level 
+      if (currentLevel === 1) 
         initlevel1();
-      } else if (currentLevel === 2) {
+       else if (currentLevel === 2) 
         initlevel2();
-      } else if (currentLevel === 3) {
+       else if (currentLevel === 3) 
         initlevel3();
-      } else if (currentLevel === 4) {
+       else if (currentLevel === 4) 
         initlevel4();
-      } else if (currentLevel === 5) {
+       else if (currentLevel === 5) 
         initlevelFinal();
-      }
     }
   }
 
+  // check if there is a collision with the moving enemy
   function checkPlayerEnemyMovingCollision(player, MovingEnemy) {
     const Collision =
+      // width
       player.position.x + player.width > MovingEnemy.position.x &&
       player.position.x < MovingEnemy.position.x + MovingEnemy.width &&
-      // code pour la hauteur
+      // height
       player.position.y + player.height > MovingEnemy.position.y + 1 &&
       player.position.y < MovingEnemy.position.y + MovingEnemy.height;
-    // La condition se déclenche si les deux collisions (X et Y) sont vraies
+    // the condition triggers if both collisions (X and Y) are true
     if (Collision) {
       console.log("");
 
-      if (currentLevel === 1) {
+      if (currentLevel === 1) 
         initlevel1();
-      } else if (currentLevel === 2) {
+      else if (currentLevel === 2) 
         initlevel2();
-      } else if (currentLevel === 3) {
+      else if (currentLevel === 3) 
         initlevel3();
-      } else if (currentLevel === 4) {
+      else if (currentLevel === 4) 
         initlevel4();
-      } else if (currentLevel === 5) {
+      else if (currentLevel === 5) 
         initlevelFinal();
-      }
     }
   }
 
-  // FONCTION UTILISE UNIQUEMENT LORSQUE LE BOSS EST STATIQUE = PEUT PRENDRE DES DEGATS
-
+  // used only when the boss is static = vulnerable
   function checkPlayerBossStaticCollision(player, Boss) {
     const Collision =
       player.position.x + player.width > Boss.position.x &&
@@ -365,7 +372,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // code pour la hauteur
       player.position.y + player.height > Boss.position.y + 1 &&
       player.position.y < Boss.position.y + Boss.height;
-    // La condition se déclenche si les deux collisions (X et Y) sont vraies
+    // the condition triggers if both collisions (X and Y) are true
     if (Collision) {
       isBossUpdateVerticalAllowed = true;
       countHitBoss = 0;
@@ -373,35 +380,36 @@ document.addEventListener("DOMContentLoaded", () => {
       initlevelFinal();
     }
   }
-  // FONCTION UTILISE UNIQUEMENT LORSQUE LE BOSS BOUGE = INVINSIBLE
 
+  // used only when the boss is moving = invulnerable
   function checkMovingBossCollision(player, boss) {
-    // Vérifie s'il y a une collision en X
+    // check if there is a collision
     const Collision =
+      // x position
       player.position.x + player.width / 1.2 > boss.position.x &&
       player.position.x * 1.1 < boss.position.x + boss.width &&
+      // y position
       player.position.y + player.height > boss.position.y &&
       player.position.y < boss.position.y + boss.height;
-    // La condition se déclenche si les deux collisions (X et Y) sont vraies
+    // the condition triggers if both collisions (X and Y) are true
     if (Collision) {
       isBossUpdateVerticalAllowed = true;
       countHitBoss = 0;
-      console.log("tu es muerto");
       initlevelFinal();
     }
   }
 
-  //création du menu
+  // menu initialization
   function initMenu() {
     musicMenu.pause();
     menuBackground = [
       new BackgroundMenu({ x: 0, y: 0, image: backgroundMenu }),
     ];
 
-    titleGame = [new Titre({ x: 115, y: 20, image: title })];
+    titleGame = [new Title({ x: 115, y: 20, image: title })];
 
     buttons = [
-      new Bouttons({
+      new Buttons({
         x: 35,
         y: 200,
         image: howToPlay,
@@ -411,7 +419,7 @@ document.addEventListener("DOMContentLoaded", () => {
           gameState = STATE_HOWTOPLAY;
         },
       }),
-      new Bouttons({
+      new Buttons({
         x: 285,
         y: 200,
         image: startGame,
@@ -422,7 +430,7 @@ document.addEventListener("DOMContentLoaded", () => {
           gameState = STATE_GAME_ON;
         },
       }),
-      new Bouttons({
+      new Buttons({
         x: 535,
         y: 200,
         image: highscore,
@@ -433,7 +441,7 @@ document.addEventListener("DOMContentLoaded", () => {
           gameState = STATE_HIGHSCORE;
         },
       }),
-      new Bouttons({
+      new Buttons({
         x: 785,
         y: 200,
         image: customize,
@@ -443,7 +451,7 @@ document.addEventListener("DOMContentLoaded", () => {
           gameState = STATE_PLAYERSELECTION;
         },
       }),
-      new Bouttons({
+      new Buttons({
         x: 105,
         y: 200,
         image: customize,
@@ -453,18 +461,18 @@ document.addEventListener("DOMContentLoaded", () => {
           playerFont.onload = () => {
             isAnimated = true;
 
-            //reset the drop zone
+            // reset the drop zone 
             const dropZone = document.getElementById("dropZone");
-            if (dropZone) {
+            if (dropZone)
               dropZone.remove();
-            }
+
             const dragAndDropHandler = new DragAndDropHandler(
               playerFont,
               isAnimated
             );
             dragAndDropHandler.addStyles();
 
-            //set isAnimated to false if the user added a custom image (only if a custom image is added)
+            // set isAnimated to false if the user added a custom image (only if a custom image is added)
             playerFont.onload = () => {
               isAnimated = false;
             };
@@ -472,18 +480,18 @@ document.addEventListener("DOMContentLoaded", () => {
           console.log(isAnimated);
         },
       }),
-      new Bouttons({
+      new Buttons({
         x: 10,
         y: 10,
         image: backToMenu,
         belongTo: [STATE_HOWTOPLAY, STATE_HIGHSCORE, STATE_PLAYERSELECTION],
         initMethod: () => {
-          // Remove the drop zone when the back button is clicked
+          // remove the drop zone when the back button is clicked
           if (gameState === STATE_PLAYERSELECTION) {
             const dropZone = document.getElementById("dropZone");
             if (dropZone) dropZone.remove();
           }
-          // Remove the modal content when the back button is clicked
+          // remove the modal content when the back button is clicked
           const modalContent = document.getElementById("modalContent");
           if (modalContent) {
             modalContent.remove();
@@ -492,23 +500,23 @@ document.addEventListener("DOMContentLoaded", () => {
           gameState = STATE_MENU;
         },
       }),
-      new Bouttons({
+      new Buttons({
         x: 950,
         y: 500,
         image: geolocationIcon,
         belongTo: [STATE_MENU],
         initMethod: () => {
-          // Remove the modal content when the back button is clicked
+          // remove the modal content when the back button is clicked
           const modalContent = document.getElementById("modalContent");
-          if (modalContent) {
+          if (modalContent)
             modalContent.remove();
-          }
+          
           if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
               (position) => {
                 const { latitude, longitude } = position.coords;
                 console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
-                // Open Google Maps with a marker at the user's coordinates
+                // open Google Maps with a marker at the user's coordinates
                 window.open(
                   `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`
                 );
@@ -524,7 +532,7 @@ document.addEventListener("DOMContentLoaded", () => {
           //gameState = STATE_MENU;
         },
       }),
-      new Bouttons({
+      new Buttons({
         x: 10,
         y: 10,
         image: home,
@@ -540,7 +548,7 @@ document.addEventListener("DOMContentLoaded", () => {
       setButtonAction(button);
     });
 
-    // Add a click event listener to the canvas
+    // add a click event listener to the canvas
     canvas.addEventListener("click", handleCanvasClick);
   }
 
@@ -551,12 +559,15 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // how to play initialization
   function initHowToPlay() {
     musicMenu.play();
     BackgroundhowToPlay = [
       new BackgroundMenu({ x: 0, y: 0, image: howToPlayBackground }),
     ];
   }
+
+  // highscore initialization
   function initHighscore() {
     showScoreboard();
     musicMenu.play();
@@ -565,6 +576,7 @@ document.addEventListener("DOMContentLoaded", () => {
     ];
   }
 
+  // ending initialization
   function initEnding() {
     bossMusic.pause();
     musicEnding.play();
@@ -576,13 +588,14 @@ document.addEventListener("DOMContentLoaded", () => {
     BackgroundEnding = [new BackgroundMenu({ x: 0, y: 0, image: backEnding })];
   }
 
+  // player selection initialization
   function initPlayerSelection() {
     musicMenu.play();
     BackgroundPlayerSelection = [
       new BackgroundMenu({ x: 0, y: 0, image: backgroundMenu }),
     ];
 
-    // Instantiate the DragAndDropHandler
+    // instantiate the DragAndDropHandler
     const dragAndDropHandler = new DragAndDropHandler(playerFont, isAnimated);
     dragAndDropHandler.addStyles();
 
@@ -592,14 +605,14 @@ document.addEventListener("DOMContentLoaded", () => {
     };
   }
 
-  // Function to handle canvas click events
+  // handle canvas click event
   function handleCanvasClick(event) {
-    // Calculate the position of the click
+    // calculate the position of the click
     var rect = canvas.getBoundingClientRect();
     var x = event.clientX - rect.left;
     var y = event.clientY - rect.top;
 
-    // Check if any of the buttons were clicked
+    // check if any of the buttons was clicked
     for (var i = 0; i < buttons.length; i++) {
       var button = buttons[i];
       if (
@@ -608,7 +621,7 @@ document.addEventListener("DOMContentLoaded", () => {
         y >= button.y &&
         y <= button.y + button.height
       ) {
-        // The button was clicked, handle the click
+        // the button was clicked, handle the click
         // handleButtonClick(button);
         button.initMethod();
         state = button.stateTo;
@@ -618,14 +631,15 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
   }
-  // permet de respawn après être tombé (même code que les ligne 108 - 143)
+
+  // level 1 initialization
   function initlevel1() {
     musicMenu.pause();
     musicLevel1.play();
-    // création de l'objet player
+    // player object creation
     player = new Player(playerFont, spriteX, spriteY,isAnimated);
 
-    // création de l'objet plateform
+    // plateforms creation
     plateforms = [
       new Plateform({
         x: 0,
@@ -654,7 +668,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }),
     ];
 
-    // création de l'objet concernant le BackGround
+    // background creation
     genericObjects = [
       new GenericObject({
         x: 0,
@@ -664,7 +678,6 @@ document.addEventListener("DOMContentLoaded", () => {
     ];
 
     spikes = [
-      // TODO change the hardcoding
       new Spikes(
         plateforms[0].position.x + 300,
         plateforms[0].position.y - 50,
@@ -741,18 +754,19 @@ document.addEventListener("DOMContentLoaded", () => {
       ),
     ];
 
-    // variable qui permettra de définir un objectif pour finir un niveau par exemple
+    // used to define an objectif to finish a level
     scrollOffset = 0;
   }
 
+  // level 2 initialization
   function initlevel2() {
     musicLevel1.pause();
     musicLevel2.play();
 
-    // création de l'objet player
+    // player creation
     player = new Player(playerFont, spriteX, spriteY, isAnimated);
 
-    // création de l'objet plateform
+    // plateform creation
     plateforms = [
       new Plateform({ x: 0, y: 350, image: desertPlatform }),
       new Plateform({
@@ -797,7 +811,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }),
     ];
 
-    // création de l'objet concernant le BackGround
+    // background creation 
     genericObjects = [
       new GenericObject({
         x: 0,
@@ -807,7 +821,6 @@ document.addEventListener("DOMContentLoaded", () => {
     ];
 
     spikes = [
-      // TODO change the hardcoding
       new Spikes(
         plateforms[4].position.x + 150,
         plateforms[4].position.y - 50,
@@ -857,16 +870,16 @@ document.addEventListener("DOMContentLoaded", () => {
         sauce
       ),
     ];
-    // variable qui permettra de définir un objectif pour finir un niveau par exemple
+    // used to define an objectif to finish a level
     scrollOffset = 0;
   }
 
   function initlevel3() {
     musicLevel2.pause();
-    // création de l'objet player
+    // player creation
     player = new Player(playerFont, spriteX, spriteY, isAnimated);
 
-    // création de l'objet plateform
+    // plateform creation
     plateforms = [
       //0
       new Plateform({ x: 0, y: 500, image: plateformVenise }),
@@ -956,7 +969,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }),
     ];
 
-    // création de l'objet concernant le BackGround
+    // background creation
     genericObjects = [
       new GenericObject({
         x: 0,
@@ -966,7 +979,6 @@ document.addEventListener("DOMContentLoaded", () => {
     ];
 
     spikes = [
-      // TODO change the hardcoding
       new Spikes(
         plateforms[0].position.x,
         plateforms[0].position.y - 218,
@@ -1166,21 +1178,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
     item = [
       new Item(
-        plateforms[13].position.x + 290,
-        plateforms[13].position.y - 50,
+        plateforms[0].position.x + 290,
+        plateforms[0].position.y - 50,
         mozzarellaImg
       ),
     ];
 
-    // variable qui permettra de définir un objectif pour finir un niveau par exemple
+    // used to define an objectif to finish a level
     scrollOffset = 0;
   }
 
   function initlevel4() {
-    // création de l'objet player
+    // player object creation 
     player = new Player(playerFont, spriteX, spriteY, isAnimated);
 
-    // création de l'objet plateform
+    // plateform objects creation
     plateforms = [
       new Plateform({ x: 0, y: 400, image: toscanePlatform }),
       new Plateform({
@@ -1225,7 +1237,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }),
     ];
 
-    // création de l'objet concernant le BackGround
+    // background creation
     genericObjects = [
       new GenericObject({
         x: 0,
@@ -1235,7 +1247,6 @@ document.addEventListener("DOMContentLoaded", () => {
     ];
 
     spikes = [
-      // TODO change the hardcoding
       new Spikes(
         plateforms[0].position.x + 150,
         plateforms[0].position.y - 50,
@@ -1286,22 +1297,22 @@ document.addEventListener("DOMContentLoaded", () => {
       ),
     ];
 
-    // variable qui permettra de définir un objectif pour finir un niveau par exemple
+    // used to define an objectif to finish a level
     scrollOffset = 0;
   }
 
   function initlevelFinal() {
     bossMusic.play();
-    // création de l'objet player
+    // player object creation
     player = new Player(playerFont, spriteX, spriteY, isAnimated);
 
-    // création de l'objet plateform
+    // plateform objects creation
     plateforms = [
       new Plateform({ x: 0, y: 400, image: bossPlatform }),
       new Plateform({ x: bossPlatform.width, y: 400, image: bossPlatform }),
     ];
 
-    // création de l'objet concernant le BackGround
+    // background creation
     genericObjects = [
       new GenericObject({
         x: 0,
@@ -1328,13 +1339,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     movingEnemies = [];
 
-    // variable qui permettra de définir un objectif pour finir un niveau par exemple
+    // used to define an objectif to finish a level
     scrollOffset = 0;
   }
 
-  // rafraichissement du canvas
-  function rafraichissement() {
-    requestAnimationFrame(rafraichissement);
+  // canvas refresh
+  function refresh() {
+    requestAnimationFrame(refresh);
     now = Date.now();
     delta = now - then;
     if (delta > interval) {
@@ -1344,6 +1355,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // animate the correct screen depending on the gameState
   function choixAffichage() {
     switch (gameState) {
       case STATE_MENU:
@@ -1367,22 +1379,23 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  let startTime = 0; // Initialisez le temps de départ
-  let elapsedTime = 0; // Initialisez le temps écoulé
+  // init the start of the game and the elapsed time
+  let startTime = 0; 
+  let elapsedTime = 0; 
 
+  // start the timer when the game starts
   function startTimer() {
-    startTime = Date.now(); // Mettez à jour le temps de départ à chaque démarrage du minuteur
+    startTime = Date.now(); 
   }
 
-  // permet de refresh en temps réel la position du player (evite que le player se déplace à l'infini dès qu'une touche est enfoncé)
+  // to refresh in real time the player position
   function animate() {
     c.fillStyle = "white";
     c.fillRect(0, 0, canvas.width, canvas.height);
 
-    // Vous pouvez ensuite mettre à jour elapsedTime comme suit dans votre boucle ou à un moment donné
+    // time management
     const currentTime = Date.now();
     elapsedTime = Math.floor((currentTime - startTime) / 1000); // Temps en secondes
-
     const minutes = Math.floor(elapsedTime / 60);
     const seconds = elapsedTime % 60;
     formattedTime = `${minutes.toString().padStart(2, "0")}:${seconds
@@ -1410,7 +1423,7 @@ document.addEventListener("DOMContentLoaded", () => {
     movingEnemies.forEach((MovingEnemy) => {
       checkPlayerEnemyMovingCollision(player, MovingEnemy);
 
-      // Mettez à jour la position horizontale du MovingEnemy
+      // update the position of the moving enemies
       MovingEnemy.updatePosition();
       MovingEnemy.draw(c);
     });
@@ -1418,42 +1431,32 @@ document.addEventListener("DOMContentLoaded", () => {
     if (currentLevel === 5) {
       bosses.forEach((boss) => {
         boss.draw(c);
-        // SI LE BOOLEAN EST TRUE ALORS l'ENEMY SE DEPLACE ET EST INVINCIBLE
+        // if the boolean is true, the boss can move and is not attackable
         if (isBossUpdateVerticalAllowed) {
           boss.updateVertical();
           checkMovingBossCollision(player, boss);
         }
-        // si le boolean est faux, le  boss ne bouge pas et nous pouvons maintenant l'attaqué
+        // if the boolean is false, the boss can't move and is attackable
         if (!isBossUpdateVerticalAllowed) {
           checkPlayerBossStaticCollision(player, boss);
         }
 
-        console.log("le random est de   " + random);
-
-        if (
-          Math.abs(boss.position.x + boss.width == 890) &&
-          countHitBoss === 0
-        ) {
+        if (Math.abs(boss.position.x + boss.width == 890) && countHitBoss === 0) {
           //boss.max = 890;
           maxReachedCounter++;
-        } else if (
-          Math.abs(boss.position.x + boss.width == 506) &&
-          countHitBoss === 1
-        ) {
+        } else if (Math.abs(boss.position.x + boss.width == 506) && countHitBoss === 1)  {
           //boss.max = 500;
           maxReachedCounter++;
-        } else if (
-          Math.abs(boss.position.x + boss.width == 310) &&
-          countHitBoss === 2
-        ) {
+        } else if (Math.abs(boss.position.x + boss.width == 310) && countHitBoss === 2) {
           //boss.max = 308;
           maxReachedCounter++;
         }
 
+        // if the boss reached the max position, he can't move for 3 seconds
         if (maxReachedCounter === random) {
           isBossUpdateVerticalAllowed = false;
           random = boss.randomPosition();
-
+          
           setTimeout(() => {
             maxReachedCounter = 0;
             isBossUpdateVerticalAllowed = true;
@@ -1462,7 +1465,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
 
-    // Gérer le saut automatique si le joueur est sur l'ennemi
+    // handle the automatic jump of the player when he gets top of an enemy
     if (isPlayerOnEnemy) {
       if (player.velocity.y === 0) {
         isPlayerOnEnemy = false;
@@ -1472,7 +1475,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     player.update(c, canvas, gravity);
 
-    // permet de mettre en place un niveau static pour le BossFinal
+    // static level for the boss
     if (currentLevel === 5) {
       if (keys.right.pressed && player.position.x < 930) {
         player.velocity.x = player.speed;
@@ -1486,8 +1489,7 @@ document.addEventListener("DOMContentLoaded", () => {
         player.velocity.x = 0;
       }
     } else {
-      // si la touche est enfoncé déplacement de 5 sinon 0
-      // le 400 et 100 réprésentent les positions que le joueurs ne peut pas dépassé
+      // if the keys are pressed, the velocity of the player is updated
       if (keys.right.pressed && player.position.x < 400) {
         player.velocity.x = player.speed;
         spriteY = 1;
@@ -1550,7 +1552,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
-    // gère la collision du joueur avec les plateformes
+    // handle collision between the player and the plateforms
     plateforms.forEach((plateform) => {
       if (
         player.position.y + player.height <= plateform.position.y &&
@@ -1562,7 +1564,8 @@ document.addEventListener("DOMContentLoaded", () => {
         player.velocity.y = 0;
       }
     });
-    // gère les collision du joueur avec les Moving Enemy
+
+    // handle the collision between the player and the moving enemies
     movingEnemies.forEach((MovingEnemy, index) => {
       if (
         player.position.y + player.height <= MovingEnemy.position.y &&
@@ -1579,9 +1582,9 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-    // gère les collision du joueur avec le Boss
+    // handle the collision between the player and the boss
     bosses.forEach((Boss, index) => {
-      // PERMET DE FAIRE DES DEGATS AU BOSS, LA CONDITION EST LA POUR ETRE LU UNIQUEMNT LORSQUE LE BOSS EST IMMOBILE
+      // to be able to hit the boss only once per jump
       if (!isBossUpdateVerticalAllowed) {
         if (
           player.position.y + player.height <= Boss.position.y &&
@@ -1612,30 +1615,30 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     if (player.position.y > canvas.height) {
-      if (currentLevel === 1) {
+      if (currentLevel === 1) 
         initlevel1();
-      } else if (currentLevel === 2) {
+      else if (currentLevel === 2) 
         initlevel2();
-      } else if (currentLevel === 3) {
+      else if (currentLevel === 3) 
         initlevel3();
-      } else if (currentLevel === 4) {
+      else if (currentLevel === 4) 
         initlevel4();
-      } else if (currentLevel === 5) {
+      else if (currentLevel === 5) 
         initlevelFinal();
-      }
     }
 
-    // Affichage du temps à l'écranin
+    // display the time
     c.fillStyle = "white";
     c.font = "20px Arial";
     c.fillText("Time: " + formattedTime, 20, 30);
 
+    // display the items
     drawItem(patePizzaImg, itemIndices.dough, 10);
     drawItem(sauce, itemIndices.sauce, 70);
     drawItem(mozzarellaImg, itemIndices.mozzarella, 130);
     drawItem(prosciuttoImg, itemIndices.prosciutto, 190);
 
-    //overlay pour changement de niveau
+    // overlay for the level transition
     c.save();
     c.globalAlpha = overlay.opacity;
     c.fillStyle = "black";
@@ -1643,82 +1646,66 @@ document.addEventListener("DOMContentLoaded", () => {
     c.restore();
   }
 
-  //permet de lancer le menu avant le jeu
+  // to launch the menu page when the game is launched
   function animateMenu() {
     animate_class.animateMenu(menuBackground, buttons, titleGame, gameState);
-
     initMenu();
   }
 
-  //permet de lancer la page how to play
+  // to launch the how to play page
   function animateHowToPlay() {
     animate_class.animateHowToPlay(BackgroundhowToPlay, buttons, gameState);
   }
 
-  //permet de lancer la page highscore
+  // to launch the highscore page
   function animateHighscore() {
     animate_class.animateHowToPlay(Backgroundhighscore, buttons, gameState);
   }
 
+  // to launch the player selection page
   function animatePlayerSelection() {
-    animate_class.animatePlayerSelection(
-      BackgroundPlayerSelection,
-      buttons,
-      gameState
-    );
+    animate_class.animatePlayerSelection(BackgroundPlayerSelection,buttons,gameState);
   }
 
+  // to launch the ending page
   function animateEnding() {
     animate_class.animateHowToPlay(BackgroundEnding, buttons, gameState);
   }
 
-  // assignation des touches pour les déplacements QUAND TOUCHE ENFONCE
+  // keys assignment for the movements when key is pressed
   window.addEventListener("keydown", ({ keyCode }) => {
     switch (keyCode) {
       case 65:
-        //console.log("left");
         keys.left.pressed = true;
         spriteY = 2;
         if (player.spriteY !== 2) player.spriteY = 2;
         break;
-      case 83:
-        //console.log("down");
-        break;
       case 68:
-        //console.log("right");
         keys.right.pressed = true;
         spriteY = 1;
         if (player.spriteY !== 1) player.spriteY = 1;
         break;
       case 87:
-        // console.log("up");
         keys.up.pressed = true;
         spriteY = 3;
         if (player.spriteY !== 3 && player.velocity.y === 0) player.spriteY = 3;
-        if ((player.velocity.y === 0 || isPlayerOnEnemy) && !isPlayerOnEnemy)
-          player.velocity.y -= 12;
+        if ((player.velocity.y === 0 || isPlayerOnEnemy) && !isPlayerOnEnemy) player.velocity.y -= 12;
         break;
     }
   });
 
-  // assignation des touches pour les déplacements QUAND TOUCHE RELACHE
+  // keys assignment for the movements when key is released
   window.addEventListener("keyup", ({ keyCode }) => {
     switch (keyCode) {
       case 65:
-        //console.log("left");
         keys.left.pressed = false;
         if (!keys.right.pressed) player.spriteY = 0;
         break;
-      case 83:
-        //console.log("down");
-        break;
       case 68:
-        // console.log("right");
         keys.right.pressed = false;
         if (!keys.left.pressed) player.spriteY = 0;
         break;
       case 87:
-        // console.log("up");
         keys.up.pressed = false;
         if (!keys.left.pressed && !keys.right.pressed) player.spriteY = 0;
         if (keys.left.pressed) player.spriteY = 2;
@@ -1726,5 +1713,5 @@ document.addEventListener("DOMContentLoaded", () => {
         break;
     }
   });
-  rafraichissement();
+  refresh();
 });

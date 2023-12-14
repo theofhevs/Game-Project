@@ -1,5 +1,5 @@
-class Titre {
-  //définir la position du titre
+class Title {
+  // define title size, position and image
   constructor({ x, y, image }) {
     this.position = {
       x,
@@ -9,6 +9,8 @@ class Titre {
     this.width = image.width / 2.5;
     this.height = image.height / 2.5;
   }
+  
+  // title creation in the canvas
   draw(c) {
     c.drawImage(
       this.image,
@@ -20,4 +22,4 @@ class Titre {
   }
 }
 
-export default Titre;
+export default Title;

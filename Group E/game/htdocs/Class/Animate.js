@@ -7,6 +7,7 @@ class Animate {
     this.c = this.canvas.getContext("2d");
   }
 
+  // menu animation function with background, buttons and title
   animateMenu(menuBackground, buttons, titleGame, gameState) {
     this.fillStyle = "white";
     this.c.fillRect(0, 0, canvas.width, canvas.height);
@@ -28,6 +29,7 @@ class Animate {
     });
   }
 
+  // how to play animation function with background and buttons
   animateHowToPlay(BackgroundhowToPlay, buttons, gameState) {
     this.c.fillStyle = "white";
     this.c.fillRect(0, 0, canvas.width, canvas.height);
@@ -45,12 +47,8 @@ class Animate {
     });
   }
 
+  // highscore animation function with background and buttons
   animateHighscore(Backgroundhighscore, buttons, gameState) {
-    /* animate_class.animateHowToPlay(
-             Backgroundhighscore,
-             buttons,
-             gameState
-           ); */
     this.c.fillStyle = "white";
     this.c.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -66,6 +64,8 @@ class Animate {
       }
     });
   }
+
+  // player selection animation function with background and buttons
   animatePlayerSelection(BackgroundPlayerSelection, buttons, gameState) {
     this.c.fillStyle = "white";
     this.c.fillRect(0, 0, canvas.width, canvas.height);
@@ -84,8 +84,5 @@ class Animate {
   }
 
 }
-
-
-
 
 export default Animate;

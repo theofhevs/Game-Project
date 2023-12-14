@@ -7,17 +7,17 @@ class DragAndDropHandler {
     }
   
     createDropZone() {
-      // Create the drop zone div
+      // create the drop zone div
       this.dropZone = document.createElement('div');
       this.dropZone.className = 'drop-zone';
       this.dropZone.id = 'dropZone';
   
-      // Create the drop zone text
+      // create the drop zone text 
       const promptSpan = document.createElement('span');
       promptSpan.className = 'drop-zone__prompt';
       promptSpan.textContent = 'Drop image here or click to upload';
   
-      // Create the file input element
+      // create the file input element 
       this.fileInput = document.createElement('input');
       this.fileInput.type = 'file';
       this.fileInput.name = 'myFile';
@@ -30,58 +30,60 @@ class DragAndDropHandler {
       document.body.appendChild(this.dropZone);
     }
   
+    // handle the file input change and update the thumbnail
     handleFile() {
       const selectedFile = this.fileInput.files[0];
       this.updateThumbnail(selectedFile);
     }
   
-      // Function to handle uploaded file
-  updateThumbnail(file) {
-    let thumbnailElement = this.dropZone.querySelector('.drop-zone__thumb');
-  
-    // First time - remove the prompt
-    if (this.dropZone.querySelector('.drop-zone__prompt'))
-      this.dropZone.querySelector('.drop-zone__prompt').remove();
+    // update the thumbnail container with the selected file
+    updateThumbnail(file) {
+      let thumbnailElement = this.dropZone.querySelector('.drop-zone__thumb');
     
-    // Remove any existing incorrect file type message
-    let incorrectFileType = this.dropZone.querySelector('.incorrect-file-type');
-    if (incorrectFileType) {
-      incorrectFileType.remove();
-    }
-
-    // Creation of the thumbnail if it doesn't exist
-    if (!thumbnailElement) {
-      thumbnailElement = document.createElement('div');
-      thumbnailElement.classList.add('drop-zone__thumb');
-      dropZone.appendChild(thumbnailElement);
-    }
-  
-    thumbnailElement.dataset.label = file.name;
-  
-    // Show thumbnail for image files
-    if (file.type.startsWith('image/')) {
-      //delete the "incorrect file type" message if it exists
-      let incorrectFileType = document.querySelector('.incorrect-file-type');
-      if (incorrectFileType)
+      // first time - remove the prompt
+      if (this.dropZone.querySelector('.drop-zone__prompt'))
+        this.dropZone.querySelector('.drop-zone__prompt').remove();
+      
+      // remove any existing incorrect file type message
+      let incorrectFileType = this.dropZone.querySelector('.incorrect-file-type');
+      if (incorrectFileType) {
         incorrectFileType.remove();
+      }
 
-      const reader = new FileReader();
+      // creation of the thumbnail if it doesn't exist
+      if (!thumbnailElement) {
+        thumbnailElement = document.createElement('div');
+        thumbnailElement.classList.add('drop-zone__thumb');
+        dropZone.appendChild(thumbnailElement);
+      }
+    
+      thumbnailElement.dataset.label = file.name;
   
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        thumbnailElement.style.backgroundImage = `url('${reader.result}')`;
-        this.playerFont.src = reader.result;
-      };
-    } else {
-      // Add an "incorrect file type" message in case the user tries to upload a file that is not an image
-      let incorrectFileType = document.createElement('div');
-      incorrectFileType.classList.add('incorrect-file-type');
-      incorrectFileType.innerHTML = 'Incorrect file type';
-      dropZone.appendChild(incorrectFileType);
-      thumbnailElement.remove();
+      // show thumbnail for image files
+      if (file.type.startsWith('image/')) {
+        // delete the "incorrect file type" message if it exists
+        let incorrectFileType = document.querySelector('.incorrect-file-type');
+        if (incorrectFileType)
+          incorrectFileType.remove();
+
+        const reader = new FileReader();
+    
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+          thumbnailElement.style.backgroundImage = `url('${reader.result}')`;
+          this.playerFont.src = reader.result;
+        };
+      } else {
+        // add an "incorrect file type" message in case the user tries to upload a file that is not an image
+        let incorrectFileType = document.createElement('div');
+        incorrectFileType.classList.add('incorrect-file-type');
+        incorrectFileType.innerHTML = 'Incorrect file type';
+        dropZone.appendChild(incorrectFileType);
+        thumbnailElement.remove();
+      }
     }
-  }
   
+    // setup the event listeners for the drop zone
     setupDropZone() {
       this.createDropZone();
   
@@ -114,61 +116,63 @@ class DragAndDropHandler {
       });
     }
 
-  addStyles() {
-    const styleElement = document.createElement('style');
-    styleElement.textContent = `
-    .drop-zone {
-      width: 200px;
-      height: 200px;
-      padding: 25px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      font-family: "Quicksand", sans-serif;
-      font-weight: 500;
-      font-size: 30px;
-      cursor: pointer;
-      color: #fcfcfc;
-      border: 4px dashed #a26eea;
-      text-shadow: 0 0 5px #a26eea, 0 0 10px #a26eea, 0 0 20px #a26eea;
-      border-radius: 10px;
-      position: absolute;
-    }
+    // add the styles for the drop zone
+    addStyles() {
+      const styleElement = document.createElement('style');
+      styleElement.textContent = `
+      .drop-zone {
+        width: 200px;
+        height: 200px;
+        padding: 25px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        font-family: "Quicksand", sans-serif;
+        font-weight: 500;
+        font-size: 30px;
+        cursor: pointer;
+        color: #fcfcfc;
+        border: 4px dashed #a26eea;
+        text-shadow: 0 0 5px #a26eea, 0 0 10px #a26eea, 0 0 20px #a26eea;
+        border-radius: 10px;
+        position: absolute;
+      }
 
-    .drop-zone--over {
-      border-style: solid;
-      
-    }
+      .drop-zone--over {
+        border-style: solid;
+        
+      }
 
-    .drop-zone__input {
-      display: none;
-    }
+      .drop-zone__input {
+        display: none;
+      }
 
-    .drop-zone__thumb {
-      width: 100%;
-      height: 100%;
-      border-radius: 10px;
-      overflow: hidden;
-      background-size: cover;
-      position: relative;
-    }
+      .drop-zone__thumb {
+        width: 100%;
+        height: 100%;
+        border-radius: 10px;
+        overflow: hidden;
+        background-size: cover;
+        position: relative;
+      }
 
-    .drop-zone__thumb::after {
-      content: attr(data-label);
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      padding: 5px 0;
-      color: #ffffff;
-      background: rgba(0, 0, 0, 0.75);
-      font-size: 14px;
-      text-align: center;
-    }
-    `;
+      .drop-zone__thumb::after {
+        content: attr(data-label);
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        padding: 5px 0;
+        color: #ffffff;
+        background: rgba(0, 0, 0, 0.75);
+        font-size: 14px;
+        text-align: center;
+      }
+      `;
 
-    document.head.appendChild(styleElement);
+      // add the styles to the head of the document
+      document.head.appendChild(styleElement);
     }
   }
   

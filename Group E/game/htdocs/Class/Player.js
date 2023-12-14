@@ -1,6 +1,5 @@
- // Creation du Personnage 
  class Player {
-    // definit sa position ainsi que sa grandeur
+    // player creation 
     constructor(image, spriteX, spriteY, isAnimated) {
         this.spriteX = spriteX
         this.spriteY = spriteY
@@ -8,21 +7,23 @@
         this.gameFrame = 0
         this.staggerFrames = 20
 
+        // set player speed and initial position
         this.speed = 4
         this.position = {
             x: 125,
             y: 100
         }
 
-        // set la gravité du personnage 
+        // set player velocity
         this.velocity = {
             x: 0,
             y: 0
         }
 
+        // set player image
         this.image = image
 
-        //taille du player
+        // set player size
         this.width = 96
         this.height = 96
     }
@@ -42,7 +43,7 @@
             c.drawImage(this.image, this.position.x, this.position.y, this.width, this.height)
     
     }
-    // gère la position du joueur avec la velocité choisi
+    // handle player position and velocity
     update(c, canvas, gravity) {
         this.draw(c)
         this.position.x += this.velocity.x

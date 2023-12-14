@@ -11,16 +11,15 @@ audio {
     position: fixed;
     top: 0;
 }
-
   
   .scoreboard-table {
-    width: 90%; /* Adjust the width as needed */
-    margin: 0 auto; /* Center the table horizontally */
-    font-size: 20px; /* Increase font size for better visibility */
+    width: 90%; 
+    margin: 0 auto; 
+    font-size: 20px; 
   }
   
   .scoreboard-table td, .scoreboard-table th {
-    padding: 16px; /* Increase padding for better spacing */
+    padding: 16px; 
     text-align: left;
   }
   
