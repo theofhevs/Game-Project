@@ -1,4 +1,4 @@
-// classes import 
+// classes import
 import Plateform from "./Class/Plateform.js";
 import GenericObject from "./Class/GenericObject.js";
 import Player from "./Class/Player.js";
@@ -68,6 +68,7 @@ const desertPlatform = new Image();
 const plateformVenise = new Image();
 const plateformVeniseBottom = new Image();
 const plateformVeniseSmall = new Image();
+const plateformVeniseSmallRed = new Image();
 const cityBackground = new Image();
 const mozzarellaImg = new Image();
 const chefEnemy = new Image();
@@ -119,6 +120,7 @@ tinyPlateformFont.src = imgURL + "platform.png";
 plateformVenise.src = imgURL + "platformVenise.png";
 plateformVeniseBottom.src = imgURL + "platformVeniseBottom.png";
 plateformVeniseSmall.src = imgURL + "platformVeniseSmall.png";
+plateformVeniseSmallRed.src = imgURL + "piloneSimpleRed.png";
 howToPlay.src = imgURL + "HowToPlay.png";
 startGame.src = imgURL + "StartGame.png";
 highscore.src = imgURL + "Highscore.png";
@@ -131,7 +133,7 @@ backToMenu.src = imgURL + "backToMenu.png";
 // animation import
 const animate_class = new Animate();
 
-// setup the canvas and context 
+// setup the canvas and context
 document.addEventListener("DOMContentLoaded", () => {
   const canvas = document.querySelector("canvas");
   const c = canvas.getContext("2d");
@@ -180,7 +182,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let formattedTime;
 
-  // item creation 
+  // item creation
   let item = [];
 
   const itemIndices = {
@@ -190,7 +192,7 @@ document.addEventListener("DOMContentLoaded", () => {
     prosciutto: 3,
   };
 
-  // item opacities for each level 
+  // item opacities for each level
   const itemOpacities = {
     [itemIndices.dough]: { 1: 0.3, 2: 2.5, 3: 2.5, 4: 2.5, 5: 2.5 },
     [itemIndices.sauce]: { 1: 0.3, 2: 0.3, 3: 2.5, 4: 2.5, 5: 2.5 },
@@ -198,7 +200,7 @@ document.addEventListener("DOMContentLoaded", () => {
     [itemIndices.prosciutto]: { 1: 0.3, 2: 0.3, 3: 0.3, 4: 0.3, 5: 2.5 },
   };
 
-  // menu creation 
+  // menu creation
   let buttons = [];
   let titleGame = [];
   let menuBackground = [];
@@ -218,7 +220,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // spikes creation
   let spikes = [];
 
-  // moving enemies creation 
+  // moving enemies creation
   let movingEnemies = [];
   let movingEnemiesY = [];
 
@@ -234,7 +236,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let random = 5;
   // start position of the boss
   let positionBossRandom = 890;
-  
+
   // set the gravity
   const gravity = 0.4;
 
@@ -291,21 +293,16 @@ document.addEventListener("DOMContentLoaded", () => {
         onComplete: () => {
           currentLevel++;
           // init the level
-          if (currentLevel === 1)
-            initlevel1();
-           else if (currentLevel === 2) 
-            initlevel2();
-           else if (currentLevel === 3) 
-            initlevel3();
-           else if (currentLevel === 4) 
-            initlevel4();
-           else if (currentLevel === 5) 
-            initlevelFinal();
-          
+          if (currentLevel === 1) initlevel1();
+          else if (currentLevel === 2) initlevel2();
+          else if (currentLevel === 3) initlevel3();
+          else if (currentLevel === 4) initlevel4();
+          else if (currentLevel === 5) initlevelFinal();
+
           gsap.to(overlay, {
             opacity: 0,
             onComplete: () => {
-              isIncrementingLevel = false; 
+              isIncrementingLevel = false;
             },
           });
         },
@@ -324,17 +321,12 @@ document.addEventListener("DOMContentLoaded", () => {
       player.position.y < enemy.position.y + enemy.height;
     // the condition triggers if both collisions (X and Y) are true
     if (Collision) {
-      // init the level 
-      if (currentLevel === 1) 
-        initlevel1();
-       else if (currentLevel === 2) 
-        initlevel2();
-       else if (currentLevel === 3) 
-        initlevel3();
-       else if (currentLevel === 4) 
-        initlevel4();
-       else if (currentLevel === 5) 
-        initlevelFinal();
+      // init the level
+      if (currentLevel === 1) initlevel1();
+      else if (currentLevel === 2) initlevel2();
+      else if (currentLevel === 3) initlevel3();
+      else if (currentLevel === 4) initlevel4();
+      else if (currentLevel === 5) initlevelFinal();
     }
   }
 
@@ -351,16 +343,11 @@ document.addEventListener("DOMContentLoaded", () => {
     if (Collision) {
       console.log("");
 
-      if (currentLevel === 1) 
-        initlevel1();
-      else if (currentLevel === 2) 
-        initlevel2();
-      else if (currentLevel === 3) 
-        initlevel3();
-      else if (currentLevel === 4) 
-        initlevel4();
-      else if (currentLevel === 5) 
-        initlevelFinal();
+      if (currentLevel === 1) initlevel1();
+      else if (currentLevel === 2) initlevel2();
+      else if (currentLevel === 3) initlevel3();
+      else if (currentLevel === 4) initlevel4();
+      else if (currentLevel === 5) initlevelFinal();
     }
   }
 
@@ -461,10 +448,9 @@ document.addEventListener("DOMContentLoaded", () => {
           playerFont.onload = () => {
             isAnimated = true;
 
-            // reset the drop zone 
+            // reset the drop zone
             const dropZone = document.getElementById("dropZone");
-            if (dropZone)
-              dropZone.remove();
+            if (dropZone) dropZone.remove();
 
             const dragAndDropHandler = new DragAndDropHandler(
               playerFont,
@@ -508,9 +494,8 @@ document.addEventListener("DOMContentLoaded", () => {
         initMethod: () => {
           // remove the modal content when the back button is clicked
           const modalContent = document.getElementById("modalContent");
-          if (modalContent)
-            modalContent.remove();
-          
+          if (modalContent) modalContent.remove();
+
           if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
               (position) => {
@@ -571,7 +556,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function initHighscore() {
     showScoreboard();
     musicMenu.play();
-   Backgroundhighscore = [
+    Backgroundhighscore = [
       new BackgroundMenu({ x: 0, y: 0, image: backgroundMenu }),
     ];
   }
@@ -637,7 +622,7 @@ document.addEventListener("DOMContentLoaded", () => {
     musicMenu.pause();
     musicLevel1.play();
     // player object creation
-    player = new Player(playerFont, spriteX, spriteY,isAnimated);
+    player = new Player(playerFont, spriteX, spriteY, isAnimated);
 
     // plateforms creation
     plateforms = [
@@ -811,7 +796,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }),
     ];
 
-    // background creation 
+    // background creation
     genericObjects = [
       new GenericObject({
         x: 0,
@@ -939,21 +924,21 @@ document.addEventListener("DOMContentLoaded", () => {
       }),
       //10
       new Plateform({
-        x: plateformVenise.width * 7.2,
-        y: 500,
-        image: plateformVeniseSmall,
+        x: plateformVenise.width * 7.1,
+        y: 300,
+        image: plateformVeniseSmallRed,
       }),
       //11
       new Plateform({
         x: plateformVenise.width * 6.6,
         y: 400,
-        image: plateformVeniseSmall,
+        image: plateformVeniseSmallRed,
       }),
       //12
       new Plateform({
-        x: plateformVenise.width * 7.1,
-        y: 300,
-        image: plateformVeniseSmall,
+        x: plateformVenise.width * 7.2,
+        y: 500,
+        image: plateformVeniseSmallRed,
       }),
       //13
       new Plateform({
@@ -1178,8 +1163,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     item = [
       new Item(
-        plateforms[0].position.x + 290,
-        plateforms[0].position.y - 50,
+        plateforms[13].position.x + 290,
+        plateforms[13].position.y - 50,
         mozzarellaImg
       ),
     ];
@@ -1189,7 +1174,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function initlevel4() {
-    // player object creation 
+    // player object creation
     player = new Player(playerFont, spriteX, spriteY, isAnimated);
 
     // plateform objects creation
@@ -1380,12 +1365,12 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // init the start of the game and the elapsed time
-  let startTime = 0; 
-  let elapsedTime = 0; 
+  let startTime = 0;
+  let elapsedTime = 0;
 
   // start the timer when the game starts
   function startTimer() {
-    startTime = Date.now(); 
+    startTime = Date.now();
   }
 
   // to refresh in real time the player position
@@ -1441,13 +1426,22 @@ document.addEventListener("DOMContentLoaded", () => {
           checkPlayerBossStaticCollision(player, boss);
         }
 
-        if (Math.abs(boss.position.x + boss.width == 890) && countHitBoss === 0) {
+        if (
+          Math.abs(boss.position.x + boss.width == 890) &&
+          countHitBoss === 0
+        ) {
           //boss.max = 890;
           maxReachedCounter++;
-        } else if (Math.abs(boss.position.x + boss.width == 506) && countHitBoss === 1)  {
+        } else if (
+          Math.abs(boss.position.x + boss.width == 506) &&
+          countHitBoss === 1
+        ) {
           //boss.max = 500;
           maxReachedCounter++;
-        } else if (Math.abs(boss.position.x + boss.width == 310) && countHitBoss === 2) {
+        } else if (
+          Math.abs(boss.position.x + boss.width == 310) &&
+          countHitBoss === 2
+        ) {
           //boss.max = 308;
           maxReachedCounter++;
         }
@@ -1456,7 +1450,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (maxReachedCounter === random) {
           isBossUpdateVerticalAllowed = false;
           random = boss.randomPosition();
-          
+
           setTimeout(() => {
             maxReachedCounter = 0;
             isBossUpdateVerticalAllowed = true;
@@ -1615,16 +1609,11 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     if (player.position.y > canvas.height) {
-      if (currentLevel === 1) 
-        initlevel1();
-      else if (currentLevel === 2) 
-        initlevel2();
-      else if (currentLevel === 3) 
-        initlevel3();
-      else if (currentLevel === 4) 
-        initlevel4();
-      else if (currentLevel === 5) 
-        initlevelFinal();
+      if (currentLevel === 1) initlevel1();
+      else if (currentLevel === 2) initlevel2();
+      else if (currentLevel === 3) initlevel3();
+      else if (currentLevel === 4) initlevel4();
+      else if (currentLevel === 5) initlevelFinal();
     }
 
     // display the time
@@ -1664,7 +1653,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // to launch the player selection page
   function animatePlayerSelection() {
-    animate_class.animatePlayerSelection(BackgroundPlayerSelection,buttons,gameState);
+    animate_class.animatePlayerSelection(
+      BackgroundPlayerSelection,
+      buttons,
+      gameState
+    );
   }
 
   // to launch the ending page
@@ -1689,7 +1682,8 @@ document.addEventListener("DOMContentLoaded", () => {
         keys.up.pressed = true;
         spriteY = 3;
         if (player.spriteY !== 3 && player.velocity.y === 0) player.spriteY = 3;
-        if ((player.velocity.y === 0 || isPlayerOnEnemy) && !isPlayerOnEnemy) player.velocity.y -= 12;
+        if ((player.velocity.y === 0 || isPlayerOnEnemy) && !isPlayerOnEnemy)
+          player.velocity.y -= 12;
         break;
     }
   });

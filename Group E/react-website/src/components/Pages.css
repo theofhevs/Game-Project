@@ -66,7 +66,7 @@ p {
 
 .wp-block-cover__image-background{
     width: 100%;
-
+    height: 200px;
 }
 
 img {
@@ -109,16 +109,48 @@ img.wptb-image-element-target{
     margin-top: 20px;
   }
 
-  .wp-image-225{
+    /* pizza */
+    .wp-image-225 {
+        width: 100px !important;
+        height: auto !important;
+        object-fit: cover;
+    }
 
+    /* burger */
+    .wp-image-251 {
+        display: flex;
+        width: 130px !important;
+        height: auto !important;
+        object-fit: cover;
+        margin-left: -50px;
+    }
+
+  /* chapeau */
+  .wp-image-252 {
+    display: flex;
+    width: 120px !important;
+    height: auto !important;
     object-fit: cover;
-    width: 100px;
-    height: auto;
+    margin-left: 200px;
+    margin-top: -160px;
   }
+
+  /* boss */
+  .wp-image-253 {
+    object-fit: cover;
+    width: 100px !important;
+    height: auto !important;
+  }
+
+
 
   .wp-block-image {
     margin-left: 90px;
     margin-right: 90px;
+  }
+
+  .alignleft{
+    display: inline-block;
   }
 
 
