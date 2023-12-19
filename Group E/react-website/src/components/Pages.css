@@ -1,0 +1,124 @@
+@import url("https://fonts.googleapis.com/css?family=Poppins");
+
+body{
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    background-color: #bbbbbb;
+}
+
+h1.wp-block-heading {
+    font-size: 70px;
+    color: white;
+    text-align: center;
+    margin-top: -160px;
+    text-shadow: black 0em 0em 0.3em;
+}
+
+h2.wp-block-heading {
+    font-size: 70px;
+    color: black;
+    text-align: left;
+    margin-top: 100px;
+    margin-left: 90px;
+}
+
+h3.wp-block-heading {
+    font-size: 40px;
+    color: black;
+    text-align: left;
+    margin-top: 100px;
+    margin-left: 90px;
+}
+
+h4.wp-block-heading {
+    font-size: 70px;
+    color: black;
+    text-align: center;
+    margin-top: 100px;
+}
+
+p {
+    font-size: 25px;
+    margin-left: 90px;
+    margin-right: 90px;
+}
+
+.wp-block-button__link {
+    display: flex;
+    background-color: #121619;
+    color: white;
+    border: 1px solid #121619;
+    border-radius: 25px;
+    padding: 10px;
+    font-size: 20px;
+    font-family: 'Poppins', sans-serif;
+    text-decoration: none;
+    width: 200px;
+    justify-content: center;
+    margin: auto;
+}
+
+.wp-block-button__link:hover {
+    text-decoration: none;
+    color: rgb(250, 6, 6);
+}
+
+.wp-block-cover__image-background{
+    width: 100%;
+
+}
+
+img {
+    width: 70%;
+    height: auto;
+    object-fit: cover;
+    z-index: 999;
+
+}
+
+table {
+    width: auto;
+    margin: 90px;
+    table-layout: fixed;
+    border-collapse: collapse;
+    border: #121619 1px solid !important;
+    padding-bottom: 90px;
+}
+
+ th,
+ td {
+    width: 25%;
+    border: #121619 1px solid !important;
+ }
+
+img.wptb-image-element-target{
+      display: block;
+      width: 100% !important;
+      margin: 0 auto;
+      height: auto !important;
+  }
+
+  ul {
+    margin-left: 90px;
+    padding-bottom: 90px;
+  }
+
+  li {
+    font-size: 25px;
+    margin-top: 20px;
+  }
+
+  .wp-image-225{
+
+    object-fit: cover;
+    width: 100px;
+    height: auto;
+  }
+
+  .wp-block-image {
+    margin-left: 90px;
+    margin-right: 90px;
+  }
+
+
