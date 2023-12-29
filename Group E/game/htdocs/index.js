@@ -622,7 +622,7 @@ document.addEventListener("DOMContentLoaded", () => {
     musicMenu.pause();
     musicLevel1.play();
     // player object creation
-    player = new Player(playerFont, spriteX, spriteY, isAnimated);
+    player = new Player(playerFont, spriteX, spriteY,isAnimated);
 
     // plateforms creation
     plateforms = [
@@ -647,7 +647,7 @@ document.addEventListener("DOMContentLoaded", () => {
         image: plateformFont,
       }),
       new Plateform({
-        x: plateformFont.width * 6,
+        x: plateformFont.width * 8,
         y: 380,
         image: plateformFont,
       }),
@@ -697,11 +697,77 @@ document.addEventListener("DOMContentLoaded", () => {
 
     movingEnemies = [
       new MovingEnemy(
+        plateforms[1].position.x - 200,
+        300,
+        "vertical",
+        0,
+        400,
+        0,
+        1,
+        burgerEnemy,
+        spriteX
+      ),
+      new MovingEnemy(
         plateforms[2].position.x + 240,
         plateforms[2].position.y,
         "vertical",
         0,
         plateforms[2].position.y,
+        0,
+        1,
+        burgerEnemy,
+        spriteX
+      ),
+      new MovingEnemy(
+        plateforms[3].position.x + 600,
+        0,
+        "vertical",
+        150,
+        plateforms[3].position.y,
+        0,
+        1,
+        burgerEnemy,
+        spriteX
+      ),
+      new MovingEnemy(
+        plateforms[3].position.x + 850,
+        0,
+        "vertical",
+        150,
+        plateforms[3].position.y,
+        0,
+        1,
+        burgerEnemy,
+        spriteX
+      ),
+      new MovingEnemy(
+        plateforms[3].position.x + 1100,
+        0,
+        "vertical",
+        150,
+        plateforms[3].position.y,
+        0,
+        1,
+        burgerEnemy,
+        spriteX
+      ),
+      new MovingEnemy(
+        plateforms[3].position.x + 1350,
+        0,
+        "vertical",
+        150,
+        plateforms[3].position.y,
+        0,
+        1,
+        burgerEnemy,
+        spriteX
+      ),
+      new MovingEnemy(
+        plateforms[3].position.x + 1600,
+        0,
+        "vertical",
+        150,
+        plateforms[3].position.y,
         0,
         1,
         burgerEnemy,
@@ -753,50 +819,49 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // plateform creation
     plateforms = [
-      new Plateform({ x: 0, y: 350, image: desertPlatform }),
+      new Plateform({ 
+        x: 0, 
+        y: 350, 
+        image: desertPlatform 
+      }),
       new Plateform({
         x: desertPlatform.width * 2 - 350,
         y: 500,
         image: desertPlatform,
       }),
       new Plateform({
-        x: desertPlatform.width * 2,
+        x: desertPlatform.width * 2.5,
+        y: 450,
+        image: desertPlatform,
+      }),
+      new Plateform({
+        x: desertPlatform.width * 3.7,
+        y: 350,
+        image: desertPlatform,
+      }),
+      new Plateform({
+        x: desertPlatform.width * 5,
+        y: 300,
+        image: desertPlatform,
+      }),
+      new Plateform({
+        x: desertPlatform.width * 6.3,
+        y: 200,
+        image: desertPlatform,
+      }),
+      new Plateform({
+        x: desertPlatform.width * 7.9,
         y: 500,
         image: desertPlatform,
       }),
       new Plateform({
-        x: desertPlatform.width * 3.2,
-        y: 500,
-        image: desertPlatform,
-      }),
-      new Plateform({
-        x: desertPlatform.width * 3.8,
-        y: 500,
-        image: desertPlatform,
-      }),
-      new Plateform({
-        x: desertPlatform.width * 5.3,
-        y: 500,
-        image: desertPlatform,
-      }),
-      new Plateform({
-        x: desertPlatform.width * 6.7,
-        y: 500,
-        image: desertPlatform,
-      }),
-      new Plateform({
-        x: desertPlatform.width * 8.25,
-        y: 500,
-        image: desertPlatform,
-      }),
-      new Plateform({
-        x: desertPlatform.width * 9.8,
+        x: desertPlatform.width * 9,
         y: 500,
         image: desertPlatform,
       }),
     ];
 
-    // background creation
+    // background creation 
     genericObjects = [
       new GenericObject({
         x: 0,
@@ -807,40 +872,86 @@ document.addEventListener("DOMContentLoaded", () => {
 
     spikes = [
       new Spikes(
-        plateforms[4].position.x + 150,
-        plateforms[4].position.y - 50,
+        plateforms[1].position.x,
+        plateforms[1].position.y - 50,
         spikesImg
       ),
       new Spikes(
-        plateforms[5].position.x + 240,
+        plateforms[2].position.x + 240,
+        plateforms[2].position.y - 50,
+        spikesImg
+      ),
+      new Spikes(
+        plateforms[3].position.x + 290,
+        plateforms[3].position.y - 50,
+        spikesImg
+      ),
+      new Spikes(
+        plateforms[3].position.x + 340,
+        plateforms[3].position.y - 50,
+        spikesImg
+      ),
+      new Spikes(
+        plateforms[5].position.x + 100,
         plateforms[5].position.y - 50,
         spikesImg
       ),
       new Spikes(
-        plateforms[5].position.x + 290,
-        plateforms[5].position.y - 50,
+        plateforms[6].position.x,
+        plateforms[6].position.y - 50,
+        spikesImg
+      ),
+      new Spikes(
+        plateforms[6].position.x + 50,
+        plateforms[6].position.y - 50,
+        spikesImg
+      ),
+      new Spikes(
+        plateforms[6].position.x + 100,
+        plateforms[6].position.y - 50,
+        spikesImg
+      ),
+      new Spikes(
+        plateforms[6].position.x + 150,
+        plateforms[6].position.y - 50,
+        spikesImg
+      ),
+      new Spikes(
+        plateforms[6].position.x + 350,
+        plateforms[6].position.y - 50,
         spikesImg
       ),
     ];
 
     movingEnemies = [
       new MovingEnemy(
-        plateforms[1].position.x + 240,
-        plateforms[1].position.y - 80,
+        plateforms[6].position.x - 100,
+        0,
         "vertical",
-        200,
-        plateforms[1].position.y,
+        150,
+        plateforms[6].position.y,
         0,
         1,
         burgerEnemy,
         spriteX
       ),
       new MovingEnemy(
-        plateforms[0].position.x + 240,
-        plateforms[0].position.y - 80,
+        plateforms[4].position.x + 240,
+        plateforms[4].position.y - 80,
         "horizontal",
-        plateforms[0].position.x,
-        plateforms[0].position.x + plateforms[0].width,
+        plateforms[4].position.x,
+        plateforms[4].position.x + plateforms[0].width,
+        1,
+        0,
+        chefEnemy,
+        spriteX
+      ),
+      new MovingEnemy(
+        plateforms[6].position.x + 240,
+        plateforms[6].position.y - 80,
+        "horizontal",
+        plateforms[6].position.x,
+        plateforms[6].position.x + plateforms[0].width,
         1,
         0,
         chefEnemy,
@@ -850,8 +961,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     item = [
       new Item(
-        plateforms[1].position.x + 290,
-        plateforms[1].position.y - 50,
+        plateforms[0].position.x + 290,
+        plateforms[0].position.y - 50,
         sauce
       ),
     ];
@@ -1172,52 +1283,35 @@ document.addEventListener("DOMContentLoaded", () => {
     // used to define an objectif to finish a level
     scrollOffset = 0;
   }
-
   function initlevel4() {
-    // player object creation
+    // player object creation 
     player = new Player(playerFont, spriteX, spriteY, isAnimated);
 
     // plateform objects creation
     plateforms = [
-      new Plateform({ x: 0, y: 400, image: toscanePlatform }),
       new Plateform({
         x: 0,
-        y: -500,
+        y: 350,
         image: toscanePlatform,
       }),
       new Plateform({
-        x: toscanePlatform.width * 2,
-        y: 500,
+        x: toscanePlatform.width * 1.5,
+        y: 250,
         image: toscanePlatform,
       }),
       new Plateform({
-        x: toscanePlatform.width * 3.2,
-        y: 500,
+        x: toscanePlatform.width * 3,
+        y: 305,
         image: toscanePlatform,
       }),
       new Plateform({
-        x: toscanePlatform.width * 3.8,
-        y: 500,
+        x: toscanePlatform.width * 4.5,
+        y: 420,
         image: toscanePlatform,
       }),
       new Plateform({
-        x: toscanePlatform.width * 5.3,
-        y: 500,
-        image: toscanePlatform,
-      }),
-      new Plateform({
-        x: toscanePlatform.width * 6.7,
-        y: 500,
-        image: toscanePlatform,
-      }),
-      new Plateform({
-        x: toscanePlatform.width * 8.25,
-        y: 500,
-        image: toscanePlatform,
-      }),
-      new Plateform({
-        x: toscanePlatform.width * 9.8,
-        y: 500,
+        x: toscanePlatform.width * 6,
+        y: 380,
         image: toscanePlatform,
       }),
     ];
@@ -1233,40 +1327,110 @@ document.addEventListener("DOMContentLoaded", () => {
 
     spikes = [
       new Spikes(
-        plateforms[0].position.x + 150,
-        plateforms[0].position.y - 50,
+        plateforms[4].position.x + 150,
+        plateforms[4].position.y - 50,
         spikesImg
       ),
       new Spikes(
-        plateforms[5].position.x + 240,
-        plateforms[5].position.y - 50,
+        plateforms[4].position.x + 200,
+        plateforms[4].position.y - 50,
         spikesImg
       ),
       new Spikes(
-        plateforms[5].position.x + 290,
-        plateforms[5].position.y - 50,
+        plateforms[4].position.x + 350,
+        plateforms[4].position.y - 50,
+        spikesImg
+      ),
+      new Spikes(
+        plateforms[4].position.x + 400,
+        plateforms[4].position.y - 50,
+        spikesImg
+      ),
+      new Spikes(
+        plateforms[2].position.x + 240,
+        plateforms[2].position.y - 50,
+        spikesImg
+      ),
+      new Spikes(
+        plateforms[2].position.x + 290,
+        plateforms[2].position.y - 50,
         spikesImg
       ),
     ];
 
     movingEnemies = [
       new MovingEnemy(
-        plateforms[1].position.x + 240,
-        plateforms[1].position.y - 80,
+        plateforms[1].position.x - 200,
+        200,
         "vertical",
         200,
-        plateforms[1].position.y,
+        400,
         0,
         1,
         burgerEnemy,
         spriteX
       ),
       new MovingEnemy(
-        plateforms[0].position.x + 240,
-        plateforms[0].position.y - 80,
+        plateforms[0].position.x + 300,
+        plateforms[0].position.y -80,
+        "vertical",
+        0,
+        plateforms[0].position.y,
+        0,
+        1,
+        burgerEnemy,
+        spriteX
+      ),
+      new MovingEnemy(
+        plateforms[4].position.x + 400,
+        plateforms[4].position.y -80,
+        "vertical",
+        0,
+        plateforms[4].position.y,
+        0,
+        1,
+        burgerEnemy,
+        spriteX
+      ),
+      new MovingEnemy(
+        plateforms[3].position.x +200,
+        plateforms[3].position.y -80,
+        "vertical",
+        0,
+        plateforms[3].position.y,
+        0,
+        1,
+        burgerEnemy,
+        spriteX
+      ),
+      new MovingEnemy(
+        plateforms[1].position.x + 240,
+        plateforms[1].position.y - 80,
         "horizontal",
-        plateforms[0].position.x,
-        plateforms[0].position.x + plateforms[0].width,
+        plateforms[1].position.x,
+        plateforms[1].position.x + plateforms[0].width,
+        1,
+        0,
+        chefEnemy,
+        spriteX
+      ),
+      new MovingEnemy(
+        plateforms[3].position.x + 240,
+        plateforms[3].position.y - 80,
+        "horizontal",
+        plateforms[3].position.x,
+        plateforms[3].position.x + plateforms[0].width,
+        1,
+        0,
+        chefEnemy,
+        spriteX
+      ),
+      new MovingEnemy(
+        plateforms[4].position.x + 240,
+        plateforms[4].position.y - 80,
+        "horizontal",
+        plateforms[4].position.x,
+        plateforms[4].position.x + plateforms[0].width,
         1,
         0,
         chefEnemy,
@@ -1276,7 +1440,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     item = [
       new Item(
-        plateforms[0].position.x + 290,
+        plateforms[0].position.x,
         plateforms[0].position.y - 50,
         prosciuttoImg
       ),
@@ -1571,9 +1735,8 @@ document.addEventListener("DOMContentLoaded", () => {
         movingEnemies.splice(index, 1);
         player.velocity.y = 0;
         isPlayerOnEnemy = true;
-      } else {
-        isPlayerOnEnemy = false;
-      }
+      } 
+      
     });
 
     // handle the collision between the player and the boss
