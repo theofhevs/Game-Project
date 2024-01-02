@@ -1,26 +1,30 @@
-@import url("https://fonts.googleapis.com/css?family=Poppins");
+/* import this font : https://fonts.googleapis.com/css?family=Abel */
+
+@import url('https://fonts.googleapis.com/css?family=Abel');
 
 body{
     margin: 0;
     padding: 0;
     height: 100vh;
-    background-color: #bbbbbb;
+    background-color: #ffffff;
+    font-family: 'Abel', sans-serif;
+    
 }
 
 h1.wp-block-heading {
-    font-size: 70px;
+    font-size: 50px;
     color: white;
     text-align: center;
-    margin-top: -160px;
-    text-shadow: black 0em 0em 0.3em;
+    margin-top: -140px;
+    font-weight: 800;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
 }
 
 h2.wp-block-heading {
-    font-size: 70px;
+    font-size: 50px;
     color: black;
-    text-align: left;
+    text-align: center;
     margin-top: 100px;
-    margin-left: 90px;
 }
 
 h3.wp-block-heading {
@@ -37,11 +41,11 @@ h4.wp-block-heading {
     text-align: center;
     margin-top: 100px;
 }
-
 p {
     font-size: 25px;
     margin-left: 90px;
     margin-right: 90px;
+    
 }
 
 .wp-block-button__link {
@@ -52,21 +56,24 @@ p {
     border-radius: 25px;
     padding: 10px;
     font-size: 20px;
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Abel', sans-serif;
     text-decoration: none;
     width: 200px;
     justify-content: center;
     margin: auto;
+    transition: transform 0.4s;
 }
 
 .wp-block-button__link:hover {
     text-decoration: none;
     color: rgb(250, 6, 6);
+    letter-spacing: 0px;
+    transform: scale(1.1);
+
 }
 
 .wp-block-cover__image-background{
     width: 100%;
-    height: 200px;
 }
 
 img {
@@ -74,31 +81,84 @@ img {
     height: auto;
     object-fit: cover;
     z-index: 999;
+}
+#root > div > div:nth-child(2) > div > figure:nth-child(8) > img{
+    margin-left: 90px;
+    width: 150px; 
+}
+#root > div > div:nth-child(2) > div > figure:nth-child(12) > img{
+    margin-left: 400px;
+    width: 180px;
+    margin-top: -500px !important;
+    padding-bottom: 50px;
 
 }
-
+#root > div > div:nth-child(2) > div > figure.wp-block-image.size-full.is-resized > img{
+    margin-left: 90px;
+    height: 180px !important;
+    width: auto !important;
+}
+#root > div > div:nth-child(2) > div > p:nth-child(13){
+    margin-top: -50px;
+}
 table {
-    width: auto;
-    margin: 90px;
+    width: 70%;
+    margin: auto;
+    margin-top: 120px;
     table-layout: fixed;
     border-collapse: collapse;
-    border: #121619 1px solid !important;
-    padding-bottom: 90px;
+    border: #121619 1px solid;
+    padding: 0px;
+}
+#wptb-table-id-36 > table > tbody{
+    margin-bottom: 90px;
+    margin-top: 90px;
+}
+#wptb-table-id-24 > table{
+    margin-top: 20px;
+}
+#wptb-table-id-24 > table > tbody > tr > td > div > div > p{
+    font-size: 15px;
+}
+tr:hover > td{
+    background-color: rgb(59, 59, 59);
+}
+td:hover{
+    background-color: rgb(104, 104, 104) !important;
 }
 
+/*remove the background color and set the text color to black on the first row*/
+table > tbody > tr:nth-child(1) > td{
+    background-color: #ffffff !important;
+}
+
+table > tbody > tr:nth-child(1) > td > div > div > p{
+    color: #000000;
+    font-size: 30px !important;
+    font-weight: bold;
+    padding-bottom: 0;
+}
  th,
  td {
-    width: 25%;
-    border: #121619 1px solid !important;
+    width: 10%;
+    border: #ffffff 1px solid !important;
+    padding: 5px;
+    background-color: rgb(22, 22, 22);
  }
-
+table > tbody > tr > td > div > div > p{
+    color: rgba(255, 255, 255, 1) ;
+    font-size: 16px !important;
+    margin: 0; 
+    padding-left: 5px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
 img.wptb-image-element-target{
       display: block;
       width: 100% !important;
       margin: 0 auto;
       height: auto !important;
   }
-
   ul {
     margin-left: 90px;
     padding-bottom: 90px;
@@ -109,48 +169,113 @@ img.wptb-image-element-target{
     margin-top: 20px;
   }
 
-    /* pizza */
-    .wp-image-225 {
-        width: 100px !important;
-        height: auto !important;
-        object-fit: cover;
-    }
+  .wp-image-225{
 
-    /* burger */
-    .wp-image-251 {
-        display: flex;
-        width: 130px !important;
-        height: auto !important;
-        object-fit: cover;
-        margin-left: -50px;
-    }
-
-  /* chapeau */
-  .wp-image-252 {
-    display: flex;
-    width: 120px !important;
-    height: auto !important;
     object-fit: cover;
-    margin-left: 200px;
-    margin-top: -160px;
+    width: 100px;
+    height: auto;
   }
-
-  /* boss */
-  .wp-image-253 {
-    object-fit: cover;
-    width: 100px !important;
-    height: auto !important;
-  }
-
-
 
   .wp-block-image {
     margin-left: 90px;
     margin-right: 90px;
   }
+a{
+    color:#000000;
+    text-decoration:none;
+    transition: letter-spacing 0.3s ease;
+}
+a:hover{
+    color: rgb(122, 6, 6);
+    letter-spacing: 1px;
+}
+#root > div > div:nth-child(2) > div > p:nth-child(4) > a{
+    display: block;
+    margin-top: 100px;
+    font-weight: bold;
+}
+#root > div > div:nth-child(2) > div > p:nth-child(5) > a{
+    font-weight: bold;
+}
 
-  .alignleft{
-    display: inline-block;
+figure > img {
+    border-radius: 10px;
+    width: 30%;
+    transition: transform 0.4s;
+}
+
+#root > div > div:nth-child(2) > div > p:nth-child(4) > a{
+    width: 218px !important;
+}
+#root > div > div:nth-child(2) > div > p:nth-child(4) > a,
+#root > div > div:nth-child(2) > div > p:nth-child(5) > a {
+    --s: 0.1em;
+  --c: rgb(67, 0, 0);
+  color: #0000;
+  padding-bottom: var(--s);
+  background: 
+    linear-gradient(90deg,var(--c) 50%,#000 0) calc(100% - var(--_p,0%))/200% 100%,
+    linear-gradient(var(--c) 0 0) 0% 100%/var(--_p,0%) var(--s) no-repeat;
+  -webkit-background-clip: text,padding-box;
+          background-clip: text,padding-box;
+  transition: background 0.8s ease, letter-spacing 0.3s ease;
+  width: 100%;
+}
+#root > div > div:nth-child(2) > div > p:nth-child(4) > a:hover,
+#root > div > div:nth-child(2) > div > p:nth-child(5) > a:hover{
+    --_p: 100%;
+}
+
+.container {
+    display: flex ;
+    flex-wrap: wrap ;
+    margin-top: 90px;
+    margin-left: 220px;
+  }
+  figure {
+    width: 48% ; 
+    margin: 1% !important;
+    box-sizing: border-box ;
+    position: relative;
+    padding-bottom: 15px;
+  }
+  
+.text-overlay {
+    position: absolute;
+    top: 46%;
+    left: 32%;
+    transform: translate(-50%, -50%);
+    opacity: 1;
+    transition: opacity 0.3s ease-in-out;
+    padding: 0px;
+    text-align: center; 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 400px;
+    height: 220px;
+    pointer-events: none; 
+  }
+  .text-overlay > p {
+    font-size: 40px;
+    color: white;
+    text-shadow: black 0em 0em 0.3em;
   }
 
+div.container > figure > img{
+    width: 400px !important;
+    height: 220px !important;
+    filter: brightness(50%);
+}
+div.container > figure > img:hover + .text-overlay{
+    opacity: 0;
+    transition: filter 0.3s ease-in-out;
+}
 
+div.container > figure > img:hover{
+    filter: brightness(100%);
+    /* make the image bigger */
+    transform: scale(1.3);
+    transition: transform 0.3s ease-in-out;
+}
