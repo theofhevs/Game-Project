@@ -22,13 +22,18 @@ let bossMusic = new Audio();
 let musicLevel1 = new Audio();
 let musicMenu = new Audio();
 let musicLevel2 = new Audio();
+let musicLevel3 = new Audio();
+let musicLevel4 = new Audio();
 let musicEnding = new Audio();
+
 
 // set the music loop to true
 bossMusic.loop = true;
 musicLevel1.loop = true;
 musicMenu.loop = true;
 musicLevel2.loop = true;
+musicLevel3.loop = true;
+musicLevel4.loop = true;
 musicEnding.loop = true;
 
 // fetch the music.json file and set the volume of the music
@@ -46,6 +51,12 @@ fetch("/music.json")
 
     musicLevel2.src = soundURL + data.musicLevel2;
     musicLevel2.volume = volumeLevel;
+
+    musicLevel3.src = soundURL + data.musicLevel3;
+    musicLevel3.volume = volumeLevel;
+
+    musicLevel4.src = soundURL + data.musicLevel4;
+    musicLevel4.volume = volumeLevel;
 
     musicEnding.src = soundURL + data.musicEnding;
     musicEnding.volume = volumeLevel;
@@ -799,8 +810,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     item = [
       new Item(
-        plateforms[0].position.x + 455,
-        plateforms[0].position.y - 50,
+        plateforms[4].position.x + 455,
+        plateforms[4].position.y - 50,
         patePizzaImg
       ),
     ];
@@ -961,8 +972,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     item = [
       new Item(
-        plateforms[0].position.x + 290,
-        plateforms[0].position.y - 50,
+        plateforms[7].position.x + 455,
+        plateforms[7].position.y - 50,
         sauce
       ),
     ];
@@ -972,6 +983,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function initlevel3() {
     musicLevel2.pause();
+    musicLevel3.play();
     // player creation
     player = new Player(playerFont, spriteX, spriteY, isAnimated);
 
@@ -1284,6 +1296,8 @@ document.addEventListener("DOMContentLoaded", () => {
     scrollOffset = 0;
   }
   function initlevel4() {
+    musicLevel3.pause();
+    musicLevel4.play();
     // player object creation 
     player = new Player(playerFont, spriteX, spriteY, isAnimated);
 
@@ -1440,8 +1454,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     item = [
       new Item(
-        plateforms[0].position.x,
-        plateforms[0].position.y - 50,
+        plateforms[4].position.x + 455,
+        plateforms[4].position.y - 50,
         prosciuttoImg
       ),
     ];
@@ -1451,6 +1465,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function initlevelFinal() {
+    musicLevel4.pause();
     bossMusic.play();
     // player object creation
     player = new Player(playerFont, spriteX, spriteY, isAnimated);
@@ -1755,7 +1770,7 @@ document.addEventListener("DOMContentLoaded", () => {
           isBossUpdateVerticalAllowed = true;
           player.velocity.y = 0;
           isPlayerOnEnemy = true;
-          if (countHitBoss === 1) {
+          if (countHitBoss === 3) {
             bosses.splice(index, 1);
             player.velocity.y = 0;
             isPlayerOnEnemy = true;
