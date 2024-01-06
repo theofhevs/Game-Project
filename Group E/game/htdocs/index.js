@@ -102,6 +102,7 @@ const bossSprite = new Image();
 const geolocationIcon = new Image();
 const backEnding = new Image();
 const home = new Image();
+const resetImage = new Image();
 home.src = imgURL + "home.png";
 backEnding.src = imgURL + "bravo.png";
 geolocationIcon.src = imgURL + "geolocalisation.png";
@@ -117,6 +118,7 @@ bossSprite.src = imgURL + "boss.png";
 chefEnemy.src = imgURL + "chefSprite.png";
 burgerEnemy.src = imgURL + "burgerSprite.png";
 customize.src = imgURL + "customize.png";
+resetImage.src = imgURL + "resetButton.png";
 mozzarellaImg.src = imgURL + "mozzarella.png";
 cityBackground.src = imgURL + "italianCityLarge.png";
 desertBackground.src = imgURL + "desertBackgroundLarge.png";
@@ -179,12 +181,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const STATE_GAME_ON = "gameOn";
   const STATE_END = "ending";
   let gameState = STATE_MENU;
-
-  // handle click (x,y du click)
-  // for each button
-  // if(button.IsInBounds(x,y))
-  //-> state = button.stateTo
-  //-> buttons = button.nextButtons
 
   // player creation
   let player = new Player(playerFont, spriteX, spriteY, isAnimated);
@@ -452,7 +448,7 @@ document.addEventListener("DOMContentLoaded", () => {
       new Buttons({
         x: 105,
         y: 200,
-        image: customize,
+        image: resetImage,
         belongTo: [STATE_PLAYERSELECTION],
         initMethod: () => {
           playerFont.src = imgURL + "sprite.png";
