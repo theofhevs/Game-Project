@@ -7,7 +7,7 @@ export default function Nav({ posts }) {
     return (
         <div>
         <nav>
-            <img src="https://dev-the-tremendous-journey.pantheonsite.io/wp-content/uploads/2023/12/pizza.png" alt="logo" />
+            <img src="https://dev-the-tremendous-journey.pantheonsite.io/wp-content/uploads/2023/12/logo.png" alt="logo" />
           <ul>
             {posts.map((post) => (
               <li key={post.id}>
